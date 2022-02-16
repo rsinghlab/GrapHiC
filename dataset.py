@@ -154,18 +154,17 @@ class HiCDataset(Dataset):
                 
                 edge_features += [[matrix[i][j]], [matrix[i][j]]]
         
-        
         edge_features = np.asarray(edge_features)
-        return torch.tensor(edge_features, dtype=torch.float)
+        return torch.tensor(edge_features, dtype=torch.long)
 
         
 
 
     def _get_adjacency_info(self, matrix):
         """
-        We could also use rdmolops.GetAdjacencyMatrix(mol)
-        but we want to be sure that the order of the indices
-        matches the order of the edge features
+            We could also use rdmolops.GetAdjacencyMatrix(mol)
+            but we want to be sure that the order of the indices
+            matches the order of the edge features
         """
         edge_indices = []
 
@@ -173,11 +172,13 @@ class HiCDataset(Dataset):
             for j in range(matrix.shape[1]):
                 if i > j: 
                     continue
-            edge_indices += [[i, j], [j, i]]
-
-
-        edge_indices = torch.tensor(edge_indices)
+                
+                edge_indices += [[i, j], [j, i]]
+        
+        edge_indices = np.asarray(edge_indices)
+        edge_indices = torch.tensor(edge_indices, dtype=torch.long)
         edge_indices = edge_indices.t().to(torch.long).view(2, -1)
+        
         return edge_indices
         
 

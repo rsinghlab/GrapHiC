@@ -14,12 +14,19 @@ low_res_gm12878_files = HiCDataset(PATH_TO_GRAPHIC_DATASETS, 'NONE', 'GM12878', 
 
 
 print(low_res_gm12878_files.len())
-print(low_res_gm12878_files.get('encode-0').x.shape[1])
 
+encode_0_chr = low_res_gm12878_files.get('encode-0')
 
 conv_layer_one = TransformerConv(1, 
-                                self.encoder_embedding_size, 
+                                128, 
                                 heads=4, 
                                 concat=False,
                                 beta=True,
-                                edge_dim=self.edge_dim)
+                                edge_dim=1)
+
+print(encode_0_chr.edge_index.dtype)
+
+
+x = conv_layer_one(encode_0_chr.x, encode_0_chr.edge_index, encode_0_chr.edge_attr).relu() 
+
+print(x)
