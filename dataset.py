@@ -16,7 +16,7 @@ print(f"Torch geometric version: {torch_geometric.__version__}")
 
 class HiCDataset(Dataset):
     def __init__(self, root, noise, cell_line, chr_id, required_datasets, percentile = 99.95, 
-                 test=False, transform=None, pre_transform=None,
+                 test=False, regenerate=False, transform=None, pre_transform=None,
                  verbose=True):
         '''
         @params: root <string>, root directory that contails all the dataset files
@@ -31,6 +31,7 @@ class HiCDataset(Dataset):
         self.chr_id = chr_id
         self.percentile = percentile
         self.verbose = verbose
+        self.regenerate = regenerate
 
         super(HiCDataset, self).__init__(root, transform, pre_transform)
         
@@ -58,6 +59,11 @@ class HiCDataset(Dataset):
 
     @property
     def processed_file_names(self):
+        
+        if self.regenerate:
+            if self.verbose: print('Reprocessing the files')
+            return ['regenerate']
+        
         dataset_ids = globals.DATASETS[self.required_datasets][self.cell_line]
         
         files_required = []
@@ -94,8 +100,8 @@ class HiCDataset(Dataset):
             adjacency_matrix = self._get_adjacency_info(raw_data)
 
             data = Data(x=node_features, 
-                        edge_index=edge_features,
-                        edge_attr=adjacency_matrix,
+                        edge_index=adjacency_matrix,
+                        edge_attr=edge_features,
                         path=file_path) 
             
             torch.save(data, 
@@ -187,7 +193,7 @@ class HiCDataset(Dataset):
 
     def len(self):
         return len(os.listdir(self.processed_dir))
-
+    
 
     def get(self, dataset_id):
         files = list(map(lambda x: os.path.join(self.processed_dir, x),os.listdir(self.processed_dir)))
