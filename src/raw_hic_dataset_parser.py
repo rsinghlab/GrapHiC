@@ -4,10 +4,7 @@
     2) It calculates the cutoff value for all the chromosome files and stores them in a .csv file
     3) Generates a file that contains the statistics of all the datasets files we have collected
 '''
-NUM_CHROMOSOMES = 23
-RESOLUTION = 10000
-NORMALIZATION = 'KR'
-PERCENTILE = 99.95
+
 
 
 import os, struct, glob
@@ -15,7 +12,6 @@ import hicstraw
 from src import globals
 import numpy as np
 from scipy.sparse import csr_matrix
-
 
 def readcstr(f):
     buf = ""
@@ -91,7 +87,7 @@ def read_hic_header(hicfile):
 
 def calculate_percentile(counts):
     counts = counts[np.where(counts != 0)]
-    return np.percentile(counts, PERCENTILE)
+    return np.percentile(counts, globals.PERCENTILE)
 
 
 
@@ -107,8 +103,8 @@ def calculate_percentile(counts):
 '''
 
 def straw_chrom_obj_to_dense_matrix(chrom, chrom_size):
-    rows = [r.binX//RESOLUTION for r in chrom]
-    cols = [r.binY//RESOLUTION for r in chrom]
+    rows = [r.binX//globals.RESOLUTION for r in chrom]
+    cols = [r.binY//globals.RESOLUTION for r in chrom]
     counts = np.array([r.counts for r in chrom])
     counts[np.isnan(counts)] = 0
 
@@ -118,7 +114,7 @@ def straw_chrom_obj_to_dense_matrix(chrom, chrom_size):
 
     print(percentile, read_counts)
 
-    N = chrom_size//RESOLUTION + 1
+    N = chrom_size//globals.RESOLUTION + 1
 
     mat = csr_matrix((counts, (rows, cols)), shape=(N,N))
     mat = csr_matrix.todense(mat)
@@ -156,11 +152,11 @@ def parse_out_chromosomes_from_hic_file(file_path, output_folder_path, noise_typ
     percentiles = []
     read_counts = []
 
-    for chromosome in range(1, NUM_CHROMOSOMES):
+    for chromosome in range(1, globals.NUM_CHROMOSOMES):
         chrom_size = read_hic_header(file_path)['chromsizes'][str(chromosome)]
         chrom = hicstraw.straw(
             'observed', 'KR', file_path,
-            str(chromosome), str(chromosome), 'BP', RESOLUTION
+            str(chromosome), str(chromosome), 'BP', globals.RESOLUTION
         )
         chrom, percentile, read_count = straw_chrom_obj_to_dense_matrix(chrom, chrom_size)
 
