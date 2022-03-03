@@ -22,8 +22,8 @@ SUB_MATRIX_SIZE = 1000
 DATASETS = {
     'LOW_RES': {
         'GM12878': ['encode-0', 'encode-1', 'encode-2', 'encode-3', 'encode-4', 'hic010', 'hic026', 'hic031', 'hic033', 'hic046'],
-        'IMR90': [],
-        'K562': []
+        'IMR90': ['hic050', 'hic052', 'hic056', 'hic057'],
+        'K562': ['hic070', 'hic071', 'hic073', 'hic074']
     },
     'HIGH_RES': {
         'GM12878': ['primary'],

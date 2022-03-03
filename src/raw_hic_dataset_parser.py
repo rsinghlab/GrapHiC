@@ -187,8 +187,8 @@ def parse_out_chromosomes_from_hic_file(file_path, output_folder_path, noise_typ
 '''
 def parse_out_all_hic_files(path_to_base_directory):
     hic_files = glob.glob(os.path.join(path_to_base_directory, '**/*.hic'), recursive=True)
-    hic_files = list(filter(lambda x: 'K562' not in x and 'IMR90' not in x, hic_files))
-    
+    #hic_files = list(filter(lambda x: 'K562' not in x and 'IMR90' not in x, hic_files))
+
     for hic_file in hic_files:
         stats = parse_out_chromosomes_from_hic_file(hic_file, os.path.join(globals.PATH_TO_GRAPHIC_DATASETS, 'raw'))
         with open('dataset_stats.csv', 'a+') as f:

@@ -1,0 +1,1076 @@
+{
+    "location": {
+        "key": "location",
+        "path": "/public/241399179910909"
+    },
+    "peers": {
+        "key": "peers",
+        "": {
+            "connected": true
+        }
+    },
+    "ls/me": {
+        "key": "ls/me",
+        "client": "kltyjkw8ecqc0f79boq6cgx93cn8hsg"
+    },
+    "/cheese_service": {
+        "key": "/cheese_service",
+        "is_staffed": false
+    },
+    "/available": {
+        "key": "/available"
+    },
+    "chat_id": {
+        "key": "chat_id",
+        "id": "241399179910909"
+    },
+    "/connection": {
+        "key": "/connection",
+        "id": "08bc4dea-4c65-48fe-94ca-a74ce2940968",
+        "client": "08bc4dea-4c65-48fe-94ca-a74ce2940968",
+        "pages_open": {
+            "241399179910909": {
+                "is_thinker": true,
+                "is_helper": false,
+                "blur": true
+            }
+        }
+    },
+    "/current_user": {
+        "key": "/current_user",
+        "user": null,
+        "logged_in": false
+    },
+    "/chats/undefined": {
+        "key": "/chats/undefined",
+        "last_message_at": 1616115190453,
+        "public_id": "undefined",
+        "thinker_has_typed": true,
+        "simulator_id": "1552332431616-2768"
+    },
+    "schedule-widget": {
+        "key": "schedule-widget"
+    },
+    "/messages/public/undefined": {
+        "key": "/messages/public/undefined",
+        "list": [
+            "/msg/public/undefined/0",
+            "/msg/public/undefined/1",
+            "/msg/public/undefined/2",
+            "/msg/public/undefined/3",
+            "/msg/public/undefined/4",
+            "/msg/public/undefined/5",
+            "/msg/public/undefined/6",
+            "/msg/public/undefined/7",
+            "/msg/public/undefined/8",
+            "/msg/public/undefined/9",
+            "/msg/public/undefined/10",
+            "/msg/public/undefined/11",
+            "/msg/public/undefined/12",
+            "/msg/public/undefined/13",
+            "/msg/public/undefined/14",
+            "/msg/public/undefined/15",
+            "/msg/public/undefined/16",
+            "/msg/public/undefined/17",
+            "/msg/public/undefined/18",
+            "/msg/public/undefined/19",
+            "/msg/public/undefined/20",
+            "/msg/public/undefined/21",
+            "/msg/public/undefined/22",
+            "/msg/public/undefined/23",
+            "/msg/public/undefined/24",
+            "/msg/public/undefined/25",
+            "/msg/public/undefined/26",
+            "/msg/public/undefined/27",
+            "/msg/public/undefined/28",
+            "/msg/public/undefined/29",
+            "/msg/public/undefined/30",
+            "/msg/public/undefined/31",
+            "/msg/public/undefined/32",
+            "/msg/public/undefined/33",
+            "/msg/public/undefined/34"
+        ]
+    },
+    "/buddy/undefined": {
+        "key": "/buddy/undefined"
+    },
+    "/sim-dash/undefined": {
+        "key": "/sim-dash/undefined",
+        "user": "/user/jkriplean",
+        "step": 67,
+        "current_code": "MD",
+        "body": "**🎉Congratulations! ** You've completed this simulated session. Nice job!!",
+        "show_reply_box": false,
+        "fill_in_the_blanks": null,
+        "free_response": false,
+        "multiple_choice": false,
+        "is_question": false,
+        "is_answer": false,
+        "continue_disabled": false,
+        "hide_continue_button": false,
+        "notes": null,
+        "notes_next": false,
+        "cheese": null,
+        "cheese_next": false,
+        "questions": [
+            {
+                "type": "text",
+                "line": "How will you respond? **Choose all that apply.**"
+            },
+            {
+                "type": "checkbox",
+                "line": "This session has ended. Thank you for using Cheeseburger Therapy! Come back any time you'd like to chat some more."
+            },
+            {
+                "type": "text",
+                "line": ""
+            },
+            {
+                "type": "checkbox",
+                "line": "We've just wrapped up this Cheeseburger Therapy session. Thank you for using our services, come back any time."
+            },
+            {
+                "type": "text",
+                "line": ""
+            },
+            {
+                "type": "checkbox",
+                "line": "Thank you, you are done! You can come back any time to talk about this situation or anything else that's troubling."
+            },
+            {
+                "type": "text",
+                "line": ""
+            },
+            {
+                "type": "text",
+                "line": ""
+            }
+        ],
+        "answers": [
+            {
+                "type": "text",
+                "line": "How will you respond? **Choose all that apply.**"
+            },
+            {
+                "type": "right",
+                "line": "This session has ended. Thank you for using Cheeseburger Therapy! Come back any time you'd like to chat some more."
+            },
+            {
+                "type": "explanation",
+                "line": "Correct! The helper uses the suggestions and wraps up the session, reminding them they can return for a new session or extension of this one. There are a variety of way you could say this."
+            },
+            {
+                "type": "text",
+                "line": ""
+            },
+            {
+                "type": "right",
+                "line": "We've just wrapped up this Cheeseburger Therapy session. Thank you for using our services, come back any time."
+            },
+            {
+                "type": "explanation",
+                "line": "Correct! The helper uses the suggestions and wraps up the session, reminding them they can return for a new session or extension of this one. There are a variety of way you could say this."
+            },
+            {
+                "type": "text",
+                "line": ""
+            },
+            {
+                "type": "right",
+                "line": "Thank you, you are done! You can come back any time to talk about this situation or anything else that's troubling."
+            },
+            {
+                "type": "explanation",
+                "line": "Correct! The helper uses the suggestions and wraps up the session, reminding them they can return for a new session or extension of this one. There are a variety of way you could say this."
+            },
+            {
+                "type": "text",
+                "line": ""
+            },
+            {
+                "type": "text",
+                "line": ""
+            }
+        ],
+        "suggestions": null
+    },
+    "/aggregate_schedule": {
+        "key": "/aggregate_schedule",
+        "_": {
+            "1645642800000": [
+                "user/PessiaP"
+            ],
+            "1645646400000": [
+                "user/PessiaP"
+            ],
+            "1645815600000": [
+                "user/PessiaP"
+            ],
+            "1645819200000": [
+                "user/PessiaP"
+            ]
+        }
+    },
+    "state_dash": {
+        "key": "state_dash",
+        "on": false,
+        "selected": {
+            "owner": null,
+            "name": null,
+            "number": null
+        },
+        "filter": null
+    },
+    "bottom_typing_area": {
+        "key": "bottom_typing_area",
+        "scrollY": 1792.484375,
+        "left": 400,
+        "top": 5828,
+        "height": 100,
+        "height_up_to_first_suggestion": 100,
+        "tfbheight": 449
+    },
+    "sidebar-position": {
+        "key": "sidebar-position",
+        "at_top": false,
+        "at_top_y": 93
+    },
+    "component/3": {
+        "key": "component/3",
+        "ticking": false
+    },
+    "/chats/241399179910909": {
+        "key": "/chats/241399179910909"
+    },
+    "/messages/public/241399179910909": {
+        "key": "/messages/public/241399179910909",
+        "list": [
+            "/msg/public/241399179910909/0",
+            "/msg/public/241399179910909/1",
+            "/msg/public/241399179910909/2",
+            "/msg/public/241399179910909/3",
+            "/msg/public/241399179910909/4",
+            "/msg/public/241399179910909/5",
+            "/msg/public/241399179910909/6",
+            "/msg/public/241399179910909/7",
+            "/msg/public/241399179910909/8",
+            "/msg/public/241399179910909/9",
+            "/msg/public/241399179910909/10",
+            "/msg/public/241399179910909/11",
+            "/msg/public/241399179910909/12",
+            "/msg/public/241399179910909/13",
+            "/msg/public/241399179910909/14",
+            "/msg/public/241399179910909/15",
+            "/msg/public/241399179910909/16",
+            "/msg/public/241399179910909/17",
+            "/msg/public/241399179910909/18",
+            "/msg/public/241399179910909/19",
+            "/msg/public/241399179910909/20",
+            "/msg/public/241399179910909/21",
+            "/msg/public/241399179910909/22",
+            "/msg/public/241399179910909/23",
+            "/msg/public/241399179910909/24",
+            "/msg/public/241399179910909/25",
+            "/msg/public/241399179910909/26",
+            "/msg/public/241399179910909/27",
+            "/msg/public/241399179910909/28",
+            "/msg/public/241399179910909/29",
+            "/msg/public/241399179910909/30",
+            "/msg/public/241399179910909/31",
+            "/msg/public/241399179910909/32",
+            "/msg/public/241399179910909/33",
+            "/msg/public/241399179910909/34",
+            "/msg/public/241399179910909/35",
+            "/msg/public/241399179910909/36",
+            "/msg/public/241399179910909/37",
+            "/msg/public/241399179910909/38",
+            "/msg/public/241399179910909/39",
+            "/msg/public/241399179910909/40",
+            "/msg/public/241399179910909/41",
+            "/msg/public/241399179910909/42",
+            "/msg/public/241399179910909/43",
+            "/msg/public/241399179910909/44",
+            "/msg/public/241399179910909/45",
+            "/msg/public/241399179910909/46",
+            "/msg/public/241399179910909/47",
+            "/msg/public/241399179910909/48",
+            "/msg/public/241399179910909/49",
+            "/msg/public/241399179910909/50",
+            "/msg/public/241399179910909/51",
+            "/msg/public/241399179910909/52",
+            "/msg/public/241399179910909/53",
+            "/msg/public/241399179910909/54",
+            "/msg/public/241399179910909/55",
+            "/msg/public/241399179910909/56",
+            "/msg/public/241399179910909/57",
+            "/msg/public/241399179910909/58",
+            "/msg/public/241399179910909/59",
+            "/msg/public/241399179910909/60",
+            "/msg/public/241399179910909/61",
+            "/msg/public/241399179910909/62",
+            "/msg/public/241399179910909/63",
+            "/msg/public/241399179910909/64",
+            "/msg/public/241399179910909/65",
+            "/msg/public/241399179910909/66",
+            "/msg/public/241399179910909/67",
+            "/msg/public/241399179910909/68",
+            "/msg/public/241399179910909/69",
+            "/msg/public/241399179910909/70",
+            "/msg/public/241399179910909/71",
+            "/msg/public/241399179910909/72",
+            "/msg/public/241399179910909/73",
+            "/msg/public/241399179910909/74",
+            "/msg/public/241399179910909/75",
+            "/msg/public/241399179910909/76",
+            "/msg/public/241399179910909/77",
+            "/msg/public/241399179910909/78",
+            "/msg/public/241399179910909/79",
+            "/msg/public/241399179910909/80",
+            "/msg/public/241399179910909/81",
+            "/msg/public/241399179910909/82",
+            "/msg/public/241399179910909/83",
+            "/msg/public/241399179910909/84",
+            "/msg/public/241399179910909/85",
+            "/msg/public/241399179910909/86",
+            "/msg/public/241399179910909/87",
+            "/msg/public/241399179910909/88",
+            "/msg/public/241399179910909/89",
+            "/msg/public/241399179910909/90",
+            "/msg/public/241399179910909/91",
+            "/msg/public/241399179910909/92",
+            "/msg/public/241399179910909/93",
+            "/msg/public/241399179910909/94",
+            "/msg/public/241399179910909/95",
+            "/msg/public/241399179910909/96",
+            "/msg/public/241399179910909/97"
+        ]
+    },
+    "/buddy/241399179910909": {
+        "key": "/buddy/241399179910909"
+    },
+    "/sim-dash/241399179910909": {
+        "key": "/sim-dash/241399179910909"
+    },
+    "/helpers_for/241399179910909": {
+        "key": "/helpers_for/241399179910909",
+        "status": false,
+        "num_available": 0,
+        "num_checked_in": 0
+    },
+    "/livetext/thinker/241399179910909": {
+        "key": "/livetext/thinker/241399179910909"
+    },
+    "/livetext/helper/241399179910909": {
+        "key": "/livetext/helper/241399179910909"
+    },
+    "/notes/public/241399179910909": {
+        "key": "/notes/public/241399179910909",
+        "event": "difficult relationships with two old business partners--- Feeling overwhelmed with the situation",
+        "thought": "I should be trying to be good with them. \nThey might compete with me and destroy me. \nI might be taking on too much.\nI fear I take on too many projects.\nIf they compete with me and destroy me, I lose their friendship, share in the company, and time spent\n",
+        "feelings_behaviors": "death, loss, sad, deflated, beaten, wrong, shamed, killed exiled",
+        "new_thought": "We can exist in a friendly competition, moving the market and the world forward."
+    },
+    "cheese-menu": {
+        "key": "cheese-menu"
+    },
+    "/msg/public/241399179910909/0": {
+        "key": "/msg/public/241399179910909/0",
+        "text": "I'm having some anxieties, recurring, about a difficult situation I had. I want to put them all to rest.",
+        "from_thinker": true,
+        "id": "1545679094579-5015",
+        "time": "Mon Dec 24 2018 11:18:14 GMT-0800 (Pacific Standard Time)"
+    },
+    "/review/241399179910909": {
+        "key": "/review/241399179910909",
+        "msgs": {}
+    },
+    "review-buddy": {
+        "key": "review-buddy"
+    },
+    "/msg/public/241399179910909/1": {
+        "key": "/msg/public/241399179910909/1",
+        "text": "Hi there, thanks for using Cheese! ",
+        "from_thinker": false,
+        "id": "1545679133452-3952",
+        "time": "Mon Dec 24 2018 11:18:53 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/2": {
+        "key": "/msg/public/241399179910909/2",
+        "text": "Whats bringing this recurring anxiety? ",
+        "from_thinker": false,
+        "id": "1545679163730-7196",
+        "time": "Mon Dec 24 2018 11:19:23 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/3": {
+        "key": "/msg/public/241399179910909/3",
+        "text": "I'm having difficult relationships with two old business partners.",
+        "from_thinker": true,
+        "id": "1545679175558-3672",
+        "time": "Mon Dec 24 2018 11:19:35 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/4": {
+        "key": "/msg/public/241399179910909/4",
+        "text": "And I'm continuing to work on the business.",
+        "from_thinker": true,
+        "id": "1545679184749-1144",
+        "time": "Mon Dec 24 2018 11:19:44 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/5": {
+        "key": "/msg/public/241399179910909/5",
+        "text": "So these thoughts about them keep coming up.",
+        "from_thinker": true,
+        "id": "1545679190893-7533",
+        "time": "Mon Dec 24 2018 11:19:50 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/6": {
+        "key": "/msg/public/241399179910909/6",
+        "text": "I feel like I've worked through the thoughts before, but then I have them again... or new thoughts, or variations on the old ones, and it's overwhelming.",
+        "from_thinker": true,
+        "id": "1545679213300-6051",
+        "time": "Mon Dec 24 2018 11:20:13 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/7": {
+        "key": "/msg/public/241399179910909/7",
+        "text": "what are these thoughts? The old, new, variations. Whichever feels the most troubling ",
+        "from_thinker": false,
+        "id": "1545679254172-624",
+        "time": "Mon Dec 24 2018 11:20:54 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/8": {
+        "key": "/msg/public/241399179910909/8",
+        "text": "Ok good question.",
+        "from_thinker": true,
+        "id": "1545679257691-4694",
+        "time": "Mon Dec 24 2018 11:20:57 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/9": {
+        "key": "/msg/public/241399179910909/9",
+        "text": "I have a thought that, on the one hand, I should be trying to be good with them. On the other hand, I have a thought that they might squeeze me out and take my stuff.",
+        "from_thinker": true,
+        "id": "1545679297514-8638",
+        "time": "Mon Dec 24 2018 11:21:37 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/10": {
+        "key": "/msg/public/241399179910909/10",
+        "text": "They might compete with me and destroy me.",
+        "from_thinker": true,
+        "id": "1545679304697-2235",
+        "time": "Mon Dec 24 2018 11:21:44 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/11": {
+        "key": "/msg/public/241399179910909/11",
+        "text": "And also that I might be taking on too much. This one is related to them competing with me. It would be like a weakness of mine, that might result in me competing with them, and then they hate me, and then I also lose, and then they destroy me.",
+        "from_thinker": true,
+        "id": "1545679374984-1485",
+        "time": "Mon Dec 24 2018 11:22:54 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/12": {
+        "key": "/msg/public/241399179910909/12",
+        "text": "I think that might be the root thought that leads to the other two.",
+        "from_thinker": true,
+        "id": "1545679386322-4484",
+        "time": "Mon Dec 24 2018 11:23:06 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/13": {
+        "key": "/msg/public/241399179910909/13",
+        "text": "It happens when I feel overwhelmed.",
+        "from_thinker": true,
+        "id": "1545679390993-2771",
+        "time": "Mon Dec 24 2018 11:23:10 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/14": {
+        "key": "/msg/public/241399179910909/14",
+        "text": "Just so I get a clear understanding of your thoughts, what would be the weakness in this situation? ",
+        "from_thinker": false,
+        "id": "1545679433139-8925",
+        "time": "Mon Dec 24 2018 11:23:53 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/15": {
+        "key": "/msg/public/241399179910909/15",
+        "text": "The weakness would be me taking on too much. It's like a behavior flaw. I have a fear I take on too many projects, rather than sticking with one and finishing it.",
+        "from_thinker": true,
+        "id": "1545679459532-2621",
+        "time": "Mon Dec 24 2018 11:24:19 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/16": {
+        "key": "/msg/public/241399179910909/16",
+        "text": "I think when I feel overwhelmed I have this thought. And this thought leads to follow-on thoughts that they might destroy me.",
+        "from_thinker": true,
+        "id": "1545679487043-3445",
+        "time": "Mon Dec 24 2018 11:24:47 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/17": {
+        "key": "/msg/public/241399179910909/17",
+        "text": "Ah I understand. Im going to summarize everything you've shared to make sure were on the same page",
+        "from_thinker": false,
+        "id": "1545679521982-4688",
+        "time": "Mon Dec 24 2018 11:25:21 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/18": {
+        "key": "/msg/public/241399179910909/18",
+        "text": "You've had difficult relationships with two of your old business partners. You think you should be trying to be good with them, but this has proven to be a difficult task. You have the thought that you may be taking on too many projects at once, this for you is a major weakness. Along with this, there is the future possibility of them being your competition. Part of the fear with them being your competition is the potential of them \"destroying\" you. ",
+        "from_thinker": false,
+        "id": "1545679632573-3114",
+        "time": "Mon Dec 24 2018 11:27:12 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/19": {
+        "key": "/msg/public/241399179910909/19",
+        "text": "Is this accurate? ",
+        "from_thinker": false,
+        "id": "1545679637494-261",
+        "time": "Mon Dec 24 2018 11:27:17 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/20": {
+        "key": "/msg/public/241399179910909/20",
+        "text": "I think the triggering event is the feeling of overwhelm.",
+        "from_thinker": true,
+        "id": "1545679657134-5168",
+        "time": "Mon Dec 24 2018 11:27:37 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/21": {
+        "key": "/msg/public/241399179910909/21",
+        "text": "I think the difficult relationships is like... an overview of the whole situation, but it's not the trigger.",
+        "from_thinker": true,
+        "id": "1545679695043-4917",
+        "time": "Mon Dec 24 2018 11:28:15 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/22": {
+        "key": "/msg/public/241399179910909/22",
+        "text": "Ok I get that",
+        "from_thinker": false,
+        "id": "1545679730773-7142",
+        "time": "Mon Dec 24 2018 11:28:50 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/23": {
+        "key": "/msg/public/241399179910909/23",
+        "text": "What thought do you have when you think about the potential of them being your competition and succeeding? ",
+        "from_thinker": false,
+        "id": "1545679748867-3690",
+        "time": "Mon Dec 24 2018 11:29:08 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/24": {
+        "key": "/msg/public/241399179910909/24",
+        "text": "What thought do I have? or feeling/behavior?",
+        "from_thinker": true,
+        "id": "1545679765539-7944",
+        "time": "Mon Dec 24 2018 11:29:25 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/25": {
+        "key": "/msg/public/241399179910909/25",
+        "text": "Why not share both ",
+        "from_thinker": false,
+        "id": "1545679774654-8520",
+        "time": "Mon Dec 24 2018 11:29:34 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/26": {
+        "key": "/msg/public/241399179910909/26",
+        "text": "It makes me think that this is all a waste of time, me trying to take this one, because I might not be capable of it, and if they competed and destroyed me, then not only would I have lost these friends, but I'd also have lost a share in the company, and I'd also have lost the time that I spent on it that I could have invested in my other projects.",
+        "from_thinker": true,
+        "id": "1545679822793-9381",
+        "time": "Mon Dec 24 2018 11:30:22 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/27": {
+        "key": "/msg/public/241399179910909/27",
+        "text": "That's like, death, a very bad outcome.",
+        "from_thinker": true,
+        "id": "1545679849533-1351",
+        "time": "Mon Dec 24 2018 11:30:49 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/28": {
+        "key": "/msg/public/241399179910909/28",
+        "text": "I think that style of thinking is called \"catastrophizing.\"",
+        "from_thinker": true,
+        "id": "1545679869814-8784",
+        "time": "Mon Dec 24 2018 11:31:09 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/29": {
+        "key": "/msg/public/241399179910909/29",
+        "text": "What feelings do these thoughts bring? ",
+        "from_thinker": false,
+        "id": "1545679885389-7832",
+        "time": "Mon Dec 24 2018 11:31:25 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/30": {
+        "key": "/msg/public/241399179910909/30",
+        "text": "What feelings do these thoughts bring? ",
+        "from_thinker": false,
+        "id": "1545679887431-4805",
+        "time": "Mon Dec 24 2018 11:31:27 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/31": {
+        "key": "/msg/public/241399179910909/31",
+        "text": "Feels like death, loss, sad, deflated, beaten, wrong, shamed, killed, exiled.",
+        "from_thinker": true,
+        "id": "1545679914324-1122",
+        "time": "Mon Dec 24 2018 11:31:54 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/32": {
+        "key": "/msg/public/241399179910909/32",
+        "text": "Those are all very strong negative feelings. I'm sorry youre having to experience these ",
+        "from_thinker": false,
+        "id": "1545679957216-5679",
+        "time": "Mon Dec 24 2018 11:32:37 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/33": {
+        "key": "/msg/public/241399179910909/33",
+        "text": "thank you. it's hard.",
+        "from_thinker": true,
+        "id": "1545679960288-9323",
+        "time": "Mon Dec 24 2018 11:32:40 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/34": {
+        "key": "/msg/public/241399179910909/34",
+        "text": "I bet. Once again ill quickly summarize",
+        "from_thinker": false,
+        "id": "1545679972029-9775",
+        "time": "Mon Dec 24 2018 11:32:52 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/35": {
+        "key": "/msg/public/241399179910909/35",
+        "text": "You have this feeling of being overwhelmed from these difficult relationships with two past business partners. You think you should be trying to be good with them, but that has had obstacles. there is the possibility of them competing with you and destroying you. If they did so, you have the thought that you'd lose friends, share in the company, and time that could have been well spent in other projects. All of this relates back to having the fear of taking on too many projects and trying to figure out how to deal with your relationships. This sistuation has lead to to feel like death, loss, sad, deflated, beaten, wrong shamed, and other negative feelings ",
+        "from_thinker": false,
+        "id": "1545680159688-7366",
+        "time": "Mon Dec 24 2018 11:35:59 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/36": {
+        "key": "/msg/public/241399179910909/36",
+        "text": "is there anything youd like to add? ",
+        "from_thinker": false,
+        "id": "1545680168661-6798",
+        "time": "Mon Dec 24 2018 11:36:08 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/37": {
+        "key": "/msg/public/241399179910909/37",
+        "text": "That's pretty good.",
+        "from_thinker": true,
+        "id": "1545680175822-7836",
+        "time": "Mon Dec 24 2018 11:36:15 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/38": {
+        "key": "/msg/public/241399179910909/38",
+        "text": "So nothing I want to add.",
+        "from_thinker": true,
+        "id": "1545680179494-9130",
+        "time": "Mon Dec 24 2018 11:36:19 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/39": {
+        "key": "/msg/public/241399179910909/39",
+        "text": "Thank you.",
+        "from_thinker": true,
+        "id": "1545680183982-9984",
+        "time": "Mon Dec 24 2018 11:36:23 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/40": {
+        "key": "/msg/public/241399179910909/40",
+        "text": "Great. For the rest of the session we want to focus on a thought to try and decipher. Which thought is the most troubling that youd like to focus on today? ",
+        "from_thinker": false,
+        "id": "1545680261674-3520",
+        "time": "Mon Dec 24 2018 11:37:41 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/41": {
+        "key": "/msg/public/241399179910909/41",
+        "text": "\"They might compete with me and destroy me.\"",
+        "from_thinker": true,
+        "id": "1545680287233-9698",
+        "time": "Mon Dec 24 2018 11:38:07 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/42": {
+        "key": "/msg/public/241399179910909/42",
+        "text": "That's probably a black & white thought.",
+        "from_thinker": true,
+        "id": "1545680309632-6757",
+        "time": "Mon Dec 24 2018 11:38:29 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/43": {
+        "key": "/msg/public/241399179910909/43",
+        "text": "I don't think I've explored all the shades of grey very well.",
+        "from_thinker": true,
+        "id": "1545680315847-1211",
+        "time": "Mon Dec 24 2018 11:38:35 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/44": {
+        "key": "/msg/public/241399179910909/44",
+        "text": "Ok we can focus on that one ",
+        "from_thinker": false,
+        "id": "1545680356647-7735",
+        "time": "Mon Dec 24 2018 11:39:16 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/45": {
+        "key": "/msg/public/241399179910909/45",
+        "text": "You automatically knew that that is black and white thinking. How were you able to identify that? ",
+        "from_thinker": false,
+        "id": "1545680381883-4875",
+        "time": "Mon Dec 24 2018 11:39:41 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/46": {
+        "key": "/msg/public/241399179910909/46",
+        "text": "Because the word \"destroy\" is so strong. Competition usually results in multiple people having a part in the competition and getting shares of the pie.",
+        "from_thinker": true,
+        "id": "1545680408322-717",
+        "time": "Mon Dec 24 2018 11:40:08 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/47": {
+        "key": "/msg/public/241399179910909/47",
+        "text": "There are lots of styles of therapy, and lots of online therapies.",
+        "from_thinker": true,
+        "id": "1545680429325-3161",
+        "time": "Mon Dec 24 2018 11:40:29 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/48": {
+        "key": "/msg/public/241399179910909/48",
+        "text": "There's no reason to believe it's a winner-take-all kinda market.",
+        "from_thinker": true,
+        "id": "1545680440580-2492",
+        "time": "Mon Dec 24 2018 11:40:40 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/49": {
+        "key": "/msg/public/241399179910909/49",
+        "text": "I completely agree. ",
+        "from_thinker": false,
+        "id": "1545680465463-7979",
+        "time": "Mon Dec 24 2018 11:41:05 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/50": {
+        "key": "/msg/public/241399179910909/50",
+        "text": "When you say \"destroy\", what does that mean in your mind? ",
+        "from_thinker": false,
+        "id": "1545680482859-324",
+        "time": "Mon Dec 24 2018 11:41:22 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/51": {
+        "key": "/msg/public/241399179910909/51",
+        "text": "It means I have zero in my mind.",
+        "from_thinker": true,
+        "id": "1545680495349-7565",
+        "time": "Mon Dec 24 2018 11:41:35 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/52": {
+        "key": "/msg/public/241399179910909/52",
+        "text": "Ah ok. Zero as in they've completely erased you as a competitor. ",
+        "from_thinker": false,
+        "id": "1545680522981-6625",
+        "time": "Mon Dec 24 2018 11:42:02 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/53": {
+        "key": "/msg/public/241399179910909/53",
+        "text": "Yeah, as in I've shut down completely. I guess that only happens if I give up though.",
+        "from_thinker": true,
+        "id": "1545680541285-8173",
+        "time": "Mon Dec 24 2018 11:42:21 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/54": {
+        "key": "/msg/public/241399179910909/54",
+        "text": "that is very true ",
+        "from_thinker": false,
+        "id": "1545680550186-3098",
+        "time": "Mon Dec 24 2018 11:42:30 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/55": {
+        "key": "/msg/public/241399179910909/55",
+        "text": "You also mentioned that there is no reason to believe \"its a winner tale all kind of market\". How does saying that make you feel? ",
+        "from_thinker": false,
+        "id": "1545680579979-770",
+        "time": "Mon Dec 24 2018 11:42:59 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/56": {
+        "key": "/msg/public/241399179910909/56",
+        "text": "Well that makes me detach a bit from the thought of being destroyed.",
+        "from_thinker": true,
+        "id": "1545680602245-8617",
+        "time": "Mon Dec 24 2018 11:43:22 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/57": {
+        "key": "/msg/public/241399179910909/57",
+        "text": "So it makes me feel curious I guess",
+        "from_thinker": true,
+        "id": "1545680608588-5360",
+        "time": "Mon Dec 24 2018 11:43:28 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/58": {
+        "key": "/msg/public/241399179910909/58",
+        "text": "But I think when I go further, and think that it's a market that will have many competitors, that changes how I am seeing it and I feel more like it's just time for us to make something good and place it into the competition.",
+        "from_thinker": true,
+        "id": "1545680648397-2738",
+        "time": "Mon Dec 24 2018 11:44:08 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/59": {
+        "key": "/msg/public/241399179910909/59",
+        "text": "does that change your approach towards the competition? The competition being your ex business partners",
+        "from_thinker": false,
+        "id": "1545680678219-1107",
+        "time": "Mon Dec 24 2018 11:44:38 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/60": {
+        "key": "/msg/public/241399179910909/60",
+        "text": "Yeah, it's less fearful. It says we can both co-exist and we aren't destroying each other. It's not friends or enemies.",
+        "from_thinker": true,
+        "id": "1545680692561-7443",
+        "time": "Mon Dec 24 2018 11:44:52 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/61": {
+        "key": "/msg/public/241399179910909/61",
+        "text": " Thats great",
+        "from_thinker": false,
+        "id": "1545680728559-7726",
+        "time": "Mon Dec 24 2018 11:45:28 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/62": {
+        "key": "/msg/public/241399179910909/62",
+        "text": "Yeah this seems a lot better.",
+        "from_thinker": true,
+        "id": "1545680742999-9504",
+        "time": "Mon Dec 24 2018 11:45:42 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/63": {
+        "key": "/msg/public/241399179910909/63",
+        "text": "Thank you",
+        "from_thinker": true,
+        "id": "1545680746863-4656",
+        "time": "Mon Dec 24 2018 11:45:46 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/64": {
+        "key": "/msg/public/241399179910909/64",
+        "text": "Does this impact your relationship towards them? ",
+        "from_thinker": false,
+        "id": "1545680769026-524",
+        "time": "Mon Dec 24 2018 11:46:09 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/65": {
+        "key": "/msg/public/241399179910909/65",
+        "text": "This thought?",
+        "from_thinker": true,
+        "id": "1545680786138-1256",
+        "time": "Mon Dec 24 2018 11:46:26 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/66": {
+        "key": "/msg/public/241399179910909/66",
+        "text": "(this is mostly off topic seeing youve chosen your focus btw.) ",
+        "from_thinker": false,
+        "id": "1545680798356-8243",
+        "time": "Mon Dec 24 2018 11:46:38 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/67": {
+        "key": "/msg/public/241399179910909/67",
+        "text": "It's ok we can play and experiment.",
+        "from_thinker": true,
+        "id": "1545680801760-3990",
+        "time": "Mon Dec 24 2018 11:46:41 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/68": {
+        "key": "/msg/public/241399179910909/68",
+        "text": "Does knowing that you can co-exist and know that you're not necessarily destroying eachother impact your thought \"I should be trying to be good with them\" ",
+        "from_thinker": false,
+        "id": "1545680858661-2305",
+        "time": "Mon Dec 24 2018 11:47:38 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/69": {
+        "key": "/msg/public/241399179910909/69",
+        "text": "Oh. That's a good question / good point. Hm.",
+        "from_thinker": true,
+        "id": "1545680870292-4593",
+        "time": "Mon Dec 24 2018 11:47:50 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/70": {
+        "key": "/msg/public/241399179910909/70",
+        "text": "Yeah, well it makes less either/or. It's not so much good or bad to them. I can just make something good, and there will be a market, and we can copy each other's things in the market, and all push the market forward. It's all good.",
+        "from_thinker": true,
+        "id": "1545680902784-589",
+        "time": "Mon Dec 24 2018 11:48:22 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/71": {
+        "key": "/msg/public/241399179910909/71",
+        "text": "Man I wish cheese were available more like 24/7 so I could get help with this more often.",
+        "from_thinker": true,
+        "id": "1545680930421-6619",
+        "time": "Mon Dec 24 2018 11:48:50 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/72": {
+        "key": "/msg/public/241399179910909/72",
+        "text": "Hey well thats a thought! ",
+        "from_thinker": false,
+        "id": "1545680941946-1340",
+        "time": "Mon Dec 24 2018 11:49:01 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/73": {
+        "key": "/msg/public/241399179910909/73",
+        "text": "Ok back on topic. \"its all good\" thats good! ",
+        "from_thinker": false,
+        "id": "1545680956546-4781",
+        "time": "Mon Dec 24 2018 11:49:16 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/74": {
+        "key": "/msg/public/241399179910909/74",
+        "text": "You're bringing the focus back onto yourself and encouraging yourself to create something good and impactful and letting the market take care of itself ",
+        "from_thinker": false,
+        "id": "1545680988854-4515",
+        "time": "Mon Dec 24 2018 11:49:48 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/75": {
+        "key": "/msg/public/241399179910909/75",
+        "text": "Yeah. That sounds real nice.",
+        "from_thinker": true,
+        "id": "1545680993966-3991",
+        "time": "Mon Dec 24 2018 11:49:53 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/76": {
+        "key": "/msg/public/241399179910909/76",
+        "text": "Lets try to come up with a new thought to help you when you think \"they might compete with me and destroy me\" ",
+        "from_thinker": false,
+        "id": "1545681024628-6281",
+        "time": "Mon Dec 24 2018 11:50:24 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/77": {
+        "key": "/msg/public/241399179910909/77",
+        "text": "What you said earlier \"It says we can both co-exist and we aren't destroying each other. It's not friends or enemies.\", I think is a good place to start ",
+        "from_thinker": false,
+        "id": "1545681054283-685",
+        "time": "Mon Dec 24 2018 11:50:54 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/78": {
+        "key": "/msg/public/241399179910909/78",
+        "text": "Friendly competition.",
+        "from_thinker": true,
+        "id": "1545681066497-4791",
+        "time": "Mon Dec 24 2018 11:51:06 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/79": {
+        "key": "/msg/public/241399179910909/79",
+        "text": "We can exist in a friendly competition, moving the market and the world forward.",
+        "from_thinker": true,
+        "id": "1545681082977-3761",
+        "time": "Mon Dec 24 2018 11:51:22 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/80": {
+        "key": "/msg/public/241399179910909/80",
+        "text": "that sounds awesome ",
+        "from_thinker": false,
+        "id": "1545681108923-9474",
+        "time": "Mon Dec 24 2018 11:51:48 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/81": {
+        "key": "/msg/public/241399179910909/81",
+        "text": "Yeah I think that's good.",
+        "from_thinker": true,
+        "id": "1545681129523-6407",
+        "time": "Mon Dec 24 2018 11:52:09 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/82": {
+        "key": "/msg/public/241399179910909/82",
+        "text": "Are you satisfied with that as your new thought or should we continue to expand> ",
+        "from_thinker": false,
+        "id": "1545681131760-2578",
+        "time": "Mon Dec 24 2018 11:52:11 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/83": {
+        "key": "/msg/public/241399179910909/83",
+        "text": "Maybe I'll have other issues in the future and I would love to work through that too.",
+        "from_thinker": true,
+        "id": "1545681141011-5276",
+        "time": "Mon Dec 24 2018 11:52:21 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/84": {
+        "key": "/msg/public/241399179910909/84",
+        "text": "I think this is quite helpful to iron down that one thing that was really troubling underneath all this.",
+        "from_thinker": true,
+        "id": "1545681151963-6968",
+        "time": "Mon Dec 24 2018 11:52:31 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/85": {
+        "key": "/msg/public/241399179910909/85",
+        "text": "Thank you",
+        "from_thinker": true,
+        "id": "1545681156803-2548",
+        "time": "Mon Dec 24 2018 11:52:36 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/86": {
+        "key": "/msg/public/241399179910909/86",
+        "text": "Thats great! ",
+        "from_thinker": false,
+        "id": "1545681160371-5259",
+        "time": "Mon Dec 24 2018 11:52:40 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/87": {
+        "key": "/msg/public/241399179910909/87",
+        "text": "I think this was very fast.",
+        "from_thinker": true,
+        "id": "1545681161595-5868",
+        "time": "Mon Dec 24 2018 11:52:41 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/88": {
+        "key": "/msg/public/241399179910909/88",
+        "text": "We prolly coulda done it even faster if we had just shot through it.",
+        "from_thinker": true,
+        "id": "1545681173962-4014",
+        "time": "Mon Dec 24 2018 11:52:53 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/89": {
+        "key": "/msg/public/241399179910909/89",
+        "text": "Yeah definfitel ",
+        "from_thinker": false,
+        "id": "1545681178084-8711",
+        "time": "Mon Dec 24 2018 11:52:58 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/90": {
+        "key": "/msg/public/241399179910909/90",
+        "text": "Well, remember to pracitce the thought \"We can exist in a friendly competition, moving the market and the world forward.\" next time youre overwhelmed about being in a \"competition\" with your ex business partnersm ",
+        "from_thinker": false,
+        "id": "1545681220236-3157",
+        "time": "Mon Dec 24 2018 11:53:40 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/91": {
+        "key": "/msg/public/241399179910909/91",
+        "text": "partners* ",
+        "from_thinker": false,
+        "id": "1545681223636-7902",
+        "time": "Mon Dec 24 2018 11:53:43 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/92": {
+        "key": "/msg/public/241399179910909/92",
+        "text": "Ok thanks. Yeah this is a big deal. Phew.",
+        "from_thinker": true,
+        "id": "1545681226959-9101",
+        "time": "Mon Dec 24 2018 11:53:46 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/93": {
+        "key": "/msg/public/241399179910909/93",
+        "text": "Great! ",
+        "from_thinker": false,
+        "id": "1545681235377-2886",
+        "time": "Mon Dec 24 2018 11:53:55 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/94": {
+        "key": "/msg/public/241399179910909/94",
+        "text": "See you soon!",
+        "from_thinker": false,
+        "id": "1545681238995-2181",
+        "time": "Mon Dec 24 2018 11:53:58 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/95": {
+        "key": "/msg/public/241399179910909/95",
+        "text": "Okie",
+        "from_thinker": true,
+        "id": "1545681240734-6723",
+        "time": "Mon Dec 24 2018 11:54:00 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/96": {
+        "key": "/msg/public/241399179910909/96",
+        "text": " Merry christmas@",
+        "from_thinker": false,
+        "id": "1545681249107-9441",
+        "time": "Mon Dec 24 2018 11:54:09 GMT-0800 (Pacific Standard Time)"
+    },
+    "/msg/public/241399179910909/97": {
+        "key": "/msg/public/241399179910909/97",
+        "text": "!!! :)",
+        "from_thinker": true,
+        "id": "1545681250118-5852",
+        "time": "Mon Dec 24 2018 11:54:10 GMT-0800 (Pacific Standard Time)"
+    },
+    "/card_entry/241399179910909": {
+        "key": "/card_entry/241399179910909"
+    },
+    "itemover": {
+        "key": "itemover",
+        "id": ""
+    }
+}

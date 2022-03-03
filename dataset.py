@@ -52,7 +52,8 @@ class HiCDataset(Dataset):
                 self.chr_id
             )
             files_required.append(file_name)
-
+        
+        
         return files_required
 
     @property
@@ -78,8 +79,6 @@ class HiCDataset(Dataset):
                 )
                 files_required.append(file_name)
         
-        print(files_required)
-
         return files_required
 
     def download(self):
@@ -189,7 +188,7 @@ class HiCDataset(Dataset):
                 edge_features += [[matrix[i][j]], [matrix[i][j]]]
         
         edge_features = np.asarray(edge_features)
-        return torch.tensor(edge_features, dtype=torch.long)
+        return torch.tensor(edge_features, dtype=torch.float)
 
         
 
@@ -221,7 +220,7 @@ class HiCDataset(Dataset):
 
     def len(self):
         return len(os.listdir(self.processed_dir))
-
+        
 
     def get(self, dataset_id, submat_num):
         files = list(map(lambda x: os.path.join(self.processed_dir, x),os.listdir(self.processed_dir)))
