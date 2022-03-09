@@ -6,7 +6,7 @@ import numpy as np
 import os
 from tqdm import tqdm
 from src import globals
-
+from torch_geometric.data import DataLoader
 
 
 print(f"Torch version: {torch.__version__}")
@@ -41,7 +41,6 @@ class HiCDataset(Dataset):
             (The download func. is not implemented here)  
         """
         dataset_ids = globals.DATASETS[self.required_datasets][self.cell_line]
-        
         files_required = []
 
         for dataset_id  in dataset_ids:
@@ -52,7 +51,6 @@ class HiCDataset(Dataset):
                 self.chr_id
             )
             files_required.append(file_name)
-        
         
         return files_required
 
@@ -223,30 +221,105 @@ class HiCDataset(Dataset):
         
 
     def get(self, dataset_id, submat_num):
-        files = list(map(lambda x: os.path.join(self.processed_dir, x),os.listdir(self.processed_dir)))
-        
-        required_file_path = list(filter(lambda x: dataset_id in x, files))
-        
-        dataset_file_path = ''
-        for rfp in required_file_path:
-            rfp_submat_num = rfp.split('/')[-1].split('.')[0].split('_')[-1].split('-')[-1]
-            if rfp_submat_num == str(submat_num):
-                dataset_file_path = rfp
 
-        if dataset_file_path == '':
-            print('Trying to access file that doesnt exist')
+        rfp = os.path.join(self.processed_dir, 'n-{}_c-{}_d-{}_chr-{}_s-{}.pt'.format(
+            self.noise, self.cell_line, dataset_id, self.chr_id, submat_num
+        ))
+        if os.path.exists(rfp):
+            return torch.load(rfp)
+        else: 
+            print('Dataset missing')
             exit(1)
 
-        data = torch.load(dataset_file_path)
-
-        return data
 
 
 
+def get_dataloader(dataset_requirements, batch_size=1, shuffle=True):
+    '''
+        @params: dataset_requirements <dict>, parameters required for the construction of the dataloader
+        @params: batch_size <int> batch size for the data loader
+        @params: shuffle <bool> shuffle the order of dataset
+        @returns: Dataloader<object>, Dataloader object that contains the low-res high-res pairs
+    '''
 
 
+    cell_lines = dataset_requirements['cell_lines']
+
+    high_res_subgraphs = {}
+    
+    low_res_subgraphs = {}
+    
 
 
+    for cell_line in cell_lines:
+        for chrom in dataset_requirements['chroms']:
+            high_res_hic_object = HiCDataset(globals.PATH_TO_GRAPHIC_DATASETS, 
+                                                dataset_requirements['noise_type'], cell_line,
+                                                chrom, 'HIGH_RES')
+            
+            chrom_size = (globals.CHROMOSOME_SIZES[str(chrom)])/globals.RESOLUTION 
+            for submat in range(0, int(chrom_size), globals.SUB_MATRIX_SIZE):
+                data = high_res_hic_object.get('primary', submat)
+                if cell_line not in high_res_subgraphs.keys():
+                    high_res_subgraphs[cell_line] = {}
+                if 'primary' not in high_res_subgraphs[cell_line].keys():
+                    high_res_subgraphs[cell_line]['primary'] = {}
+                if chrom not in high_res_subgraphs[cell_line]['primary'].keys():
+                    high_res_subgraphs[cell_line]['primary'][chrom] = {}
+                
+                high_res_subgraphs[cell_line]['primary'][chrom][submat] = data
+
+
+                
+    
+    for cell_line in cell_lines:
+        for chrom in dataset_requirements['chroms']:
+            for dataset in dataset_requirements['base_datasets']:
+                if dataset not in globals.DATASETS['LOW_RES'][cell_line]:
+                    continue
+                
+                low_res_hic_object = HiCDataset(globals.PATH_TO_GRAPHIC_DATASETS, 
+                                                dataset_requirements['noise_type'], cell_line,
+                                                chrom, 'LOW_RES')
+                
+
+                chrom_size = (globals.CHROMOSOME_SIZES[str(chrom)])/globals.RESOLUTION 
+                for submat in range(0, int(chrom_size), globals.SUB_MATRIX_SIZE):
+                    data = low_res_hic_object.get(dataset, submat)
+                    
+                    if cell_line not in low_res_subgraphs.keys():
+                        low_res_subgraphs[cell_line] = {}
+                    if dataset not in low_res_subgraphs[cell_line].keys():
+                        low_res_subgraphs[cell_line][dataset] = {}
+                    if chrom not in low_res_subgraphs[cell_line][dataset].keys():
+                        low_res_subgraphs[cell_line][dataset][chrom] = {}
+                    
+                    low_res_subgraphs[cell_line][dataset][chrom][submat] = data
+    
+
+    # create dataloader object 
+    data_loader = []
+    for cell_line in cell_lines:
+        for chrom in dataset_requirements['chroms']:
+            for submat in high_res_subgraphs[cell_line]['primary'][chrom].keys():
+                for dataset in dataset_requirements['base_datasets']:
+                    if dataset not in globals.DATASETS['LOW_RES'][cell_line]:
+                        continue
+                    data_loader.append(
+                        {
+                            'base': low_res_subgraphs[cell_line][dataset][chrom][submat],
+                            'target': high_res_subgraphs[cell_line]['primary'][chrom][submat],
+                            'chrom': chrom,
+                            'submat': submat,
+                            'cell_line': cell_line,
+                            'base_dataset': dataset,
+                            'noise': dataset_requirements['noise_type']
+                        }
+                    )
+    
+    data_loader = DataLoader(data_loader, batch_size=batch_size, shuffle=shuffle)
+    
+    return data_loader
 
 
 

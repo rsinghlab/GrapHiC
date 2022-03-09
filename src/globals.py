@@ -50,7 +50,12 @@ CHROMOSOME_SIZES = {
 
 
 
-
+DATASET_REQUIREMENTS = {
+    'cell_lines' : ['GM12878'],
+    'base_datasets': ['encode-0', 'hic010'],
+    'noise_type': 'NONE',
+    'chroms': list(range(1,23))
+}
 
 
 
