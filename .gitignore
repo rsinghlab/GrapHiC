@@ -2,3 +2,5 @@ data/
 logdir/
 outputs/
 weights/
+grapHiC/
+*.pyc

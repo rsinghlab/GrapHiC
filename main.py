@@ -1,68 +1,72 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-import torch
+#import matplotlib.pyplot as plt
+#import torch
 
-from src.models.DeepHiC import DeepHiC
-from src.models.HiCNN import HiCNN
-from src.models.HiCNN2 import HiCNN2
-from src.models.HiCPlus import HiCPlus
-from src.models.Smoothing import Smoothing
-from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
-from src.predict_imagebased import predict as image_predict
-from src.train_imagebased import train as image_train
-from src.train_graphbased import train as graph_train
-from src.predict_graphbased import predict as graph_predict
-from torchsummary import summary
-
-
-from src.utils import graph_positional_encoding, visualize_matrix, normalize_hic_matrix, create_dataset_from_hic_files
-from src.difficult_to_map_region_analysis import compare_regions
-print(compare_regions(
-    '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/H1_rao_et_al/', 
-    '/media/murtaza/ubuntu2/updated_hic_data/data/difficult_to_map_regions/regions.bed'
-), ' overlap precentage for chromosome 1')
+# from src.models.DeepHiC import DeepHiC
+# from src.models.HiCNN import HiCNN
+# from src.models.HiCNN2 import HiCNN2
+# from src.models.HiCPlus import HiCPlus
+# from src.models.Smoothing import Smoothing
+# from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
+# from src.predict_imagebased import predict as image_predict
+# from src.train_imagebased import train as image_train
+# from src.train_graphbased import train as graph_train
+# from src.predict_graphbased import predict as graph_predict
+#from torchsummary import summary
 
 
-HYPERPARAMETERS = {
-    'batch_size': 128,
-    'learning_rate': 0.001,
-    'momentum': 0.9,
-    'epochs': 100,
-    'optimizer_type': 'ADAM',
-    'input_shape': -1
-}
+# from src.utils import graph_positional_encoding, visualize_matrix, normalize_hic_matrix, create_dataset_from_hic_files
+# from src.difficult_to_map_region_analysis import compare_regions
+# print(compare_regions(
+#     '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/H1_rao_et_al/', 
+#     '/media/murtaza/ubuntu2/updated_hic_data/data/difficult_to_map_regions/regions.bed'
+# ), ' overlap precentage for chromosome 1')
 
-cropping_params={
-    'chunk_size':200,
-    'stride'    :200,
-    'bounds'    :190,
-    'padding'   :True
-}
+from src.parse_hic_files import parse_hic_file
 
-normalization_params={
-    'norm'              : True,
-    'remove_zeros'      : True,
-    'set_diagonal_zero' : False,
-    'cutoff'            : 95.0,
-    'rescale'           : True,
-    'chrom_wide'        : True, 
-    'draw_dist_graphs'  : True
-}
-pos_encoding_idx = 3
-pos_encoding = ['graph']
-
-input_shape = {
-    'constant': 1,
-    'monotonic': 1,
-    'transformer': 4,
-    'graph': 4
-}
+parse_hic_file('/media/murtaza/ubuntu/updated_hic_data/data/hic_datasets/H1/4DN/4dn-0.hic')
 
 
+# HYPERPARAMETERS = {
+#     'batch_size': 128,
+#     'learning_rate': 0.001,
+#     'momentum': 0.9,
+#     'epochs': 100,
+#     'optimizer_type': 'ADAM',
+#     'input_shape': -1
+# }
 
-cell_line_idx = 3
-cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
+# cropping_params={
+#     'chunk_size':200,
+#     'stride'    :200,
+#     'bounds'    :190,
+#     'padding'   :True
+# }
+
+# normalization_params={
+#     'norm'              : True,
+#     'remove_zeros'      : True,
+#     'set_diagonal_zero' : False,
+#     'cutoff'            : 95.0,
+#     'rescale'           : True,
+#     'chrom_wide'        : True, 
+#     'draw_dist_graphs'  : True
+# }
+# pos_encoding_idx = 3
+# pos_encoding = ['graph']
+
+# input_shape = {
+#     'constant': 1,
+#     'monotonic': 1,
+#     'transformer': 4,
+#     'graph': 4
+# }
+
+
+
+# cell_line_idx = 3
+# cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
 
 
 # chromosomes = ['chr1', 'chr10', 'chr19']
