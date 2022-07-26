@@ -4,3 +4,4 @@ outputs/
 weights/
 grapHiC/
 *.pyc
+*.out

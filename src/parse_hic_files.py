@@ -3,12 +3,21 @@
     Currently I am only supporting, '.hic format'
 '''
 
+from concurrent.futures import process
 import hicstraw
 import os
 import numpy as np
-import time
-from multiprocessing import Process
+from scipy.sparse import csr_matrix, coo_matrix, vstack, hstack
+from scipy import sparse
 
+
+import time
+from functools import partial
+import multiprocessing
+from multiprocessing import Process
+from src.utils import create_entire_path_directory
+
+# Main Multiprocessing switch for the HiC parser
 MULTIPROCESSING=False
 
 def process_chromosome(hic, output, resolution, chromosome):
@@ -24,26 +33,49 @@ def process_chromosome(hic, output, resolution, chromosome):
     index = chromosome.index
     length = chromosome.length
     name = chromosome.name
-    
+    print('Starting parsing Chromosome {}'.format(name))
+
     
     chromosome_matrix = hic.getMatrixZoomData(
         chromosome.name, chromosome.name, 
         'observed', 'KR', 'BP', resolution                                          
     )
+    
     informative_indexes = np.array(chromosome_matrix.getNormVector(index))
-    informative_indexes = informative_indexes[~np.isnan(informative_indexes)]
+    informative_indexes = np.where(np.isnan(informative_indexes)^True)[0]
+    print(informative_indexes.shape)
+
+
+    if len(informative_indexes) == 0:
+        print('Chromosome {} doesnt contain any informative rows'.format(name))
+        return
+
+    results = chromosome_matrix.getRecords(0, length, 0, length)
     
-    matrix = np.array(chromosome_matrix.getRecordsAsMatrix(0, length, 0, length))
-    
+    # Bottleneck step
+    results = np.array([[(r.binX//resolution), (r.binY//resolution), r.counts] for r in results])
+
+    N = length//resolution
+    mat = csr_matrix((results[:, 2], (results[:, 0], results[:, 1])), shape=(N,N))
+    mat = csr_matrix.todense(mat)
+    mat = mat.T
+    mat = mat + np.tril(mat, -1).T
+
     output_path = os.path.join(
         output, 
-        'resolution_{}'.format(resolution),
+        'resolution_{}'.format(resolution)
+    )
+    create_entire_path_directory(output_path)
+    
+    output_path = os.path.join(
+        output_path, 
         'chr{}.npz'.format(name)
     )
-    
+
+    np.savez_compressed(output_path, hic=mat, compact=informative_indexes, size=length)
     print('Saving Chromosome at path {}'.format(output_path))
-    np.savez_compressed(output_path, hic=matrix, compact=informative_indexes, size=length)
-    
+    1.2845626521723261,
+    return True
 
     
     
@@ -68,24 +100,24 @@ def parse_hic_file(path_to_hic_file, output, resolution=10000):
         exit(1)
     
     # Get all the available chromosomes
-    chromosomes = hic.getChromosomes()[20:]
-    procs = [] 
-    
+    chromosomes = hic.getChromosomes()[1:]
     start_time = time.time()
-    
-    if MULTIPROCESSING:    
+
+    if MULTIPROCESSING:
+        process_pool = []
+
         for idx in range(len(chromosomes)):
-            proc = Process(target=process_chromosome, args=(hic, output, resolution, chromosomes[idx], ))
-            procs.append(proc)
-            proc.start()
+            p = Process(target=process_chromosome, args=(hic, output, resolution, chromosomes[idx], ))
+            process_pool.append(p)
+            p.start()
         
-        for proc in procs: 
-            proc.join()
-    
+        for process in process_pool:
+            process.join()
     else:
         for idx in range(len(chromosomes)):
             process_chromosome(hic, output, resolution, chromosomes[idx])
-    
+
+
     end_time = time.time()
     
     print('Parsing took {} seconds!'.format(end_time - start_time))

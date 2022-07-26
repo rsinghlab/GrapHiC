@@ -1,0 +1,44 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 5655598
+##  Job Name : GrapHiC
+##  Nodelist : gpu2101
+##      CPUs : 
+##  Mem/Node : 524288 MB
+## Directory : /gpfs/home/gmurtaza/GrapHiC
+##   Job Started : Tue Jul 26 14:22:21 EDT 2022
+###############################################################################
+module: unloading 'gcc/10.2'
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/3.9.0'
+module: loading 'python/3.9.0'
+module: unloading 'cuda/11.3.1'
+module: loading 'cuda/11.3.1'
+module: cuda: To use: module load gcc/10.2
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2021 NVIDIA Corporation
+Built on Mon_May__3_19:15:13_PDT_2021
+Cuda compilation tools, release 11.3, V11.3.109
+Build cuda_11.3.r11.3/compiler.29920130_0
+name
+NVIDIA GeForce RTX 3090
+Traceback (most recent call last):
+  File "/gpfs/home/gmurtaza/GrapHiC/main.py", line 15, in <module>
+    from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
+  File "/gpfs/home/gmurtaza/GrapHiC/src/models/GrapHiC.py", line 6, in <module>
+    from torch_geometric.nn import GCNConv, Set2Set, global_mean_pool
+  File "/gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch_geometric/nn/__init__.py", line 3, in <module>
+    from .sequential import Sequential
+  File "/gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch_geometric/nn/sequential.py", line 9, in <module>
+    from torch_geometric.nn.conv.utils.jit import class_from_module_repr
+  File "/gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch_geometric/nn/conv/__init__.py", line 25, in <module>
+    from .spline_conv import SplineConv
+  File "/gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch_geometric/nn/conv/spline_conv.py", line 16, in <module>
+    from torch_spline_conv import spline_basis, spline_weighting
+  File "/gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch_spline_conv/__init__.py", line 15, in <module>
+    torch.ops.load_library(spec.origin)
+  File "/gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch/_ops.py", line 255, in load_library
+    ctypes.CDLL(path)
+  File "/gpfs/runtime/opt/python/3.9.0/lib/python3.9/ctypes/__init__.py", line 374, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: /lib64/libm.so.6: version `GLIBC_2.27' not found (required by /gpfs/home/gmurtaza/GrapHiC/grapHiC/lib/python3.9/site-packages/torch_spline_conv/_basis_cuda.so)
