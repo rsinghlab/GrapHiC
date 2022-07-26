@@ -4,4 +4,5 @@ outputs/
 weights/
 grapHiC/
 *.pyc
-*.out
+main.out
+oscar_script
