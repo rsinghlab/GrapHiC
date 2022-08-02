@@ -1,5 +1,3 @@
-from base64 import encode
-from bisect import insort
 import torch
 import torch.nn.functional as F 
 import torch.nn as nn
@@ -153,29 +151,9 @@ class ContactCNN(nn.Module):
 
 
 class GrapHiCLoss(torch.nn.Module):
-    def __init__(self, window_radius=10, deriv_size=10):
+    def __init__(self):
         super(GrapHiCLoss, self).__init__()
-        # Insulation loss parameters
-        self.deriv_size     = deriv_size
-        self.window_radius  = window_radius=10
-        self.di_pool        = torch.nn.AvgPool2d(kernel_size=window_radius, stride=1)
-        self.top_pool       = torch.nn.AvgPool1d(kernel_size=deriv_size, stride=1)
-        self.bottom_pool    = torch.nn.AvgPool1d(kernel_size=deriv_size, stride=1)
-        # Mean Squared Error loss
-        self.mse = L1Loss()
-
-        # weighing paramters
-        self.insulation_lambda = 1
         self.mse_lambda = 1
-
-    def indivInsulation(self, x):
-        iv     = self.di_pool(x)
-        iv     = torch.diagonal(iv, dim1=2, dim2=3)       
-        iv     = torch.log2(iv/torch.mean(iv))
-        top    = self.top_pool(iv[:,:,self.deriv_size:])
-        bottom = self.bottom_pool(iv[:,:,:-self.deriv_size])
-        dv     = (top-bottom)
-        return dv
 
     def forward(self, output, target):
         # Computing the insulation loss

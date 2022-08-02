@@ -1,21 +1,26 @@
 import os
-import numpy as np
-import matplotlib.pyplot as plt
 import torch
+import numpy as np
 
-from src.models.DeepHiC import DeepHiC
-from src.models.HiCNN import HiCNN
-from src.models.HiCNN2 import HiCNN2
-from src.models.HiCPlus import HiCPlus
-from src.models.Smoothing import Smoothing
+from src.parse_hic_files import parse_hic_file
+from src.dataset_creator import create_dataset_from_hic_files
+
+import matplotlib.pyplot as plt
+
+# from src.models.DeepHiC import DeepHiC
+# from src.models.HiCNN import HiCNN
+# from src.models.HiCNN2 import HiCNN2
+# from src.models.HiCPlus import HiCPlus
+# from src.models.Smoothing import Smoothing
 from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
+# from src.predict_imagebased import predict as image_predict
+# from src.train_imagebased import train as image_train
 from src.train_graphbased import train as graph_train
-from src.predict_graphbased import predict as graph_predict
+# from src.predict_graphbased import predict as graph_predict
+#from torchsummary import summary
 
-from torchsummary import summary
 
-
-from src.utils import create_dataset_from_hic_files
+# from src.utils import graph_positional_encoding, visualize_matrix, normalize_hic_matrix, create_dataset_from_hic_files
 # from src.difficult_to_map_region_analysis import compare_regions
 # print(compare_regions(
 #     '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/H1_rao_et_al/', 
@@ -149,7 +154,18 @@ for percentile in precentiles:
         )
 
 
-# chromosomes = ['chr1', 'chr10', 'chr19']
+# chromosomes = ['chr1', 'chr10',model_name = 'graphic_insulation+l1loss_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
+#             cropping_params['chunk_size'],
+#             cropping_params['stride'],    
+#             cropping_params['bounds'],
+#             normalization_params['norm'],
+#             normalization_params['remove_zeros'],
+#             normalization_params['set_diagonal_zero'],
+#             normalization_params['cutoff'],
+#             normalization_params['rescale'],
+#             normalization_params['chrom_wide'],
+#             encoding
+#         ) 'chr19']
 # rzs = [True, False]
 # sdzs = [True, False]
 
@@ -163,6 +179,65 @@ for percentile in precentiles:
 #                 normalization_params['set_diagonal_zero'] = sdz
                 
 #                 normalized_matrix = normalize_hic_matrix(matrix, normalization_params, cell_line, chromosome)
+
+# precentiles = [95]
+
+# for percentile in precentiles:
+#     normalization_params['cutoff'] = percentile
+
+#     for encoding in pos_encoding:
+
+#         HYPERPARAMETERS['input_shape'] = input_shape[encoding]
+
+#         model_name = 'graphic_insulation+l1loss_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
+#             cropping_params['chunk_size'],
+#             cropping_params['stride'],    
+#             cropping_params['bounds'],
+#             normalization_params['norm'],
+#             normalization_params['remove_zeros'],
+#             normalization_params['set_diagonal_zero'],
+#             normalization_params['cutoff'],
+#             normalization_params['rescale'],
+#             normalization_params['chrom_wide'],
+#             encoding
+#         )
+#         print(model_name)
+
+#         dataset_path = '/users/gmurtaza/GrapHiC/data/datasets/real/{}/c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}/'.format(
+#             cell_lines[cell_line_idx],
+#             cropping_params['chunk_size'],
+#             cropping_params['stride'],    
+#             cropping_params['bounds'],
+#             normalization_params['norm'],
+#             normalization_params['remove_zeros'],
+#             normalization_params['set_diagonal_zero'],
+#             normalization_params['cutoff'],
+#             normalization_params['rescale'],
+#             normalization_params['chrom_wide'],
+#             encoding
+#         )
+#         print(dataset_path)
+
+#         if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
+#             create_dataset_from_hic_files(
+#                 '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
+#                 '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
+#                 dataset_path,
+#                 encoding,
+#                 [],
+#                 cropping_params,
+#                 normalization_params,
+#                 'none',
+#                 'intersection',
+#                 ['train', 'valid', 'test']
+#             )
+
+#         else:
+#             print('Dataset already exists!')
+
+
+
+
 
 # embedding = torch.rand(64, 200, 32)
 
@@ -280,9 +355,6 @@ for percentile in precentiles:
 #     'IMR90': ['hic057'],
 #     'K562': ['hic073']
 # }
-
-
-
 
 # inputs_base_directory = 'data/datasets/'
 # output_base_directory = '/media/murtaza/ubuntu/hic_data/chromosome_files/'

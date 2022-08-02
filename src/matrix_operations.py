@@ -15,7 +15,9 @@ def compactM(matrix, compact_idx, verbose=False):
         @params: verbose <boolean> Debugging print statements
         @returns: <np.array> Condesed matrix with zero arrays pruned 
     """
+
     compact_size = len(compact_idx)
+    
     result = np.zeros((compact_size, compact_size)).astype(matrix.dtype)
     
     if verbose: print('Compacting a', matrix.shape, 'shaped matrix to', result.shape, 'shaped!')
@@ -24,6 +26,8 @@ def compactM(matrix, compact_idx, verbose=False):
         result[i, :] = matrix[idx][compact_idx]
     
     return result
+
+
 
 def spreadM(c_mat, compact_idx, full_size, convert_int=True, verbose=False):
     """spreading matrix according to the index list (a reversed operation to compactM)."""
