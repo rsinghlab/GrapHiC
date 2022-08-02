@@ -19,8 +19,9 @@ from matplotlib import pyplot as plt
 from matplotlib import gridspec
 import matplotlib.pyplot as plt 
 
-
-
+from src.matrix_operations import compactM, divide
+from src.epigentic_encodings import read_node_encoding_files
+from src.positional_encodings import encoding_methods
 
 
 
@@ -326,7 +327,8 @@ def create_graph_dataloader(base, targets, encodings, pos_indxs, batch_size, shu
         edge_indexes = get_edge_indexes(matrix)
         
         graph = Data(x=x, edge_attr=edge_attrs, edge_index=edge_indexes, 
-                     pos_indx=torch.from_numpy(pos_indx), y=torch.from_numpy(target)
+                     pos_indx=torch.from_numpy(pos_indx), y=torch.from_numpy(target),
+                     input=torch.from_numpy(matrix)
                     )
         
         graphs.append(graph)
@@ -379,3 +381,10 @@ def visualize_matrix(input_path, output_path, idx, size):
 
     plt.matshow(data[idx:idx+size, idx:idx+size], cmap='hot', interpolation='none')
     plt.savefig(output_path)
+
+
+
+
+
+def graph_random_walks(adjacency_matrix):
+    pass

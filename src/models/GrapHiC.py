@@ -35,7 +35,7 @@ class FullyConnected(nn.Module):
         self.H = hidden_dim
         #self.conv = nn.Conv2d(2 * self.D, self.H, 1)
         self.conv = nn.Conv2d(self.D, self.H, 1)
-        self.batchnorm = nn.BatchNorm2d(self.H)
+        #self.batchnorm = nn.BatchNorm2d(self.H)
         self.activation = activation
 
     def forward(self, z0, z1):
@@ -64,7 +64,7 @@ class FullyConnected(nn.Module):
 
         c = self.conv(z_mul)
         c = self.activation(c)
-        c = self.batchnorm(c)
+        #c = self.batchnorm(c)
 
         return c
 
@@ -91,7 +91,7 @@ class ContactCNN(nn.Module):
         self.hidden = FullyConnected(embed_dim, hidden_dim)
 
         self.conv = nn.Conv2d(hidden_dim, 1, width, padding=width // 2)
-        self.batchnorm = nn.BatchNorm2d(1)
+        #self.batchnorm = nn.BatchNorm2d(1)
         self.activation = activation
         #self.clip()
 
@@ -145,7 +145,7 @@ class ContactCNN(nn.Module):
 
         # S is (b,N,M)
         s = self.conv(C)
-        s = self.batchnorm(s)
+        #s = self.batchnorm(s)
         s = self.activation(s)
         return s
 
@@ -179,13 +179,8 @@ class GrapHiCLoss(torch.nn.Module):
 
     def forward(self, output, target):
         # Computing the insulation loss
-        out_dv = self.indivInsulation(output)
-        tar_dv = self.indivInsulation(target)
-        insulation_loss = self.insulation_lambda*F.mse_loss(tar_dv, out_dv)
         l1_loss = self.mse_lambda*self.mse(output, target)
-        print(l1_loss, insulation_loss)
-        
-        return insulation_loss+l1_loss
+        return l1_loss
 
 
 
@@ -210,9 +205,6 @@ class GraphConvGrapHiC(torch.nn.Module):
         
         self.loss_function = GrapHiCLoss()
 
-        self.dropout = Dropout2d(0.4)
-
-
         self.conv0 = GCNConv(HYPERPARAMETERS['input_shape'], 16, 1, normalize=True)
         self.conv1 = GCNConv(16, 32, 1, normalize=True)
         self.conv2 = GCNConv(32, 32, 1, normalize=True)
@@ -225,7 +217,7 @@ class GraphConvGrapHiC(torch.nn.Module):
         x1 = torch.relu(self.conv0(x=x, edge_index=edge_index, edge_weight=edge_attr))
         x2 = torch.relu(self.conv1(x=x1, edge_index=edge_index, edge_weight=edge_attr))
         x3 = torch.relu(self.conv2(x=x2, edge_index=edge_index, edge_weight=edge_attr))
-        x3 = self.process_target_graph_batch(x3, batch_index)
+        x3 = self.process_graph_batch(x3, batch_index)
 
         return x3
 
@@ -248,7 +240,7 @@ class GraphConvGrapHiC(torch.nn.Module):
 
         indxs = torch.tensor(data['inds'], dtype=torch.long)
 
-        data_loader = create_graph_dataloader(bases, targets, encodings, indxs, self.hyperparameters['batch_size'], True)
+        data_loader = create_graph_dataloader(bases, targets, encodings, indxs, self.hyperparameters['batch_size'], False)
         
         return data_loader
 
@@ -266,9 +258,9 @@ class GraphConvGrapHiC(torch.nn.Module):
         return self.loss_function(preds.float(), target.float())
         
 
-    def process_target_graph_batch(self, target_batch, batch):
-        num_targets = int(batch.max()) + 1
-        return target_batch.reshape(num_targets, int(target_batch.shape[0]/num_targets), target_batch.shape[1])
+    def process_graph_batch(self, graph_batch, batch_idx):
+        num_targets = int(batch_idx.max()) + 1
+        return graph_batch.reshape(num_targets, int(graph_batch.shape[0]/num_targets), graph_batch.shape[1])
 
 
     def load_weights(self, scheme='min-valid-loss'):
@@ -277,8 +269,8 @@ class GraphConvGrapHiC(torch.nn.Module):
             exit(1)
         
         weights = list(map(lambda x: (float(x.split('_')[1].split('-')[0]) ,os.path.join(self.dir_model, x)), os.listdir(self.dir_model)))
-        req_weights = max(weights,key=itemgetter(0))[1]
-        
+        req_weights = min(weights,key=itemgetter(0))[1]
+
         print("Loading: {}".format(req_weights))
 
         self.load_state_dict(torch.load(req_weights, map_location=self.device))

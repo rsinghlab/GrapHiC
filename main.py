@@ -1,72 +1,152 @@
 import os
 import numpy as np
-#import matplotlib.pyplot as plt
-#import torch
+import matplotlib.pyplot as plt
+import torch
 
-# from src.models.DeepHiC import DeepHiC
-# from src.models.HiCNN import HiCNN
-# from src.models.HiCNN2 import HiCNN2
-# from src.models.HiCPlus import HiCPlus
-# from src.models.Smoothing import Smoothing
-# from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
-# from src.predict_imagebased import predict as image_predict
-# from src.train_imagebased import train as image_train
-# from src.train_graphbased import train as graph_train
-# from src.predict_graphbased import predict as graph_predict
-#from torchsummary import summary
+from src.models.DeepHiC import DeepHiC
+from src.models.HiCNN import HiCNN
+from src.models.HiCNN2 import HiCNN2
+from src.models.HiCPlus import HiCPlus
+from src.models.Smoothing import Smoothing
+from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
+from src.train_graphbased import train as graph_train
+from src.predict_graphbased import predict as graph_predict
+
+from torchsummary import summary
 
 
-# from src.utils import graph_positional_encoding, visualize_matrix, normalize_hic_matrix, create_dataset_from_hic_files
+from src.utils import create_dataset_from_hic_files
 # from src.difficult_to_map_region_analysis import compare_regions
 # print(compare_regions(
 #     '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/H1_rao_et_al/', 
 #     '/media/murtaza/ubuntu2/updated_hic_data/data/difficult_to_map_regions/regions.bed'
 # ), ' overlap precentage for chromosome 1')
 
-from src.parse_hic_files import parse_hic_file
-
-parse_hic_file('/media/murtaza/ubuntu/updated_hic_data/data/hic_datasets/H1/4DN/4dn-0.hic')
+#parse_hic_file('/media/murtaza/ubuntu/updated_hic_data/data/hic_datasets/H1/4DN/4dn-0.hic')
 
 
-# HYPERPARAMETERS = {
-#     'batch_size': 128,
-#     'learning_rate': 0.001,
-#     'momentum': 0.9,
-#     'epochs': 100,
-#     'optimizer_type': 'ADAM',
-#     'input_shape': -1
-# }
+HYPERPARAMETERS = {
+    'batch_size': 128,
+    'learning_rate': 0.001,
+    'momentum': 0.9,
+    'epochs': 100,
+    'optimizer_type': 'ADAM',
+    'input_shape': -1
+}
 
-# cropping_params={
-#     'chunk_size':200,
-#     'stride'    :200,
-#     'bounds'    :190,
-#     'padding'   :True
-# }
+cropping_params={
+    'chunk_size':200,
+    'stride'    :200,
+    'bounds'    :190,
+    'padding'   :True
+}
 
-# normalization_params={
-#     'norm'              : True,
-#     'remove_zeros'      : True,
-#     'set_diagonal_zero' : False,
-#     'cutoff'            : 95.0,
-#     'rescale'           : True,
-#     'chrom_wide'        : True, 
-#     'draw_dist_graphs'  : True
-# }
-# pos_encoding_idx = 3
-# pos_encoding = ['graph']
+normalization_params={
+    'norm'              : True,
+    'remove_zeros'      : True,
+    'set_diagonal_zero' : False,
+    'cutoff'            : 95.0,
+    'rescale'           : True,
+    'chrom_wide'        : True, 
+    'draw_dist_graphs'  : False
+}
+pos_encoding_idx = 0
+pos_encoding = ['graph']
 
-# input_shape = {
-#     'constant': 1,
-#     'monotonic': 1,
-#     'transformer': 4,
-#     'graph': 4
-# }
+input_shape = {
+    'constant': 1,
+    'monotonic': 1,
+    'transformer': 4,
+    'graph': 4
+}
 
 
 
-# cell_line_idx = 3
-# cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
+cell_line_idx = 0
+cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
+base_files = ['hic026', 'encode0', 'hic033']
+
+
+
+precentiles = [99.9]
+
+for percentile in precentiles:
+    normalization_params['cutoff'] = percentile
+
+    for base_file in base_files:
+
+        HYPERPARAMETERS['input_shape'] = input_shape[pos_encoding[pos_encoding_idx]]
+
+        model_name = 'graphic_l1loss_cell:{}_base:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
+            cell_lines[cell_line_idx],
+            base_file,
+            cropping_params['chunk_size'],
+            cropping_params['stride'],    
+            cropping_params['bounds'],
+            normalization_params['norm'],
+            normalization_params['remove_zeros'],
+            normalization_params['set_diagonal_zero'],
+            normalization_params['cutoff'],
+            normalization_params['rescale'],
+            normalization_params['chrom_wide'],
+            pos_encoding[pos_encoding_idx]
+        )
+        print(model_name)
+
+        dataset_path = '/home/murtaza/Documents/GrapHiC/data/datasets/real/{}/cell:{}_base:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}/'.format(
+            cell_lines[cell_line_idx],
+            cell_lines[cell_line_idx],
+            base_file,
+            cropping_params['chunk_size'],
+            cropping_params['stride'],    
+            cropping_params['bounds'],
+            normalization_params['norm'],
+            normalization_params['remove_zeros'],
+            normalization_params['set_diagonal_zero'],
+            normalization_params['cutoff'],
+            normalization_params['rescale'],
+            normalization_params['chrom_wide'],
+            pos_encoding[pos_encoding_idx]
+        )
+        print(dataset_path)
+
+        if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
+            create_dataset_from_hic_files(
+                '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/{}_{}'.format(cell_lines[cell_line_idx], base_file),
+                '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/{}_rao_et_al'.format(cell_lines[cell_line_idx]),
+                dataset_path,
+                pos_encoding[pos_encoding_idx],
+                [],
+                cropping_params,
+                normalization_params,
+                'none',
+                'intersection',
+                ['train', 'valid', 'test']
+            )
+
+        else:
+           print('Dataset already exists!')
+
+
+        use_cuda = torch.cuda.is_available()
+        device = torch.device("cuda:0" if use_cuda else "cpu")
+
+
+        graphic_model = GraphConvGrapHiC(HYPERPARAMETERS, device, model_name)
+
+
+        graph_train(graphic_model, 
+                    os.path.join(dataset_path, 'train.npz'),
+                    os.path.join(dataset_path, 'valid.npz'),
+                    model_name,
+                    clean_existing_weights=True, debug=True
+        )
+
+        graph_predict(
+            graphic_model,
+            os.path.join(dataset_path, 'test.npz'),
+            os.path.join('/home/murtaza/Documents/temp_graphic/GrapHiC/outputs/test_outputs/', graphic_model.model_name)
+        )
 
 
 # chromosomes = ['chr1', 'chr10', 'chr19']
@@ -83,77 +163,6 @@ parse_hic_file('/media/murtaza/ubuntu/updated_hic_data/data/hic_datasets/H1/4DN/
 #                 normalization_params['set_diagonal_zero'] = sdz
                 
 #                 normalized_matrix = normalize_hic_matrix(matrix, normalization_params, cell_line, chromosome)
-
-# precentiles = [95]
-
-# for percentile in precentiles:
-#     normalization_params['cutoff'] = percentile
-
-#     for encoding in pos_encoding:
-
-#         HYPERPARAMETERS['input_shape'] = input_shape[encoding]
-
-#         model_name = 'graphic_insulation+l1loss_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
-#             cropping_params['chunk_size'],
-#             cropping_params['stride'],    
-#             cropping_params['bounds'],
-#             normalization_params['norm'],
-#             normalization_params['remove_zeros'],
-#             normalization_params['set_diagonal_zero'],
-#             normalization_params['cutoff'],
-#             normalization_params['rescale'],
-#             normalization_params['chrom_wide'],
-#             encoding
-#         )
-#         print(model_name)
-
-#         dataset_path = '/home/murtaza/Documents/GrapHiC/data/datasets/real/{}/c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}/'.format(
-#             cell_lines[cell_line_idx],
-#             cropping_params['chunk_size'],
-#             cropping_params['stride'],    
-#             cropping_params['bounds'],
-#             normalization_params['norm'],
-#             normalization_params['remove_zeros'],
-#             normalization_params['set_diagonal_zero'],
-#             normalization_params['cutoff'],
-#             normalization_params['rescale'],
-#             normalization_params['chrom_wide'],
-#             encoding
-#         )
-#         print(dataset_path)
-
-#         if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
-#             create_dataset_from_hic_files(
-#                 '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/{}_rao_et_al'.format(cell_lines[cell_line_idx]),
-#                 '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/{}_rao_et_al'.format(cell_lines[cell_line_idx]),
-#                 dataset_path,
-#                 encoding,
-#                 [],
-#                 cropping_params,
-#                 normalization_params,
-#                 'none',
-#                 'intersection',
-#                 ['train', 'valid', 'test']
-#             )
-
-#         else:
-#             print('Dataset already exists!')
-
-
-#         use_cuda = torch.cuda.is_available()
-#         device = torch.device("cuda:0" if use_cuda else "cpu")
-
-
-#         graphic_model = GraphConvGrapHiC(HYPERPARAMETERS, device, model_name)
-
-
-#         graph_train(graphic_model, 
-#                     os.path.join(dataset_path, 'train.npz'),
-#                     os.path.join(dataset_path, 'valid.npz'),
-#                     model_name,
-#                     clean_existing_weights=True, debug=True
-#         )
-
 
 # embedding = torch.rand(64, 200, 32)
 

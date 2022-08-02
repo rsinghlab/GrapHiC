@@ -9,7 +9,9 @@ import os
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 
+REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
 
 def validation_loss(model, validation_loader, epoch=0):
     validation_loss = 0.0
@@ -20,20 +22,20 @@ def validation_loss(model, validation_loader, epoch=0):
         
         data = data.to(model.device)
         output = model(data.x, data.edge_index, data.edge_attr, data.batch)
-        targets = model.process_target_graph_batch(data.y, data.batch)
+        targets = model.process_graph_batch(data.y, data.batch)
         targets = targets.reshape(targets.shape[0], 1, targets.shape[1], targets.shape[2])
         batch_loss = model.loss(output, targets)
         validation_loss = validation_loss + batch_loss.item()
         num_batches += 1
         
-        if i == 0 or i == 25:
-            plt.imshow(output[0, 0, :, :].detach().to('cpu').numpy())
-            plt.savefig('outputs/{}/target_epoch_{}_i_{}.png'.format(model.model_name, epoch, i))
+        if i == 0:
+            plt.matshow(output[0, 0, :, :].detach().to('cpu').numpy(), cmap=REDMAP)
+            plt.savefig('outputs/{}/output_epoch_{}_i_{}.png'.format(model.model_name, epoch, i))
             plt.close()
-            plt.imshow(targets[0, 0, :, :].to('cpu').numpy())
-            plt.savefig('outputs/{}/generated_epoch_{}_i_{}.png'.format(model.model_name, epoch, i))
+            plt.matshow(targets[0, 0, :, :].to('cpu').numpy(), cmap=REDMAP)
+            plt.savefig('outputs/{}/targets_epoch_{}_i_{}.png'.format(model.model_name, epoch, i))
             plt.close()
-
+        
 
 
     return float(validation_loss)/num_batches
@@ -42,8 +44,8 @@ def train(model, file_train, file_valid, experiment_name, clean_existing_weights
     writer = SummaryWriter('logdir/{}'.format(experiment_name))
     
     # create output directory for the model
-    utils.create_entire_path_directory(os.path.join('home/murtaza/Documents/GrapHiC/outputs/', model.model_name))
-
+    utils.create_entire_path_directory(os.path.join('/home/murtaza/Documents/temp_graphic/GrapHiC/outputs/', model.model_name))
+    
     # Clean the existing sets of weights in the model.dir_model directory
     if clean_existing_weights:
         utils.delete_files(model.dir_model)
@@ -77,7 +79,7 @@ def train(model, file_train, file_valid, experiment_name, clean_existing_weights
             
             output = model(data.x, data.edge_index, data.edge_attr, data.batch)
 
-            targets = model.process_target_graph_batch(data.y, data.batch)
+            targets = model.process_graph_batch(data.y, data.batch)
             targets = targets.reshape(targets.shape[0], 1, targets.shape[1], targets.shape[2])
 
             batch_loss = model.loss(output, targets)
