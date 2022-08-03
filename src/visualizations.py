@@ -1,11 +1,13 @@
 '''
     This file should contain all the visualization scripts
 '''
+import matplotlib
 import numpy as np
+import os
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 
-
-
+REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
 
 
 def plot_distribution_with_precentiles(values, graph_name):
@@ -24,3 +26,27 @@ def plot_distribution_with_precentiles(values, graph_name):
     plt.plot(x_vals, y_vals)
     plt.savefig('outputs/graphs/{}'.format(graph_name), format='png')
     plt.close()
+
+
+def visualize(inputs, outputs, targets, batch_idx, output_folder):
+    for idx in range(inputs.shape[0]):
+        input = inputs[idx, 0, :, :].to('cpu').numpy()
+        target = targets[idx, 0, :, :].to('cpu').numpy()
+        output = outputs[idx, 0, :, :].detach().to('cpu').numpy()
+        f, (ax0, ax1, ax2) = plt.subplots(1, 3,  sharex=True, sharey=True)
+        ax0.matshow(input, cmap=REDMAP)
+        ax0.set_title('Input')
+        ax0.axis('off')
+
+
+        ax1.matshow(target, cmap=REDMAP)
+        ax1.set_title('Target')
+        ax1.axis('off')
+
+        ax2.matshow(output, cmap=REDMAP)
+        ax2.set_title('Generated')
+        ax2.axis('off')
+        
+        plt.savefig(os.path.join(output_folder, 'bidx:{}_sampleidx{}.png'.format(batch_idx, idx) ))
+        plt.close()
+

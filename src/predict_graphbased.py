@@ -77,7 +77,7 @@ def predict(model, dataset_file, output_directory, clean_existing_chromfiles=Fal
     
     for data in tqdm(dataset_loader, desc='Predicting: '):
         data = data.to(model.device)
-        outputs = model(data.x, data.edge_index, data.edge_attr, data.batch)
+        outputs = model(data)
         
         targets = model.process_graph_batch(data.y, data.batch)
         inputs = model.process_graph_batch(data.input, data.batch)

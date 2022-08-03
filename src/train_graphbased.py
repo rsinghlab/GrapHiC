@@ -21,7 +21,7 @@ def validation_loss(model, validation_loader, epoch=0):
             continue
         
         data = data.to(model.device)
-        output = model(data.x, data.edge_index, data.edge_attr, data.batch)
+        output = model(data)
         targets = model.process_graph_batch(data.y, data.batch)
         targets = targets.reshape(targets.shape[0], 1, targets.shape[1], targets.shape[2])
         batch_loss = model.loss(output, targets)
@@ -48,7 +48,7 @@ def train(model, file_train, file_valid, experiment_name, clean_existing_weights
     
     # Clean the existing sets of weights in the model.dir_model directory
     if clean_existing_weights:
-        utils.delete_files(model.dir_model)
+        utils.delete_files(model.weights_dir)
     
     if debug: print('Initializing the model parameters')
     # Move model to the defined device
@@ -77,7 +77,7 @@ def train(model, file_train, file_valid, experiment_name, clean_existing_weights
             data = data.to(model.device)
             optimizer.zero_grad()
             
-            output = model(data.x, data.edge_index, data.edge_attr, data.batch)
+            output = model(data)
 
             targets = model.process_graph_batch(data.y, data.batch)
             targets = targets.reshape(targets.shape[0], 1, targets.shape[1], targets.shape[2])
@@ -93,5 +93,5 @@ def train(model, file_train, file_valid, experiment_name, clean_existing_weights
 
         writer.add_scalar("Loss/Training", float(epoch_loss)/num_batches, epoch)
         writer.add_scalar("Loss/Validation", valid_loss, epoch) 
-        torch.save(model.state_dict(), os.path.join(model.dir_model, '{}-epoch_{}-loss_model'.format(epoch, valid_loss)))
+        torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, valid_loss)))
     writer.flush()
