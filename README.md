@@ -57,4 +57,5 @@ This should install appropriate required packages of pygeometric and ideally aft
 ## Setting up paths inside the codebase
 All the static paths used during the testing and development phase are stored in the file GrapHiC/src/utils.py. There are x main paths that need to be updated. 
 1) BASE_DIRECTORY path points or stores the absolute path of the directory where you pulled this codebase. If you have changed the path of your terminal since the start of this installation process running 'pwd' command would give you the absolute path. Update the value of BASE_DIRECTORY to the output of pwd command. 
-2) 
+2) HIC_FILES_DIRECTORY, PARSED_HIC_FILES_DIRECTORY and DATASET_DIRECTORY can be anywhere in your filesystem just make sure that whatever filesystem they are on, it has enough space to store ~200GBs of both raw and processed .hic datasets. 
+3) WEIGHTS_DIRECTORY and GENERATED_DATA_DIRECTORY are currently setup to be automatically adjusted based on the BASE_DIRECTORY but if you want to store these somewhere else feel free to change them as well. WEIGHTS_DIRECTORY stores the weights of the models (for each epoch in current implementation) and GENERATED_DATA_DIRECTORY all the generated visualizations.  
