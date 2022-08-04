@@ -18,7 +18,7 @@ from src.normalizations import normalize_hic_matrix
 from src.positional_encodings import encoding_methods
 from src.noise import noise_types
 
-MULTIPROCESSING = True
+MULTIPROCESSING = False
 
 
 dataset_partitions = {
@@ -74,8 +74,9 @@ def _process_chromosome_files(
         noise,
         verbose
     ):
-    chromosome = path_to_base_chrom.split('/')[-1].split('.')[0]
+    chromosome = int(path_to_base_chrom.split('/')[-1].split('.')[0].split('chr')[1])
 
+    if verbose: print('Processing chromosome {}'.format(chromosome))
     # Read chromosome files
     try:
         base_data = load_hic_file(path_to_base_chrom)
@@ -116,7 +117,7 @@ def _process_chromosome_files(
         target_chrom = normalize_hic_matrix(target_chrom, normalization_params, chromosome=chromosome)
 
     if noise:
-        if verbose: print('Adding {} noise to the data')
+        if verbose: print('Adding {} noise to the data'.format(noise))
         base_chrom = noise_types[noise](base_chrom)
         
 
@@ -133,8 +134,9 @@ def _process_chromosome_files(
         pos_encoding = encoding_methods[positional_encoding_method](base)
         pos_encodings.append(pos_encoding)
 
-    encodings = merge_encodings(node_features, pos_encoding)
-
+    pos_encodings = np.array(pos_encodings)
+    encodings = merge_encodings(node_features, pos_encodings)
+    
     return (
             chromosome, 
             bases, 
@@ -166,7 +168,7 @@ def create_dataset_from_hic_files(
                                 'rescale'           : True,
                                 'draw_dist_graphs'  : False
                                 },
-                                noise='none',
+                                noise=None,
                                 compact='intersection',
                                 datasets=[
                                 'train', 
@@ -224,35 +226,15 @@ def create_dataset_from_hic_files(
         
         
         results = list(filter(lambda x: len(x) != 0, results))
-        
-        # else:
-        #     for chromosome in chromosomes:
-        #         if verbose: print('Working with chromosome {} files...'.format(chromosome))
-        #         base_chrom_path = os.path.join(path_to_base_files, 'chr{}.npz'.format(chromosome))
-        #         target_chrom_path = os.path.join(path_to_target_files, 'chr{}.npz'.format(chromosome))
-        #         results.append(process_chromosome_files(
-        #             base_chrom_path, 
-        #             target_chrom_path,
-        #             positional_encoding_method, 
-        #             node_encoding_files, 
-        #             normalization_params, 
-        #             cropping_params, 
-        #             compact, 
-        #             noise, 
-        #             verbose)
-        #         )
-                
             
-        #     # Filter out empty tuples
-        #     results = list(filter(lambda x: len(x) != 0, results))            
 
         data = np.concatenate([r[1] for r in results])
         target = np.concatenate([r[2] for r in results])
         inds = np.concatenate([r[3] for r in results])
         encodings = np.concatenate([r[4] for r in results])
         
-        compacts = {r[0].split('chr')[0]: r[5] for r in results}
-        sizes = {r[0].split('chr')[0]: r[6] for r in results}
+        compacts = {r[0]: r[5] for r in results}
+        sizes = {r[0]: r[6] for r in results}
 
         
         print('Saving file:', output_file)

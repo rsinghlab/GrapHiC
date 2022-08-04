@@ -7,15 +7,14 @@ from src import visualizations
 
 
 SAMPLE_HIC_NORMALIZATION_PARAMS = {
-    'norm'              : True,  # This controls if we want to apply normalization or not
-    'remove_zeros'      : True,  # Remove zeros before the percentile computation
-    'set_diagonal_zero' : False, # Set the diagonals to zero before percentile computation
-    'cutoff'            : 95.0,  # What percentile to use for cutoff
-    'rescale'           : True,  # Rescale the clipped matrix between 0-1
-    'chrom_wide'        : True,  # Apply the normalization chromosome-wide or sample wide, where sample is the submatrix from the chromosomes
-    'draw_dist_graphs'  : True   # A visualiation handle, to visualize the distribution of the HiC matrix
+    'norm'              : True,  # To normalize or not
+    'remove_zeros'      : True,  # Remove zero before percentile calculation
+    'set_diagonal_zero' : False, # Remove the diagonal before percentile calculation
+    'percentile'        : 95.0,  # Percentile 
+    'rescale'           : True,  # After applying cutoff, rescale between 0 and 1
+    'chrom_wide'        : True,  # Apply it on chromosome scale #TODO: Sample wise normalization isn't implemented
+    'draw_dist_graphs'  : False  # Visualize the distribution of the chromosome
 }
-
 
 def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1'):
     '''
@@ -33,7 +32,7 @@ def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1'):
         np.fill_diagonal(hic_matrix, 0)
     
 
-    if params['cutoff'] == -1:
+    if params['percentile'] == -1:
         return hic_matrix
 
 
@@ -55,7 +54,7 @@ def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1'):
         
 
     # Compute and apply cutoff
-    cutoff_value = np.percentile(all_values, params['cutoff'])
+    cutoff_value = np.percentile(all_values, params['percentile'])
 
     hic_matrix = np.minimum(cutoff_value, hic_matrix)
     hic_matrix = np.maximum(hic_matrix, 0)

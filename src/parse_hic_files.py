@@ -17,6 +17,9 @@ import multiprocessing
 from multiprocessing import Process
 from src.utils import create_entire_path_directory
 
+import wget
+
+
 # Main Multiprocessing switch for the HiC parser
 MULTIPROCESSING=False
 
@@ -33,6 +36,26 @@ def process_chromosome(hic, output, resolution, chromosome):
     index = chromosome.index
     length = chromosome.length
     name = chromosome.name
+
+    output_path = os.path.join(
+        output, 
+        'resolution_{}'.format(resolution)
+    )
+    create_entire_path_directory(output_path)
+    
+    output_path = os.path.join(
+        output_path, 
+        'chr{}.npz'.format(name)
+    )
+
+    if name in ['Y','MT']:
+        return 
+    
+
+    if os.path.exists(output_path):
+        print('Already parsed!')
+        return
+
     print('Starting parsing Chromosome {}'.format(name))
 
     
@@ -61,20 +84,8 @@ def process_chromosome(hic, output, resolution, chromosome):
     mat = mat.T
     mat = mat + np.tril(mat, -1).T
 
-    output_path = os.path.join(
-        output, 
-        'resolution_{}'.format(resolution)
-    )
-    create_entire_path_directory(output_path)
-    
-    output_path = os.path.join(
-        output_path, 
-        'chr{}.npz'.format(name)
-    )
-
     np.savez_compressed(output_path, hic=mat, compact=informative_indexes, size=length)
     print('Saving Chromosome at path {}'.format(output_path))
-    1.2845626521723261,
     return True
 
     
@@ -128,7 +139,14 @@ def parse_hic_file(path_to_hic_file, output, resolution=10000):
 
 
 
+def download_hic_file(file_paths):
+    print('Downloading HiC file from {}'.format(file_paths['remote_path']))
+    
+    create_entire_path_directory('/'.join(file_paths['local_path'].split('/')[:-1]))
+    wget.download(file_paths['remote_path'], file_paths['local_path'])   
 
+    print('HiC file downloaded at {}'.format(file_paths['local_path']))
+    
 
 
 
