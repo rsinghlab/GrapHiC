@@ -28,4 +28,7 @@ Once you have setup the virtual environment activate it so we can finally start 
 ```
 source grapHiC/bin/activate
 ```
+## Setting up CUDA, PYTORCH and PYTORCH GEOMETRIC
+At the time of writing this readme, the stable versions of CUDA, Pytorch and PyGeometric werent compatible with each other. So I managed to figure out a way to make them run with each other by downgrading to older stable versions of all three of them. If you already have a setup that runs fine ignore this step and skip to the step of installing rest of the packages. 
+
 
