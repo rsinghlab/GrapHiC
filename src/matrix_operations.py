@@ -3,6 +3,7 @@
 
 '''
 import numpy as np
+from pyrandwalk import *
 
 
 except_chr = {'hsa': {'X': 23, 23: 'X'}, 'mouse': {'X': 20, 20: 'X'}}
@@ -104,3 +105,22 @@ def divide(mat, chr_num, cropping_params, verbose=False):
     if verbose: print(f'[Chr{chr_str}] Dividing HiC matrix ({size}x{size}) into {len(result)} samples with chunk={chunk_size}, stride={stride}, bound={bound}')
     index = np.array(index)
     return result, index
+
+
+
+
+def graph_rw_smoothing(adj_matrix, steps=3):
+    smoothed = np.copy(adj_matrix)
+    states = np.arange(adj_matrix.shape[0])
+    rw = RandomWalk(states, adj_matrix)
+
+    for step in range(steps):
+        smoothed += rw.trans_power(step + 1)
+    
+    smoothed = smoothed / (steps + 1)
+
+    return smoothed
+
+
+
+

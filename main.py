@@ -5,17 +5,17 @@ import numpy as np
 from src.parse_hic_files import parse_hic_file
 from src.dataset_creator import create_dataset_from_hic_files
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 # from src.models.DeepHiC import DeepHiC
 # from src.models.HiCNN import HiCNN
 # from src.models.HiCNN2 import HiCNN2
 # from src.models.HiCPlus import HiCPlus
 # from src.models.Smoothing import Smoothing
-from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
+# from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
 # from src.predict_imagebased import predict as image_predict
 # from src.train_imagebased import train as image_train
-from src.train_graphbased import train as graph_train
+# from src.train_graphbased import train as graph_train
 # from src.predict_graphbased import predict as graph_predict
 #from torchsummary import summary
 
@@ -28,28 +28,28 @@ from src.train_graphbased import train as graph_train
 # ), ' overlap precentage for chromosome 1')
 
 
-parse_hic_file(
-    '/users/gmurtaza/data/gmurtaza/hic_datasets/H1/4DN/4dn-0.hic',
-    '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/',
-    10000 
-)
+# parse_hic_file(
+#     '/users/gmurtaza/data/gmurtaza/hic_datasets/H1/4DN/4dn-0.hic',
+#     '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/',
+#     10000 
+# )
 
 
-HYPERPARAMETERS = {
-    'batch_size': 128,
-    'learning_rate': 0.001,
-    'momentum': 0.9,
-    'epochs': 100,
-    'optimizer_type': 'ADAM',
-    'input_shape': -1
-}
+# HYPERPARAMETERS = {
+#     'batch_size': 128,
+#     'learning_rate': 0.001,
+#     'momentum': 0.9,
+#     'epochs': 100,
+#     'optimizer_type': 'ADAM',
+#     'input_shape': -1
+# }
 
-cropping_params={
-    'chunk_size':200,
-    'stride'    :200,
-    'bounds'    :190,
-    'padding'   :True
-}
+# cropping_params={
+#     'chunk_size':200,
+#     'stride'    :200,
+#     'bounds'    :190,
+#     'padding'   :True
+# }
 
 normalization_params={
     'norm'              : True,
@@ -60,72 +60,105 @@ normalization_params={
     'chrom_wide'        : True, 
     'draw_dist_graphs'  : False
 }
-# pos_encoding_idx = 3
-pos_encoding = ['graph']
+# # pos_encoding_idx = 3
+# pos_encoding = ['graph']
 
-input_shape = {
-    'constant': 1,
-    'monotonic': 1,
-    'transformer': 4,
-    'graph': 4
-}
-
-
-
-cell_line_idx = 3
-cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
+# input_shape = {
+#     'constant': 1,
+#     'monotonic': 1,
+#     'transformer': 4,
+#     'graph': 4
+# }
 
 
 
-dataset_path = '/users/gmurtaza/GrapHiC/data/datasets/real/{}/c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}/'.format(
-    cell_lines[cell_line_idx],
-    cropping_params['chunk_size'],
-    cropping_params['stride'],    
-    cropping_params['bounds'],
-    normalization_params['norm'],
-    normalization_params['remove_zeros'],
-    normalization_params['set_diagonal_zero'],
-    normalization_params['cutoff'],
-    normalization_params['rescale'],
-    normalization_params['chrom_wide'],
-    pos_encoding[0]
-)
-print(dataset_path)
-
-if not os.path.exists(os.path.join(dataset_path, 'train')):
-    create_dataset_from_hic_files(
-        '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
-        '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
-        dataset_path,
-        pos_encoding[0],
-        [],
-        cropping_params,
-        normalization_params,
-        None,
-        'intersection',
-        ['train', 'valid', 'test'],
-        True
-    )
-else:
-    print('Dataset already exists')
-
-model_name = 'graphic_l1loss_cell:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
-        'H1',
-        'H1',
-        cropping_params['chunk_size'],
-        cropping_params['stride'],    
-        cropping_params['bounds'],
-        normalization_params['norm'],
-        normalization_params['remove_zeros'],
-        normalization_params['set_diagonal_zero'],
-        normalization_params['cutoff'],
-        normalization_params['rescale'],
-        normalization_params['chrom_wide'],
-        'graph'
-)
+# cell_line_idx = 3
+# cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
 
 
-print(model_name)
+
+# dataset_path = '/users/gmurtaza/GrapHiC/data/datasets/real/{}/c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}/'.format(
+#     cell_lines[cell_line_idx],
+#     cropping_params['chunk_size'],
+#     cropping_params['stride'],    
+#     cropping_params['bounds'],
+#     normalization_params['norm'],
+#     normalization_params['remove_zeros'],
+#     normalization_params['set_diagonal_zero'],
+#     normalization_params['cutoff'],
+#     normalization_params['rescale'],
+#     normalization_params['chrom_wide'],
+#     pos_encoding[0]
+# )
+# print(dataset_path)
+
+# if not os.path.exists(os.path.join(dataset_path, 'train')):
+#     create_dataset_from_hic_files(
+#         '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
+#         '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
+#         dataset_path,
+#         pos_encoding[0],
+#         [],
+#         cropping_params,
+#         normalization_params,
+#         None,
+#         'intersection',
+#         ['train', 'valid', 'test'],
+#         True
+#     )
+# else:
+#     print('Dataset already exists')
+
+# model_name = 'graphic_l1loss_cell:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
+#         'H1',
+#         'H1',
+#         cropping_params['chunk_size'],
+#         cropping_params['stride'],    
+#         cropping_params['bounds'],
+#         normalization_params['norm'],
+#         normalization_params['remove_zeros'],
+#         normalization_params['set_diagonal_zero'],
+#         normalization_params['cutoff'],
+#         normalization_params['rescale'],
+#         normalization_params['chrom_wide'],
+#         'graph'
+# )
+from src.utils import load_hic_file
+from src.matrix_operations import graph_rw_smoothing
+from matplotlib.colors import LinearSegmentedColormap
+from src.normalizations import normalize_hic_matrix
+import matplotlib.pyplot as plt
+from scipy.special import softmax
+
+# REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
+
+
+# # print(model_name)
+# hic_matrix = load_hic_file('/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000/chr10.npz')['hic']
+# hic_matrix = normalize_hic_matrix(hic_matrix, normalization_params, 'H1', 'chr10')
+
+# hic_matrix = hic_matrix[1000:1200, 1000:1200]
+# hic_matrix = softmax(hic_matrix, axis=0)
+# print(np.sum(hic_matrix[0, : ]))
+
+
+# t1 = graph_rw_smoothing(hic_matrix, 1)
+# t2 = graph_rw_smoothing(hic_matrix, 2)
+# t3 = graph_rw_smoothing(hic_matrix, 3)
+# t4 = graph_rw_smoothing(hic_matrix, 4)
+
+
+# plt.matshow(hic_matrix, cmap=REDMAP)
+# plt.savefig('t0.png')
+# plt.matshow(t1, cmap=REDMAP)
+# plt.savefig('t1.png')
+# plt.matshow(t2, cmap=REDMAP)
+# plt.savefig('t2.png')
+# plt.matshow(t3, cmap=REDMAP)
+# plt.savefig('t3.png')
+# plt.matshow(t4, cmap=REDMAP)
+# plt.savefig('t4.png')
+
 
 # use_cuda = torch.cuda.is_available()
 # device = torch.device("cuda:0" if use_cuda else "cpu")
