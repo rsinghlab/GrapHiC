@@ -7,7 +7,24 @@ Make sure you update all the hard coded paths in the src/utils.py to where ever 
 
 
 ## How to setup the enviroment
-I highly recommend that you make a virtual enviroment or (anaconda enviroment) before you begin setting up the code base. 
+I highly recommend that you use make an anaconda environment (or a virtual environment) before you begin setting up the code base. I have given the install instruction for both, follow whatever is easier in your case. 
+
+### Installing using Anaconda
+Make sure you are using CUDA version 10.2 for this installation process. I would follow instruction on this [link](https://developer.nvidia.com/cuda-10.2-download-archive?target_os=Linux). I would highly recommend that you make sure you have the correct version of Nvidia drivers installed as well, otherwise this can quickly become very complicated to debug. 
+
+
+After you have pulled this repository, 
+
+```
+conda env create --name grapHiC --file=environments.yml
+```
+
+I have commited my anaconda enviroment.yml file that should in theory install appropriate packages and ensure you have no dependency conflicts. I have made that .yml file for an even broader audience that has glibc of version 2.17 and for whatever reasons they are unable to update it (as it was in my cluster's case). 
+
+Finally, activate the environment and that should be it. 
+```
+conda activate grapHiC
+```
 
 
 ### Creating Virtual Environment
@@ -51,7 +68,12 @@ Looking in links: https://data.pyg.org/whl/torch-1.11.0+cu113.html
 This should install appropriate required packages of pygeometric and ideally after this step everything should run fine without broken symbolic links. 
 
 ### Installing rest of the packages
+For rest of the packages just run command, 
 
+```
+pip install -r requirements.txt
+```
+After this everything else should work fine. 
 
 
 ## Setting up paths inside the codebase
