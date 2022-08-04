@@ -2,10 +2,10 @@ import os, shutil
 import numpy as np
 
 
-BASE_DIRECTORY = '/home/murtaza/Documents/temp_graphic/GrapHiC/'
-HIC_FILES_DIRECTORY = '/media/murtaza/ubuntu2/hic_data/hic_files/' # Recommended that this path is on some larger storage device
-PARSED_HIC_FILES_DIRECTORY = '/media/murtaza/ubuntu2/hic_data/chromosome_files/graphic/'
-DATASET_DIRECTORY = '/media/murtaza/ubuntu2/hic_data/datasets/real/'
+BASE_DIRECTORY = '/users/gmurtaza/GrapHiC/'
+HIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/hic_datasets' # Recommended that this path is on some larger storage device
+PARSED_HIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets'
+DATASET_DIRECTORY = '/users/gmurtaza/data/gmurtaza/generated_datasets'
 
 WEIGHTS_DIRECTORY = os.path.join(BASE_DIRECTORY, 'weights') # Recommended to keep weights on the same directory
 GENERATED_DATA_DIRECTORY = os.path.join(BASE_DIRECTORY, 'outputs')

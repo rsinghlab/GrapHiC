@@ -11,58 +11,10 @@ from src.parse_hic_files import parse_hic_file, download_hic_file
 from src.dataset_creator import create_dataset_from_hic_files
 from src.utils import HIC_FILES_DIRECTORY, PARSED_HIC_FILES_DIRECTORY, DATASET_DIRECTORY
 
-<<<<<<< HEAD
-# import matplotlib.pyplot as plt
-
-# from src.models.DeepHiC import DeepHiC
-# from src.models.HiCNN import HiCNN
-# from src.models.HiCNN2 import HiCNN2
-# from src.models.HiCPlus import HiCPlus
-# from src.models.Smoothing import Smoothing
-# from src.models.GrapHiC import GraphConvGrapHiC, FullyConnected, ContactCNN
-# from src.predict_imagebased import predict as image_predict
-# from src.train_imagebased import train as image_train
-# from src.train_graphbased import train as graph_train
-# from src.predict_graphbased import predict as graph_predict
-#from torchsummary import summary
-
-
-# from src.utils import graph_positional_encoding, visualize_matrix, normalize_hic_matrix, create_dataset_from_hic_files
-# from src.difficult_to_map_region_analysis import compare_regions
-# print(compare_regions(
-#     '/media/murtaza/ubuntu2/hic_data/chromosome_files/real/H1_rao_et_al/', 
-#     '/media/murtaza/ubuntu2/updated_hic_data/data/difficult_to_map_regions/regions.bed'
-# ), ' overlap precentage for chromosome 1')
-
-
-# parse_hic_file(
-#     '/users/gmurtaza/data/gmurtaza/hic_datasets/H1/4DN/4dn-0.hic',
-#     '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/',
-#     10000 
-# )
-=======
->>>>>>> 32ec350199bc65b39f7f21da8318287095f9a0aa
 
 ### These are default parameters, to run interesting experiments change these parameters ###
 hic_data_resolution = 10000
 
-<<<<<<< HEAD
-# HYPERPARAMETERS = {
-#     'batch_size': 128,
-#     'learning_rate': 0.001,
-#     'momentum': 0.9,
-#     'epochs': 100,
-#     'optimizer_type': 'ADAM',
-#     'input_shape': -1
-# }
-
-# cropping_params={
-#     'chunk_size':200,
-#     'stride'    :200,
-#     'bounds'    :190,
-#     'padding'   :True
-# }
-=======
 # These hyperparameters go to GrapHiC model controlling the training batch size, optimizer parameters 
 HYPERPARAMETERS = {
     'epochs'            : 100, 
@@ -79,7 +31,6 @@ cropping_params = {
     'bounds'    :190,
     'padding'   :True
 }
->>>>>>> 32ec350199bc65b39f7f21da8318287095f9a0aa
 
 # These parameters are also used by the dataset creator function but this set contains the normalization parameters
 normalization_params = {
@@ -91,107 +42,6 @@ normalization_params = {
     'chrom_wide'        : True,  # Apply it on chromosome scale #TODO: Sample wise normalization isn't implemented
     'draw_dist_graphs'  : False  # Visualize the distribution of the chromosome
 }
-<<<<<<< HEAD
-# # pos_encoding_idx = 3
-# pos_encoding = ['graph']
-
-# input_shape = {
-#     'constant': 1,
-#     'monotonic': 1,
-#     'transformer': 4,
-#     'graph': 4
-# }
-
-
-
-# cell_line_idx = 3
-# cell_lines = ['GM12878', 'IMR90', 'K562', 'H1', 'HG002']
-
-
-
-# dataset_path = '/users/gmurtaza/GrapHiC/data/datasets/real/{}/c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}/'.format(
-#     cell_lines[cell_line_idx],
-#     cropping_params['chunk_size'],
-#     cropping_params['stride'],    
-#     cropping_params['bounds'],
-#     normalization_params['norm'],
-#     normalization_params['remove_zeros'],
-#     normalization_params['set_diagonal_zero'],
-#     normalization_params['cutoff'],
-#     normalization_params['rescale'],
-#     normalization_params['chrom_wide'],
-#     pos_encoding[0]
-# )
-# print(dataset_path)
-
-# if not os.path.exists(os.path.join(dataset_path, 'train')):
-#     create_dataset_from_hic_files(
-#         '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
-#         '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000'.format(cell_lines[cell_line_idx]),
-#         dataset_path,
-#         pos_encoding[0],
-#         [],
-#         cropping_params,
-#         normalization_params,
-#         None,
-#         'intersection',
-#         ['train', 'valid', 'test'],
-#         True
-#     )
-# else:
-#     print('Dataset already exists')
-
-# model_name = 'graphic_l1loss_cell:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_cw:{}_enc:{}'.format(
-#         'H1',
-#         'H1',
-#         cropping_params['chunk_size'],
-#         cropping_params['stride'],    
-#         cropping_params['bounds'],
-#         normalization_params['norm'],
-#         normalization_params['remove_zeros'],
-#         normalization_params['set_diagonal_zero'],
-#         normalization_params['cutoff'],
-#         normalization_params['rescale'],
-#         normalization_params['chrom_wide'],
-#         'graph'
-# )
-from src.utils import load_hic_file
-from src.matrix_operations import graph_rw_smoothing
-from matplotlib.colors import LinearSegmentedColormap
-from src.normalizations import normalize_hic_matrix
-import matplotlib.pyplot as plt
-from scipy.special import softmax
-
-# REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
-
-
-# # print(model_name)
-# hic_matrix = load_hic_file('/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/H1/resolution_10000/chr10.npz')['hic']
-# hic_matrix = normalize_hic_matrix(hic_matrix, normalization_params, 'H1', 'chr10')
-
-# hic_matrix = hic_matrix[1000:1200, 1000:1200]
-# hic_matrix = softmax(hic_matrix, axis=0)
-# print(np.sum(hic_matrix[0, : ]))
-
-
-# t1 = graph_rw_smoothing(hic_matrix, 1)
-# t2 = graph_rw_smoothing(hic_matrix, 2)
-# t3 = graph_rw_smoothing(hic_matrix, 3)
-# t4 = graph_rw_smoothing(hic_matrix, 4)
-
-
-# plt.matshow(hic_matrix, cmap=REDMAP)
-# plt.savefig('t0.png')
-# plt.matshow(t1, cmap=REDMAP)
-# plt.savefig('t1.png')
-# plt.matshow(t2, cmap=REDMAP)
-# plt.savefig('t2.png')
-# plt.matshow(t3, cmap=REDMAP)
-# plt.savefig('t3.png')
-# plt.matshow(t4, cmap=REDMAP)
-# plt.savefig('t4.png')
-
-=======
 
 # Some other dataset creation paramters
 positional_encoding_method = 'graph' # Required for GrapHiC, can take values between ['constant', 'monotonic', 'transformer', 'graph']
@@ -205,10 +55,10 @@ base_files = ['hic026', 'encode0', 'hic033']
 
 # These files should exist, (currently not using all of them but would at some point)
 hic_file_paths = {
-    'GM12878-geo-raoetal': {
-            'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-raoetal.hic'),
-            'remote_path': 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE63nnn/GSE63525/suppl/GSE63525_GM12878_insitu_primary%2Breplicate_combined_30.hic'
-    },
+    # 'GM12878-geo-raoetal': {
+    #         'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-raoetal.hic'),
+    #         'remote_path': 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE63nnn/GSE63525/suppl/GSE63525_GM12878_insitu_primary%2Breplicate_combined_30.hic'
+    # },
     'GM12878-encode-0': {
             'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'encode-0.hic'),
             'remote_path': 'https://www.encodeproject.org/files/ENCFF799QGA/@@download/ENCFF799QGA.hic'
@@ -237,64 +87,64 @@ for hic_file_key in hic_file_paths.keys():
     )
 
 
-# Step 2: Create Dataset (Currently I am only creating dataset with base:encode-0 and target:rao-et-al)
+# # Step 2: Create Dataset (Currently I am only creating dataset with base:encode-0 and target:rao-et-al)
 
-# First we construct a string that is the dataset path
-base = 'GM12878-encode-0'
-target = 'GM12878-geo-raoetal'
-
-
-dataset_name = 'base:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_enc:{}_noi:{}_nirrm:{}/'.format(
-    base,
-    target,
-    cropping_params['sub_mat'],
-    cropping_params['stride'],    
-    cropping_params['bounds'],
-    normalization_params['norm'],
-    normalization_params['remove_zeros'],
-    normalization_params['set_diagonal_zero'],
-    normalization_params['percentile'],
-    normalization_params['rescale'],
-    positional_encoding_method,
-    noise_augmentation_method,
-    non_informative_row_resolution_method
-)
-# We create a hash because the path length is too long, we remember the hash to name correspondances in an external JSON. 
-
-dataset_name_hash = hashlib.sha1(dataset_name.encode('ascii')).hexdigest()
-
-# save hash in the external json for later references
-datasets_database = json.load(open('datasets.json'))
-
-if not datasets_database.get(dataset_name_hash):
-    datasets_database[dataset_name_hash] = dataset_name
-    with open("datasets.json", "w") as outfile:
-        json.dump(datasets_database, outfile)
-
-else:
-    print('Entry already exists in the database')
+# # First we construct a string that is the dataset path
+# base = 'GM12878-encode-0'
+# target = 'GM12878-geo-raoetal'
 
 
+# dataset_name = 'base:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_enc:{}_noi:{}_nirrm:{}/'.format(
+#     base,
+#     target,
+#     cropping_params['sub_mat'],
+#     cropping_params['stride'],    
+#     cropping_params['bounds'],
+#     normalization_params['norm'],
+#     normalization_params['remove_zeros'],
+#     normalization_params['set_diagonal_zero'],
+#     normalization_params['percentile'],
+#     normalization_params['rescale'],
+#     positional_encoding_method,
+#     noise_augmentation_method,
+#     non_informative_row_resolution_method
+# )
+# # We create a hash because the path length is too long, we remember the hash to name correspondances in an external JSON. 
+
+# dataset_name_hash = hashlib.sha1(dataset_name.encode('ascii')).hexdigest()
+
+# # save hash in the external json for later references
+# datasets_database = json.load(open('datasets.json'))
+
+# if not datasets_database.get(dataset_name_hash):
+#     datasets_database[dataset_name_hash] = dataset_name
+#     with open("datasets.json", "w") as outfile:
+#         json.dump(datasets_database, outfile)
+
+# else:
+#     print('Entry already exists in the database')
 
 
-dataset_path = os.path.join(DATASET_DIRECTORY, dataset_name_hash)
 
 
-if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
-    create_dataset_from_hic_files(
-        os.path.join(PARSED_HIC_FILES_DIRECTORY, base ,'resolution_{}'.format(hic_data_resolution)),
-        os.path.join(PARSED_HIC_FILES_DIRECTORY, target ,'resolution_{}'.format(hic_data_resolution)),
-        dataset_path,
-        positional_encoding_method,
-        [],
-        cropping_params,
-        normalization_params,
-        noise_augmentation_method,
-        non_informative_row_resolution_method,
-        ['train', 'test', 'valid']
-    )
-else:
-    print('Dataset already exists!')
+# dataset_path = os.path.join(DATASET_DIRECTORY, dataset_name_hash)
+
+
+# if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
+#     create_dataset_from_hic_files(
+#         os.path.join(PARSED_HIC_FILES_DIRECTORY, base ,'resolution_{}'.format(hic_data_resolution)),
+#         os.path.join(PARSED_HIC_FILES_DIRECTORY, target ,'resolution_{}'.format(hic_data_resolution)),
+#         dataset_path,
+#         positional_encoding_method,
+#         [],
+#         cropping_params,
+#         normalization_params,
+#         noise_augmentation_method,
+#         non_informative_row_resolution_method,
+#         ['train', 'test', 'valid']
+#     )
+# else:
+#     print('Dataset already exists!')
 
 ############################################### TRAIN AND RUN GRAPHIC MODEL ###############################################################
 # Step3: Create the Model
@@ -317,7 +167,6 @@ run(
     os.path.join(dataset_path, 'test.npz')
 )
 #############################################################################################################################################
->>>>>>> 32ec350199bc65b39f7f21da8318287095f9a0aa
 
 ############################################### TRAIN AND RUN HiCPLUS MODEL ###############################################################
 # use_cuda = torch.cuda.is_available()

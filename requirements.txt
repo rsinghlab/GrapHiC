@@ -1,153 +1,70 @@
-absl-py==1.0.0
-aiohttp==3.8.1
-aiosignal==1.2.0
-appdirs==1.4.3
-apturl==0.5.2
-asciitree==0.3.3
-async-timeout==4.0.2
-attrs==21.4.0
-blinker==1.4
-Brlapi==0.7.0
-cachetools==5.0.0
-certifi==2019.11.28
-chardet==3.0.4
-charset-normalizer==2.0.12
-Click==7.0
-colorama==0.4.3
-command-not-found==0.3
-cooler==0.8.11
-cryptography==2.8
-cupshelpers==1.0
+absl-py==1.2.0
+art==5.7
+brotlipy @ file:///home/conda/feedstock_root/build_artifacts/brotlipy_1648854164373/work
+cachetools==5.2.0
+certifi @ file:///opt/conda/conda-bld/certifi_1655968806487/work/certifi
+cffi @ file:///tmp/abs_98z5h56wf8/croots/recipe/cffi_1659598650955/work
+charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1655906222726/work
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1655412516417/work
+cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography_1636040644060/work
 cycler==0.11.0
-cytoolz==0.10.1
-dbus-python==1.2.16
-defer==1.0.6
-Deprecated==1.2.13
-dill==0.3.5.1
-distlib==0.3.0
-distro==1.4.0
-distro-info===0.23ubuntu1
-entrypoints==0.3
-filelock==3.0.12
-fonttools==4.30.0
-frozenlist==1.3.0
-fsspec==2022.3.0
--e git+https://github.com/kundajelab/genomedisco.git@1e60ee1c3f163ff96f7541a25b55a52d5f5b4c2d#egg=genomedisco
-gitdb==4.0.9
-GitPython==3.1.27
-google-auth==2.6.2
+fonttools==4.34.4
+google-auth==2.9.1
 google-auth-oauthlib==0.4.6
-grpcio==1.44.0
-h5py==3.6.0
+googledrivedownloader @ file:///home/conda/feedstock_root/build_artifacts/googledrivedownloader_1619807768586/work
+grpcio==1.47.0
 hic-straw==1.3.1
-hicrep==0.2.6
-httplib2==0.14.0
-idna==2.8
-igraph==0.9.10
-imageio==2.19.5
-importlib-metadata==4.11.3
-install==1.3.5
-Jinja2==3.0.3
-joblib==1.1.0
-keyring==18.0.1
-kiwisolver==1.4.0
-kornia==0.6.6
-language-selector==0.1
-launchpadlib==1.10.13
-lazr.restfulclient==0.14.2
-lazr.uri==1.0.3
-louis==3.12.0
-macaroonbakery==1.3.1
-Markdown==3.3.6
-MarkupSafe==2.1.1
-matplotlib==3.5.1
-more-itertools==4.2.0
-multidict==6.0.2
-multiprocess==0.70.13
-netifaces==0.10.4
-networkx==2.8
-numpy==1.22.3
-nvidia-ml-py3==7.352.0
-nvsmi==0.4.2
-oauthlib==3.1.0
-olefile==0.46
+idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1642433548627/work
+imageio==2.21.0
+importlib-metadata==4.12.0
+Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1654302431367/work
+joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1633637554808/work
+kiwisolver==1.4.4
+Markdown==3.4.1
+MarkupSafe @ file:///home/conda/feedstock_root/build_artifacts/markupsafe_1648737556467/work
+matplotlib==3.5.2
+networkx==2.8.5
+numpy==1.23.1
+oauthlib==3.2.0
 packaging==21.3
-pandas==1.4.1
-pexpect==4.6.0
-Pillow==7.0.0
-positional-encodings==6.0.1
-protobuf==3.6.1
-psutil==5.9.0
+pandas==1.2.3
+Pillow==9.2.0
+protobuf==3.19.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pyBigWig==0.3.18
 pybind11==2.10.0
-pycairo==1.16.2
-pycups==1.9.73
-pyDeprecate==0.3.2
-pyfaidx==0.7.0
-PyGObject==3.36.0
-PyJWT==1.7.1
-pymacaroons==0.13.0
-PyNaCl==1.3.0
-pypairix==0.3.7
-pyparsing==3.0.7
-pyRFC3339==1.1
-python-apt==2.0.0+ubuntu0.20.4.7
+pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
+pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1643496850550/work
+pyparsing==3.0.9
+pyrandwalk==1.1
+PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1648857263093/work
 python-dateutil==2.8.2
-python-debian===0.1.36ubuntu1
-python-igraph==0.9.10
-pytorch-lightning==1.6.1
-pytz==2021.3
+python-louvain @ file:///home/conda/feedstock_root/build_artifacts/python-louvain_1643704011655/work
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1647961439546/work
 PyWavelets==1.3.0
-pyxdg==0.26
-PyYAML==6.0
-reportlab==3.5.34
-requests==2.22.0
+PyYAML @ file:///home/conda/feedstock_root/build_artifacts/pyyaml_1648757097602/work
+requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1656534056640/work
 requests-oauthlib==1.3.1
-requests-unixsocket==0.2.0
-rsa==4.8
+rsa==4.9
 scikit-image==0.19.3
-scikit-learn==1.0.2
-scipy==1.8.0
-screen-resolution-extra==0.0.0
-SecretStorage==2.3.1
-simplejson==3.16.0
-six==1.14.0
-sklearn==0.0
-smmap==5.0.0
-ssh-import-id==5.10
-systemd-python==234
-tensorboard==2.8.0
+scikit-learn @ file:///home/conda/feedstock_root/build_artifacts/scikit-learn_1652976687386/work
+scipy @ file:///home/conda/feedstock_root/build_artifacts/scipy_1653073865807/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+tensorboard==2.9.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-texttable==1.6.4
-threadpoolctl==3.1.0
-tifffile==2022.5.4
-toolz==0.12.0
-torch==1.11.0+cu113
-torch-cluster==1.6.0
-torch-geometric==2.0.4
-torch-scatter==2.0.9
-torch-sparse==0.6.13
-torch-spline-conv==1.2.1
-torch-tb-profiler==0.4.0
-torchaudio==0.11.0+cu113
-torchmetrics==0.8.0
-torchsummary==1.5.1
-torchvision==0.12.0+cu113
-tqdm==4.63.0
-typing-extensions==4.1.1
-ubuntu-advantage-tools==27.9
-ubuntu-drivers-common==0.0.0
-ufw==0.36
-unattended-upgrades==0.1
-urllib3==1.25.8
-virtualenv==20.0.17
-wadllib==1.3.3
-Werkzeug==2.1.1
+threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1643647933166/work
+tifffile==2022.8.3
+torch==1.9.0
+torch-cluster @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-cluster_1631030071828/work
+torch-geometric @ file:///usr/share/miniconda/envs/test/conda-bld/pyg_1640156706160/work
+torch-scatter @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-scatter_1634901536263/work
+torch-sparse @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-sparse_1631190941791/work
+torch-spline-conv @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-spline-conv_1631008639148/work
+tqdm @ file:///home/conda/feedstock_root/build_artifacts/tqdm_1649051611147/work
+typing_extensions @ file:///tmp/abs_ben9emwtky/croots/recipe/typing_extensions_1659638822008/work
+urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1658789158161/work
+Werkzeug==2.2.1
 wget==3.2
-wrapt==1.14.1
-xkit==0.0.0
-yarl==1.7.2
-zipp==1.0.0
+yacs @ file:///home/conda/feedstock_root/build_artifacts/yacs_1645705974477/work
+zipp==3.8.1
