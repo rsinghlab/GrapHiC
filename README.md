@@ -54,4 +54,7 @@ This should install appropriate required packages of pygeometric and ideally aft
 
 
 
-
+## Setting up paths inside the codebase
+All the static paths used during the testing and development phase are stored in the file GrapHiC/src/utils.py. There are x main paths that need to be updated. 
+1) BASE_DIRECTORY path points or stores the absolute path of the directory where you pulled this codebase. If you have changed the path of your terminal since the start of this installation process running 'pwd' command would give you the absolute path. Update the value of BASE_DIRECTORY to the output of pwd command. 
+2) 
