@@ -36,7 +36,6 @@ def process_chromosome(hic, output, resolution, chromosome):
     index = chromosome.index
     length = chromosome.length
     name = chromosome.name
-
     output_path = os.path.join(
         output, 
         'resolution_{}'.format(resolution)
@@ -50,7 +49,6 @@ def process_chromosome(hic, output, resolution, chromosome):
 
     if name in ['Y','MT']:
         return 
-    
 
     if os.path.exists(output_path):
         print('Already parsed!')
