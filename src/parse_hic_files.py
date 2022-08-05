@@ -24,6 +24,7 @@ def process_chromosome(hic, output, resolution, chromosome):
     index = chromosome.index
     length = chromosome.length
     name = chromosome.name
+    print('Starting parsing Chromosome {}'.format(name))
     
     
     chromosome_matrix = hic.getMatrixZoomData(
