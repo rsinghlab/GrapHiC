@@ -14,6 +14,10 @@ def constant_positional_encoding(matrix):
         @params: matrix <np.array>, 2D Hi-C matrix array
         @returns: <np.array> 1D that contains the node positions
     '''
+    # Ensure the input adjacency matrix is of shape 2
+    if len(matrix.shape) == 3:
+        matrix = matrix[0]
+    
     return np.ones((matrix.shape[0], 1))
 
 
@@ -25,6 +29,10 @@ def monotonic_positional_encoding(matrix, type='fractional'):
                                 value to be the matrix.shape[0].
         @params: <np.array> 1D that contains the node positions
     '''
+    # Ensure the input adjacency matrix is of shape 2
+    if len(matrix.shape) == 3:
+        matrix = matrix[0]
+    
     # Adding a small value so the starting value is not zero
     if type == 'fractional':
         return np.reshape(np.linspace(0.0, 1.0, num=matrix.shape[0]), (matrix.shape[0], 1))
@@ -43,6 +51,10 @@ def transformer_positional_encoding(matrix, encoding_dim=4, padding_idx=None):
                                 value to be the matrix.shape[0].
         @params: <np.array> 1D that contains the node positions
     '''
+    # Ensure the input adjacency matrix is of shape 2
+    if len(matrix.shape) == 3:
+        matrix = matrix[0]
+    
     n_position = matrix.shape[0]
    
     def cal_angle(position, hid_idx):
@@ -73,6 +85,10 @@ def graph_positional_encoding(matrix, encoding_dim=4, upscale=255):
                                 value to be the matrix.shape[0].
         @params: <np.array> 1D that contains the node positions
     '''
+    # Ensure the input adjacency matrix is of shape 2
+    if len(matrix.shape) == 3:
+        matrix = matrix[0]
+    
     # Convert the matrix to laplacian form 
     L = (matrix*upscale).astype(np.int32)
     L = laplacian(L)

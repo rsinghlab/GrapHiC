@@ -3,7 +3,11 @@
 
 '''
 import numpy as np
+from pyrandwalk import *
 
+import torch
+from torch_geometric.data import Dataset, Data
+from torch_geometric.loader import DataLoader
 
 except_chr = {'hsa': {'X': 23, 23: 'X'}, 'mouse': {'X': 20, 20: 'X'}}
 
@@ -15,7 +19,9 @@ def compactM(matrix, compact_idx, verbose=False):
         @params: verbose <boolean> Debugging print statements
         @returns: <np.array> Condesed matrix with zero arrays pruned 
     """
+
     compact_size = len(compact_idx)
+    
     result = np.zeros((compact_size, compact_size)).astype(matrix.dtype)
     
     if verbose: print('Compacting a', matrix.shape, 'shaped matrix to', result.shape, 'shaped!')
@@ -24,6 +30,8 @@ def compactM(matrix, compact_idx, verbose=False):
         result[i, :] = matrix[idx][compact_idx]
     
     return result
+
+
 
 def spreadM(c_mat, compact_idx, full_size, convert_int=True, verbose=False):
     """spreading matrix according to the index list (a reversed operation to compactM)."""
@@ -64,6 +72,10 @@ def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
         results[n] = full_mat
     return results
 
+
+
+
+
 def divide(mat, chr_num, cropping_params, verbose=False):
     """
         @params: mat <np.array> HiC matrix that needs to be chunked up
@@ -79,7 +91,7 @@ def divide(mat, chr_num, cropping_params, verbose=False):
     size = mat.shape[0]
     
     stride = cropping_params['stride']
-    chunk_size = cropping_params['chunk_size']
+    chunk_size = cropping_params['sub_mat']
     bound = cropping_params['bounds']
     padding = cropping_params['padding']
 
@@ -95,8 +107,81 @@ def divide(mat, chr_num, cropping_params, verbose=False):
             if abs(i-j)<=bound and i+chunk_size<height and j+chunk_size<width:
                 subImage = mat[i:i+chunk_size, j:j+chunk_size]
                 result.append([subImage])
-                index.append((chr_num, size, i, j))
+                index.append((int(chr_num), int(size), int(i), int(j)))
     result = np.array(result)
     if verbose: print(f'[Chr{chr_str}] Dividing HiC matrix ({size}x{size}) into {len(result)} samples with chunk={chunk_size}, stride={stride}, bound={bound}')
     index = np.array(index)
     return result, index
+
+
+
+
+def graph_rw_smoothing(adj_matrix, steps=3):
+    smoothed = np.copy(adj_matrix)
+    states = np.arange(adj_matrix.shape[0])
+    rw = RandomWalk(states, adj_matrix)
+
+    for step in range(steps):
+        smoothed += rw.trans_power(step + 1)
+    
+    smoothed = smoothed / (steps + 1)
+
+    return smoothed
+
+
+
+
+
+
+def get_node_features(encoding):
+    return torch.tensor(encoding, dtype=torch.float)
+
+def get_edge_attrs(matrix):
+    edge_indices = np.nonzero(matrix)    
+    edge_features = matrix[edge_indices]
+    edge_features = edge_features.reshape(-1, 1)
+
+    return torch.tensor(edge_features, dtype=torch.float)
+
+def get_edge_indexes(matrix):
+    edge_indices = np.transpose(np.nonzero(matrix))
+    edge_indices = torch.tensor(edge_indices, dtype=torch.long)
+    edge_indices = edge_indices.t().to(torch.long).view(2, -1)
+
+    return edge_indices
+
+def create_graph_dataloader(base, targets, encodings, pos_indxs, batch_size, shuffle):
+    graphs = []
+    for idx in range(base.shape[0]):
+        matrix = base[idx, 0, :, :].cpu().detach().numpy()
+        target = targets[idx, 0, :, :].cpu().detach().numpy()
+        encoding = encodings[idx, :, :].cpu().detach().numpy()
+        pos_indx = pos_indxs[idx].cpu().detach().numpy()
+        
+
+        x = get_node_features(encoding)
+        edge_attrs = get_edge_attrs(matrix)
+        edge_indexes = get_edge_indexes(matrix)
+        
+        graph = Data(
+                        x=x, 
+                        edge_attr=edge_attrs, 
+                        edge_index=edge_indexes, 
+                        pos_indx=torch.from_numpy(pos_indx), 
+                        y=torch.from_numpy(target),
+                        input=torch.from_numpy(matrix)
+                    )
+        
+        graphs.append(graph)
+    
+    
+    return DataLoader(graphs, batch_size=batch_size, shuffle=shuffle)
+
+
+
+def process_graph_batch(model, y, batch):
+    targets = model.process_graph_batch(y, batch)
+    targets = targets.reshape(targets.shape[0], 1, targets.shape[1], targets.shape[2])
+    return targets
+
+
