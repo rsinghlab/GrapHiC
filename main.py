@@ -55,10 +55,10 @@ base_files = ['hic026', 'encode0', 'hic033']
 
 # These files should exist, (currently not using all of them but would at some point)
 hic_file_paths = {
-    # 'GM12878-geo-raoetal': {
-    #         'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-raoetal.hic'),
-    #         'remote_path': 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE63nnn/GSE63525/suppl/GSE63525_GM12878_insitu_primary%2Breplicate_combined_30.hic'
-    # },
+    'GM12878-geo-raoetal': {
+            'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-raoetal.hic'),
+            'remote_path': 'https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE63525&format=file&file=GSE63525%5FGM12878%5Finsitu%5Fprimary%2Breplicate%5Fcombined%5F30%2Ehic'
+    },
     'GM12878-encode-0': {
             'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'encode-0.hic'),
             'remote_path': 'https://www.encodeproject.org/files/ENCFF799QGA/@@download/ENCFF799QGA.hic'
@@ -77,7 +77,6 @@ hic_file_paths = {
 # Step 1: Download and parse the HiC files
 for hic_file_key in hic_file_paths.keys():
     if not os.path.exists(hic_file_paths[hic_file_key]['local_path']):
-        #TODO: Write a script that downloads the files from remote path
         download_hic_file(hic_file_paths[hic_file_key])
     
     parse_hic_file(

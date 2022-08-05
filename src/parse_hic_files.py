@@ -21,7 +21,7 @@ import wget
 
 
 # Main Multiprocessing switch for the HiC parser
-MULTIPROCESSING=False
+MULTIPROCESSING=True
 
 def process_chromosome(hic, output, resolution, chromosome):
     '''

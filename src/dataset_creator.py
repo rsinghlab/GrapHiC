@@ -18,7 +18,7 @@ from src.normalizations import normalize_hic_matrix
 from src.positional_encodings import encoding_methods
 from src.noise import noise_types
 
-MULTIPROCESSING = False
+MULTIPROCESSING = True
 
 
 dataset_partitions = {
