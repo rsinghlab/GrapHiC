@@ -12,7 +12,7 @@ import os
 from src.matrix_operations import create_graph_dataloader
 from src.utils import WEIGHTS_DIRECTORY
 from src.models.ContactCNN import ContactCNN
-
+from src.models.TVLoss import TVLoss
 
 torch.manual_seed(0)
 
@@ -21,11 +21,14 @@ class GrapHiCLoss(torch.nn.Module):
     def __init__(self):
         super(GrapHiCLoss, self).__init__()
         self.mse_lambda = 1
+        self.tv_lambda = 0.0001
         self.mse = L1Loss()
+        self.tvloss = TVLoss(self.tv_lambda)
 
     def forward(self, output, target):
         l1_loss = self.mse_lambda*self.mse(output, target)
-        return l1_loss
+        tv_loss = self.tvloss(output)
+        return l1_loss + tv_loss
 
 
 
@@ -43,11 +46,11 @@ class GrapHiC(torch.nn.Module):
         
         self.loss_function = GrapHiCLoss()
 
-        self.conv0 = GCNConv(input_embedding_size, 16, 1, normalize=True)
-        self.conv1 = GCNConv(16, 32, 1, normalize=True)
-        self.conv2 = GCNConv(32, 32, 1, normalize=True)
+        self.conv0 = GCNConv(input_embedding_size, 64, 1, normalize=True)
+        self.conv1 = GCNConv(64, 64, 1, normalize=True)
+        self.conv2 = GCNConv(64, 64, 1, normalize=True)
 
-        self.contact_cnn = ContactCNN(32, 32)
+        self.contact_cnn = ContactCNN(64, 64)
 
         
 

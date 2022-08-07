@@ -11,24 +11,17 @@
 #SBATCH -o main.out
 
 # Load modules
-module load gcc/8.3
-module load cuda/10.2
-module load anaconda/2020.02
-source /gpfs/runtime/opt/anaconda/2020.02/etc/profile.d/conda.sh
+module load gcc/10.2
+module load cuda/11.3.1
 
 # Activate the virtual environment
-conda activate grapHiC
-
-conda env export
-
-
 # nvcc --version
 # nvidia-smi --query-gpu=gpu_name --format=csv
 
 # Load python virtual environment 
-# source /users/gmurtaza/GrapHiC/grapHiC/bin/activate
+source /users/gmurtaza/GrapHiC/grapHiC/bin/activate
 
 # Run the program 
-# python main.py
+python main.py
 
 

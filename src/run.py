@@ -109,16 +109,18 @@ def test(model, test_loader, output_path):
         visualize(inputs, outputs, targets, total_batches, output_path)
 
 
+    with open(os.path.join(output_path, 'metrics.dump'), 'a+') as dump_file:
+        dump_file.write('Mean Squared Error --- Baseline: {}, Generated: {}\n'.format(
+            (baseline_mse_score/total_batches), (upscaled_mse_score/total_batches)
+        ))
+        dump_file.write('SSIM --- Baseline: {}, Generated: {}\n'.format(
+            (baseline_ssim_score/total_batches), (upscaled_ssim_score/total_batches)
+        ))
+        dump_file.write('Pearson\'s Correlation Coefficient --- Baseline: {}, Generated: {}\n'.format(
+            (baseline_pcc_score/total_batches), (upscaled_pcc_score/total_batches)
+        ))
 
-    print('Mean Squared Error --- Baseline: {}, Generated: {}'.format(
-        (baseline_mse_score/total_batches), (upscaled_mse_score/total_batches)
-    ))
-    print('SSIM --- Baseline: {}, Generated: {}'.format(
-        (baseline_ssim_score/total_batches), (upscaled_ssim_score/total_batches)
-    ))
-    print('Pearson\'s Correlation Coefficient --- Baseline: {}, Generated: {}'.format(
-        (baseline_pcc_score/total_batches), (upscaled_pcc_score/total_batches)
-    ))
+
 
 
 def generate_chromosomes():

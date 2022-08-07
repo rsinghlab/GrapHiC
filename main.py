@@ -22,6 +22,7 @@ HYPERPARAMETERS = {
     'optimizer_type'    : 'ADAM',
     'learning_rate'     : 0.001,
     'momentum'          : 0.9,
+    'num_heads'         : 4,
 }
 
 # These parameters are used by the dataset creator function to describe how to divide the chromosome matrices
@@ -86,73 +87,73 @@ for hic_file_key in hic_file_paths.keys():
     )
 
 
-# # Step 2: Create Dataset (Currently I am only creating dataset with base:encode-0 and target:rao-et-al)
+# Step 2: Create Dataset (Currently I am only creating dataset with base:encode-0 and target:rao-et-al)
 
-# # First we construct a string that is the dataset path
-# base = 'GM12878-encode-0'
-# target = 'GM12878-geo-raoetal'
-
-
-# dataset_name = 'base:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_enc:{}_noi:{}_nirrm:{}/'.format(
-#     base,
-#     target,
-#     cropping_params['sub_mat'],
-#     cropping_params['stride'],    
-#     cropping_params['bounds'],
-#     normalization_params['norm'],
-#     normalization_params['remove_zeros'],
-#     normalization_params['set_diagonal_zero'],
-#     normalization_params['percentile'],
-#     normalization_params['rescale'],
-#     positional_encoding_method,
-#     noise_augmentation_method,
-#     non_informative_row_resolution_method
-# )
-# # We create a hash because the path length is too long, we remember the hash to name correspondances in an external JSON. 
-
-# dataset_name_hash = hashlib.sha1(dataset_name.encode('ascii')).hexdigest()
-
-# # save hash in the external json for later references
-# datasets_database = json.load(open('datasets.json'))
-
-# if not datasets_database.get(dataset_name_hash):
-#     datasets_database[dataset_name_hash] = dataset_name
-#     with open("datasets.json", "w") as outfile:
-#         json.dump(datasets_database, outfile)
-
-# else:
-#     print('Entry already exists in the database')
+# First we construct a string that is the dataset path
+base = 'GM12878-encode-0'
+target = 'GM12878-geo-raoetal'
 
 
+dataset_name = 'base:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_enc:{}_noi:{}_nirrm:{}/'.format(
+    base,
+    target,
+    cropping_params['sub_mat'],
+    cropping_params['stride'],    
+    cropping_params['bounds'],
+    normalization_params['norm'],
+    normalization_params['remove_zeros'],
+    normalization_params['set_diagonal_zero'],
+    normalization_params['percentile'],
+    normalization_params['rescale'],
+    positional_encoding_method,
+    noise_augmentation_method,
+    non_informative_row_resolution_method
+)
+# We create a hash because the path length is too long, we remember the hash to name correspondances in an external JSON. 
+
+dataset_name_hash = hashlib.sha1(dataset_name.encode('ascii')).hexdigest()
+
+# save hash in the external json for later references
+datasets_database = json.load(open('datasets.json'))
+
+if not datasets_database.get(dataset_name_hash):
+    datasets_database[dataset_name_hash] = dataset_name
+    with open("datasets.json", "w") as outfile:
+        json.dump(datasets_database, outfile)
+
+else:
+    print('Entry already exists in the database')
 
 
-# dataset_path = os.path.join(DATASET_DIRECTORY, dataset_name_hash)
 
 
-# if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
-#     create_dataset_from_hic_files(
-#         os.path.join(PARSED_HIC_FILES_DIRECTORY, base ,'resolution_{}'.format(hic_data_resolution)),
-#         os.path.join(PARSED_HIC_FILES_DIRECTORY, target ,'resolution_{}'.format(hic_data_resolution)),
-#         dataset_path,
-#         positional_encoding_method,
-#         [],
-#         cropping_params,
-#         normalization_params,
-#         noise_augmentation_method,
-#         non_informative_row_resolution_method,
-#         ['train', 'test', 'valid']
-#     )
-# else:
-#     print('Dataset already exists!')
+dataset_path = os.path.join(DATASET_DIRECTORY, dataset_name_hash)
 
-############################################### TRAIN AND RUN GRAPHIC MODEL ###############################################################
-# Step3: Create the Model
+
+if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
+    create_dataset_from_hic_files(
+        os.path.join(PARSED_HIC_FILES_DIRECTORY, base ,'resolution_{}'.format(hic_data_resolution)),
+        os.path.join(PARSED_HIC_FILES_DIRECTORY, target ,'resolution_{}'.format(hic_data_resolution)),
+        dataset_path,
+        positional_encoding_method,
+        [],
+        cropping_params,
+        normalization_params,
+        noise_augmentation_method,
+        non_informative_row_resolution_method,
+        ['train', 'test', 'valid']
+    )
+else:
+    print('Dataset already exists!')
+
+############################################## TRAIN AND RUN GRAPHIC MODEL ###############################################################
+#Step3: Create the Model
 
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
 
 
-model_name = 'graphic_l1loss_dhash:{}/'.format(
+model_name = 'graphic(embd-64)_l1loss+tvloss(e-04)_dhash:{}/'.format(
     dataset_name_hash
 )
 

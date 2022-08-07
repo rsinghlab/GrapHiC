@@ -1,70 +1,59 @@
 absl-py==1.2.0
 art==5.7
-brotlipy @ file:///home/conda/feedstock_root/build_artifacts/brotlipy_1648854164373/work
 cachetools==5.2.0
-certifi @ file:///opt/conda/conda-bld/certifi_1655968806487/work/certifi
-cffi @ file:///tmp/abs_98z5h56wf8/croots/recipe/cffi_1659598650955/work
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1655906222726/work
-colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1655412516417/work
-cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography_1636040644060/work
+certifi==2022.6.15
+charset-normalizer==2.1.0
 cycler==0.11.0
 fonttools==4.34.4
-google-auth==2.9.1
+google-auth==2.10.0
 google-auth-oauthlib==0.4.6
-googledrivedownloader @ file:///home/conda/feedstock_root/build_artifacts/googledrivedownloader_1619807768586/work
 grpcio==1.47.0
 hic-straw==1.3.1
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1642433548627/work
+idna==3.3
 imageio==2.21.0
 importlib-metadata==4.12.0
-Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1654302431367/work
-joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1633637554808/work
+Jinja2==3.1.2
+joblib==1.1.0
 kiwisolver==1.4.4
 Markdown==3.4.1
-MarkupSafe @ file:///home/conda/feedstock_root/build_artifacts/markupsafe_1648737556467/work
+MarkupSafe==2.1.1
 matplotlib==3.5.2
-networkx==2.8.5
-numpy==1.23.1
+networkx==2.6.3
+numpy==1.21.6
 oauthlib==3.2.0
 packaging==21.3
-pandas==1.2.3
+pandas==1.3.5
 Pillow==9.2.0
 protobuf==3.19.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pybind11==2.10.0
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
-pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1643496850550/work
 pyparsing==3.0.9
 pyrandwalk==1.1
-PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1648857263093/work
 python-dateutil==2.8.2
-python-louvain @ file:///home/conda/feedstock_root/build_artifacts/python-louvain_1643704011655/work
-pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1647961439546/work
+pytz==2022.1
 PyWavelets==1.3.0
-PyYAML @ file:///home/conda/feedstock_root/build_artifacts/pyyaml_1648757097602/work
-requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1656534056640/work
+requests==2.28.1
 requests-oauthlib==1.3.1
 rsa==4.9
 scikit-image==0.19.3
-scikit-learn @ file:///home/conda/feedstock_root/build_artifacts/scikit-learn_1652976687386/work
-scipy @ file:///home/conda/feedstock_root/build_artifacts/scipy_1653073865807/work
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+scikit-learn==1.0.2
+scipy==1.7.3
+six==1.16.0
 tensorboard==2.9.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1643647933166/work
-tifffile==2022.8.3
-torch==1.9.0
-torch-cluster @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-cluster_1631030071828/work
-torch-geometric @ file:///usr/share/miniconda/envs/test/conda-bld/pyg_1640156706160/work
-torch-scatter @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-scatter_1634901536263/work
-torch-sparse @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-sparse_1631190941791/work
-torch-spline-conv @ file:///usr/share/miniconda/envs/test/conda-bld/pytorch-spline-conv_1631008639148/work
-tqdm @ file:///home/conda/feedstock_root/build_artifacts/tqdm_1649051611147/work
-typing_extensions @ file:///tmp/abs_ben9emwtky/croots/recipe/typing_extensions_1659638822008/work
-urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1658789158161/work
+threadpoolctl==3.1.0
+tifffile==2021.11.2
+torch==1.11.0+cu113
+torch-geometric==2.0.4
+torch-scatter==2.0.9
+torch-sparse==0.6.14
+torchaudio==0.11.0+cu113
+torchvision==0.12.0+cu113
+tqdm==4.64.0
+typing_extensions==4.3.0
+urllib3==1.26.11
 Werkzeug==2.2.1
 wget==3.2
-yacs @ file:///home/conda/feedstock_root/build_artifacts/yacs_1645705974477/work
 zipp==3.8.1

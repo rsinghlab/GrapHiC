@@ -37,24 +37,14 @@ class FullyConnected(nn.Module):
         :rtype: torch.Tensor
         """
 
-        # z0 is (b,N,d), z1 is (b,M,d)
         z0 = z0.transpose(1, 2)
         z1 = z1.transpose(1, 2)
-        # z0 is (b,d,N), z1 is (b,d,M)
 
-        # Removing the z_diff because in our case the embeddings should be the same
-        # z_dif = torch.abs(z0.unsqueeze(3) - z1.unsqueeze(2))
-        # print(z_dif.shape)
-        
         z_mul = z0.unsqueeze(3) * z1.unsqueeze(2)
         
-        # z_cat = torch.cat([z_dif, z_mul], 1)
-        # print(z_cat.shape)
-
         c = self.conv(z_mul)
         c = self.activation(c)
-        #c = self.batchnorm(c)
-
+        
         return c
 
 
@@ -73,17 +63,15 @@ class ContactCNN(nn.Module):
     """
 
     def __init__(
-        self, embed_dim, hidden_dim=50, width=7, activation=nn.Sigmoid()
+        self, embed_dim, hidden_dim=128, width=7, activation=nn.Sigmoid()
     ):
         super(ContactCNN, self).__init__()
 
         self.hidden = FullyConnected(embed_dim, hidden_dim)
 
         self.conv = nn.Conv2d(hidden_dim, 1, width, padding=width // 2)
-        #self.batchnorm = nn.BatchNorm2d(1)
         self.activation = activation
-        #self.clip()
-
+        
     def clip(self):
         """
         Force the convolutional layer to be transpose invariant.
@@ -102,8 +90,6 @@ class ContactCNN(nn.Module):
         :return: Predicted contact map :math:`(b \\times N \\times M)`
         :rtype: torch.Tensor
         """
-        # print('z0', z0)
-        # print('z1', z1)
 
         C = self.cmap(z0, z1)
         return self.predict(C)
@@ -132,9 +118,7 @@ class ContactCNN(nn.Module):
         :rtype: torch.Tensor
         """
 
-        # S is (b,N,M)
         s = self.conv(C)
-        #s = self.batchnorm(s)
         s = self.activation(s)
         return s
 

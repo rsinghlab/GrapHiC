@@ -58,3 +58,8 @@ def create_entire_path_directory(path):
 
 def graph_random_walks(adjacency_matrix):
     pass
+
+
+
+create_entire_path_directory(WEIGHTS_DIRECTORY)
+create_entire_path_directory(GENERATED_DATA_DIRECTORY)
