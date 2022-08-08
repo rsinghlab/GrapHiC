@@ -6,6 +6,7 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from src.utils import create_entire_path_directory
 
 REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
 
@@ -29,6 +30,7 @@ def plot_distribution_with_precentiles(values, graph_name):
 
 
 def visualize(inputs, outputs, targets, batch_idx, output_folder):
+    create_entire_path_directory(output_folder)
     for idx in range(inputs.shape[0]):
         input = inputs[idx, 0, :, :].to('cpu').numpy()
         target = targets[idx, 0, :, :].to('cpu').numpy()

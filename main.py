@@ -27,8 +27,8 @@ HYPERPARAMETERS = {
 
 # These parameters are used by the dataset creator function to describe how to divide the chromosome matrices
 cropping_params = {
-    'sub_mat'   :200,
-    'stride'    :200,
+    'sub_mat'   :400,
+    'stride'    :50,
     'bounds'    :190,
     'padding'   :True
 }

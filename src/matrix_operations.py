@@ -8,6 +8,7 @@ from pyrandwalk import *
 import torch
 from torch_geometric.data import Dataset, Data
 from torch_geometric.loader import DataLoader
+import matplotlib.pyplot as plt
 
 except_chr = {'hsa': {'X': 23, 23: 'X'}, 'mouse': {'X': 20, 20: 'X'}}
 
@@ -63,12 +64,26 @@ def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
         index = indices[loci]
         width = index[0,1]
         full_mat = np.zeros((width, width))
-        for sub, pos in zip(sub_mats, index):
+        full_mat_mask = np.ones((width, width))
+        
+        for sub, pos in zip(sub_mats, index):            
             i, j = pos[-2], pos[-1]
             if corp > 0:
                 sub = sub[:, corp:-corp, corp:-corp]
                 _, h, w = sub.shape
+            # Handle the cases where our samples are spilling outside the bounds of chromosome    
+            if (i+h) >= width:
+                sub = sub[:,:h-((i+h) -width),:]
+                
+            if (j+w) >= width:
+                sub = sub[:,:,:h-((j+h) - width)]
+                
             full_mat[i:i+h, j:j+w] = sub
+            full_mat_mask[i:i+h, j:j+w] += np.ones_like(sub[0, :, :])
+            
+        plt.matshow(full_mat_mask)
+        plt.savefig('visualization.png')
+
         results[n] = full_mat
     return results
 

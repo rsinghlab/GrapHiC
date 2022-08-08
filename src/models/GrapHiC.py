@@ -103,14 +103,14 @@ class GrapHiC(torch.nn.Module):
         return self.decode(Z)
 
 
-    def load_data(self, file_path):
+    def load_data(self, file_path, batch_size=-1, shuffle=False):
         data = np.load(file_path, allow_pickle=True)
         bases = torch.tensor(data['data'], dtype=torch.float32)
         targets = torch.tensor(data['target'], dtype=torch.float32)
         encodings = torch.tensor(data['encodings'], dtype=torch.float32)
         indxs = torch.tensor(data['inds'], dtype=torch.long)
-
-        data_loader = create_graph_dataloader(bases, targets, encodings, indxs, self.hyperparameters['batch_size'], False)
+        batch_size = self.hyperparameters['batch_size'] if batch_size == -1 else batch_size
+        data_loader = create_graph_dataloader(bases, targets, encodings, indxs, batch_size , shuffle)
         
         return data_loader
 

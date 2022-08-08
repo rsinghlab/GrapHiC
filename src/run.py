@@ -4,13 +4,26 @@
 '''
 import os
 import torch
+import numpy as np
 from tqdm import tqdm
 
 from src.utils import BASE_DIRECTORY, create_entire_path_directory, delete_files, GENERATED_DATA_DIRECTORY
-from src.matrix_operations import process_graph_batch
+from src.matrix_operations import process_graph_batch, spreadM, together
 from src.evaluations import MSE, SSIM, PCC
 from torch.utils.tensorboard import SummaryWriter
 from src.visualizations import visualize
+
+def data_info(data):
+    indices = data['inds']
+    compacts = data['compacts'][()]
+    sizes = data['sizes'][()]
+    return indices, compacts, sizes
+
+def save_data(predicted_hic, compact, size, file):
+    hic = spreadM(predicted_hic, compact, size, convert_int=False, verbose=True)
+    np.savez_compressed(file, hic=hic, compact=compact)
+    print('Saving file:', file)
+
 
 
 def train(model, train_loader, optimizer):
@@ -112,7 +125,7 @@ def test(model, test_loader, output_path):
 
         total_batches += 1
         
-        visualize(inputs, outputs, targets, total_batches, output_path)
+        visualize(inputs, outputs, targets, total_batches, os.path.join(output_path, 'visualizations'))
 
 
     with open(os.path.join(output_path, 'metrics.dump'), 'a+') as dump_file:
@@ -129,8 +142,49 @@ def test(model, test_loader, output_path):
 
 
 
-def generate_chromosomes():
-    pass
+def generate_chromosomes(model, file_test, output_path):
+    model.training = False
+    loader = model.load_data(
+        file_test, 
+        1,
+        False
+    )
+
+
+    result_data = []
+    result_inds = []
+    
+    _, compacts, sizes = data_info(np.load(file_test, allow_pickle=True))
+    output_path = os.path.join(output_path, 'chromosomes')
+    create_entire_path_directory(output_path)
+
+    for i, data in enumerate(loader):
+        if i == (len(loader) - 1):
+            continue
+        data = data.to(model.device)
+        outputs = model(data)
+
+        result_data.append(outputs.detach().to('cpu').numpy())
+        result_inds.append(data.pos_indx.to('cpu').numpy())
+    
+    
+    result_data = np.concatenate(result_data, axis=0)
+    result_inds = np.concatenate(result_inds, axis=0).reshape(-1, 4)
+    
+    predicted = together(result_data, result_inds, tag='Reconstructing: ')
+
+    def save_data_n(key):
+        file = os.path.join(output_path, f'chr{key}.npz')
+        save_data(predicted[key], compacts[key], sizes[key], file)
+
+    print(f'Saving predicted data as individual chromosome files')
+
+    for key in compacts.keys():
+        save_data_n(key)
+
+
+
+
 
 
 def run(
@@ -138,7 +192,7 @@ def run(
         file_train, 
         file_validation,
         file_test,
-        clean_existing_weights=True, 
+        clean_existing_weights=False, 
         debug=True
     ):
     '''
@@ -195,18 +249,15 @@ def run(
         writer.add_scalar("MSE/Validation",     mse,                epoch)
         writer.add_scalar("SSIM/Validation",    ssim,               epoch)
         writer.add_scalar("PCC/Validation",     pcc,                epoch)
-        torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, validation_loss)))
+    #     torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, validation_loss)))
 
     # Step 4: Test the model on testing set
     # Load the best weight
     model.load_weights()
     test(model, test_loader, output_path)
 
-    # # Step 5: Generate chromosome files
-    generate_chromosomes()
-
-    # # Step 6: Generate report and clean up
-    # #TODO: 
+    # Step 5: Generate chromosome files
+    generate_chromosomes(model, file_test, output_path)
 
     
 
