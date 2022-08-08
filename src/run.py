@@ -13,7 +13,8 @@ from torch.utils.tensorboard import SummaryWriter
 from src.visualizations import visualize
 
 
-def train(model, train_loader, optimizer, epoch):
+def train(model, train_loader, optimizer):
+    model.training = True
     epoch_loss = 0.0
     num_batches = 0
     for i, (data) in enumerate(train_loader):
@@ -42,6 +43,9 @@ def train(model, train_loader, optimizer, epoch):
 
 
 def validate(model, valid_loader):
+    model.training = False
+    print('Running validation function')
+
     validation_loss = 0.0
     mse = 0.0
     ssim = 0.0 
@@ -76,6 +80,8 @@ def validate(model, valid_loader):
 
 
 def test(model, test_loader, output_path):
+    model.training = False
+
     baseline_mse_score = 0.0
     baseline_ssim_score = 0.0
     baseline_pcc_score = 0.0
@@ -181,7 +187,7 @@ def run(
 
     # Step 3: Enter the main training loop
     for epoch in tqdm(range(model.hyperparameters['epochs']), 'Training Epochs'):
-        training_loss = train(model, train_loader, optimizer, writer)
+        training_loss = train(model, train_loader, optimizer)
         validation_loss, mse, ssim, pcc = validate(model, validation_loader)
 
         writer.add_scalar("Loss/Training",      training_loss,      epoch)
@@ -189,7 +195,7 @@ def run(
         writer.add_scalar("MSE/Validation",     mse,                epoch)
         writer.add_scalar("SSIM/Validation",    ssim,               epoch)
         writer.add_scalar("PCC/Validation",     pcc,                epoch)
-        torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, training_loss)))
+        torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, validation_loss)))
 
     # Step 4: Test the model on testing set
     # Load the best weight

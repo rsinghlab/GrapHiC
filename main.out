@@ -1,11 +1,11 @@
 ## SLURM PROLOG ###############################################################
-##    Job ID : 5817205
+##    Job ID : 5824935
 ##  Job Name : GrapHiC
 ##  Nodelist : gpu2101
 ##      CPUs : 
 ##  Mem/Node : 524288 MB
 ## Directory : /gpfs/home/gmurtaza/GrapHiC
-##   Job Started : Sun Aug  7 18:42:02 EDT 2022
+##   Job Started : Mon Aug  8 11:32:13 EDT 2022
 ###############################################################################
 module: unloading 'gcc/10.2'
 module: loading 'gcc/10.2'
@@ -37,7 +37,7 @@ Already parsed!
 Already parsed!
 Already parsed!
 Already parsed!
-Parsing took 0.2861347198486328 seconds!
+Parsing took 0.2791860103607178 seconds!
 Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/encode-0.hic file.
 Already parsed!
 Already parsed!
@@ -62,7 +62,7 @@ Already parsed!
 Already parsed!
 Already parsed!
 Already parsed!
-Parsing took 0.20076823234558105 seconds!
+Parsing took 0.1976313591003418 seconds!
 Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/encode-1.hic file.
 Already parsed!
 Already parsed!
@@ -87,7 +87,7 @@ Already parsed!
 Already parsed!
 Already parsed!
 Already parsed!
-Parsing took 0.20440411567687988 seconds!
+Parsing took 0.19758272171020508 seconds!
 Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/geo-026.hic file.
 Already parsed!
 Already parsed!
@@ -112,7 +112,7 @@ Already parsed!
 Already parsed!
 Already parsed!
 Already parsed!
-Parsing took 0.2037038803100586 seconds!
+Parsing took 0.20229482650756836 seconds!
 Entry already exists in the database
 Dataset already exists!
 /users/gmurtaza/GrapHiC/logdir/graphic(embd-64)_l1loss+tvloss(e-04)_dhash:e8f75f9da30d9a21c85a42ec568fc73073e0313c/
@@ -121,4 +121,106 @@ Initializing the Optimizer
 Loading Training Dataset
 Loading Validation Dataset
 Loading Testing Dataset
-Training Epochs:   0%|          | 0/100 [00:00<?, ?it/s]Training Epochs:   1%|          | 1/100 [00:02<03:38,  2.21s/it]Training Epochs:   2%|▏         | 2/100 [00:04<03:32,  2.17s/it]Training Epochs:   3%|▎         | 3/100 [00:06<03:29,  2.16s/it]Training Epochs:   4%|▍         | 4/100 [00:08<03:27,  2.16s/it]Training Epochs:   5%|▌         | 5/100 [00:10<03:24,  2.16s/it]Training Epochs:   6%|▌         | 6/100 [00:12<03:22,  2.16s/it]Training Epochs:   7%|▋         | 7/100 [00:15<03:20,  2.16s/it]Training Epochs:   8%|▊         | 8/100 [00:17<03:18,  2.16s/it]Training Epochs:   9%|▉         | 9/100 [00:19<03:15,  2.15s/it]Training Epochs:  10%|█         | 10/100 [00:21<03:13,  2.15s/it]Training Epochs:  11%|█         | 11/100 [00:23<03:11,  2.15s/it]Training Epochs:  12%|█▏        | 12/100 [00:25<03:09,  2.15s/it]Training Epochs:  13%|█▎        | 13/100 [00:28<03:06,  2.15s/it]Training Epochs:  14%|█▍        | 14/100 [00:30<03:04,  2.15s/it]Training Epochs:  15%|█▌        | 15/100 [00:32<03:02,  2.15s/it]Training Epochs:  16%|█▌        | 16/100 [00:34<03:00,  2.15s/it]Training Epochs:  17%|█▋        | 17/100 [00:36<02:58,  2.15s/it]Training Epochs:  18%|█▊        | 18/100 [00:38<02:56,  2.15s/it]Training Epochs:  19%|█▉        | 19/100 [00:40<02:54,  2.16s/it]Training Epochs:  20%|██        | 20/100 [00:43<02:52,  2.16s/it]Training Epochs:  21%|██        | 21/100 [00:45<02:50,  2.16s/it]Training Epochs:  22%|██▏       | 22/100 [00:47<02:48,  2.16s/it]Training Epochs:  23%|██▎       | 23/100 [00:49<02:46,  2.16s/it]Training Epochs:  24%|██▍       | 24/100 [00:51<02:44,  2.16s/it]Training Epochs:  25%|██▌       | 25/100 [00:53<02:42,  2.16s/it]Training Epochs:  26%|██▌       | 26/100 [00:56<02:39,  2.16s/it]Training Epochs:  27%|██▋       | 27/100 [00:58<02:37,  2.16s/it]Training Epochs:  28%|██▊       | 28/100 [01:00<02:35,  2.16s/it]Training Epochs:  29%|██▉       | 29/100 [01:02<02:33,  2.16s/it]Training Epochs:  30%|███       | 30/100 [01:04<02:31,  2.16s/it]Training Epochs:  31%|███       | 31/100 [01:06<02:29,  2.16s/it]Training Epochs:  32%|███▏      | 32/100 [01:09<02:27,  2.16s/it]Training Epochs:  33%|███▎      | 33/100 [01:11<02:24,  2.16s/it]Training Epochs:  34%|███▍      | 34/100 [01:13<02:22,  2.16s/it]Training Epochs:  35%|███▌      | 35/100 [01:15<02:20,  2.16s/it]Training Epochs:  36%|███▌      | 36/100 [01:17<02:18,  2.16s/it]Training Epochs:  37%|███▋      | 37/100 [01:19<02:16,  2.17s/it]Training Epochs:  38%|███▊      | 38/100 [01:22<02:14,  2.17s/it]Training Epochs:  39%|███▉      | 39/100 [01:24<02:12,  2.16s/it]Training Epochs:  40%|████      | 40/100 [01:26<02:09,  2.16s/it]Training Epochs:  41%|████      | 41/100 [01:28<02:07,  2.16s/it]Training Epochs:  42%|████▏     | 42/100 [01:30<02:05,  2.16s/it]Training Epochs:  43%|████▎     | 43/100 [01:32<02:03,  2.16s/it]Training Epochs:  44%|████▍     | 44/100 [01:35<02:01,  2.16s/it]Training Epochs:  45%|████▌     | 45/100 [01:37<01:59,  2.17s/it]Training Epochs:  46%|████▌     | 46/100 [01:39<01:56,  2.17s/it]Training Epochs:  47%|████▋     | 47/100 [01:41<01:54,  2.17s/it]Training Epochs:  48%|████▊     | 48/100 [01:43<01:52,  2.17s/it]Training Epochs:  49%|████▉     | 49/100 [01:45<01:50,  2.17s/it]Training Epochs:  50%|█████     | 50/100 [01:48<01:48,  2.17s/it]Training Epochs:  51%|█████     | 51/100 [01:50<01:46,  2.17s/it]Training Epochs:  52%|█████▏    | 52/100 [01:52<01:44,  2.17s/it]Training Epochs:  53%|█████▎    | 53/100 [01:54<01:41,  2.17s/it]Training Epochs:  54%|█████▍    | 54/100 [01:56<01:39,  2.17s/it]Training Epochs:  55%|█████▌    | 55/100 [01:58<01:37,  2.17s/it]Training Epochs:  56%|█████▌    | 56/100 [02:01<01:35,  2.17s/it]Training Epochs:  57%|█████▋    | 57/100 [02:03<01:33,  2.17s/it]Training Epochs:  58%|█████▊    | 58/100 [02:05<01:31,  2.17s/it]Training Epochs:  59%|█████▉    | 59/100 [02:07<01:28,  2.17s/it]Training Epochs:  60%|██████    | 60/100 [02:09<01:26,  2.17s/it]Training Epochs:  61%|██████    | 61/100 [02:11<01:24,  2.17s/it]Training Epochs:  62%|██████▏   | 62/100 [02:14<01:22,  2.17s/it]Training Epochs:  63%|██████▎   | 63/100 [02:16<01:20,  2.17s/it]Training Epochs:  64%|██████▍   | 64/100 [02:18<01:18,  2.17s/it]Training Epochs:  65%|██████▌   | 65/100 [02:20<01:15,  2.17s/it]Training Epochs:  66%|██████▌   | 66/100 [02:22<01:13,  2.17s/it]Training Epochs:  67%|██████▋   | 67/100 [02:24<01:11,  2.17s/it]Training Epochs:  68%|██████▊   | 68/100 [02:27<01:09,  2.17s/it]Training Epochs:  69%|██████▉   | 69/100 [02:29<01:07,  2.17s/it]Training Epochs:  70%|███████   | 70/100 [02:31<01:05,  2.17s/it]
+Training Epochs:   0%|          | 0/100 [00:00<?, ?it/s]Training Epochs:   1%|          | 1/100 [00:02<03:39,  2.22s/it]Training Epochs:   2%|▏         | 2/100 [00:04<03:34,  2.19s/it]Training Epochs:   3%|▎         | 3/100 [00:06<03:31,  2.18s/it]Training Epochs:   4%|▍         | 4/100 [00:08<03:28,  2.18s/it]Training Epochs:   5%|▌         | 5/100 [00:10<03:26,  2.18s/it]Training Epochs:   6%|▌         | 6/100 [00:13<03:24,  2.18s/it]Training Epochs:   7%|▋         | 7/100 [00:15<03:22,  2.18s/it]Training Epochs:   8%|▊         | 8/100 [00:17<03:20,  2.18s/it]Training Epochs:   9%|▉         | 9/100 [00:19<03:18,  2.18s/it]Training Epochs:  10%|█         | 10/100 [00:21<03:16,  2.18s/it]Training Epochs:  11%|█         | 11/100 [00:23<03:14,  2.18s/it]Training Epochs:  12%|█▏        | 12/100 [00:26<03:12,  2.18s/it]Training Epochs:  13%|█▎        | 13/100 [00:28<03:10,  2.18s/it]Training Epochs:  14%|█▍        | 14/100 [00:30<03:07,  2.18s/it]Training Epochs:  15%|█▌        | 15/100 [00:32<03:05,  2.18s/it]Training Epochs:  16%|█▌        | 16/100 [00:34<03:03,  2.18s/it]Training Epochs:  17%|█▋        | 17/100 [00:37<03:00,  2.18s/it]Training Epochs:  18%|█▊        | 18/100 [00:39<02:58,  2.18s/it]Training Epochs:  19%|█▉        | 19/100 [00:41<02:56,  2.18s/it]Training Epochs:  20%|██        | 20/100 [00:43<02:54,  2.18s/it]Training Epochs:  21%|██        | 21/100 [00:45<02:51,  2.18s/it]Training Epochs:  22%|██▏       | 22/100 [00:47<02:49,  2.18s/it]Training Epochs:  23%|██▎       | 23/100 [00:50<02:47,  2.18s/it]Training Epochs:  24%|██▍       | 24/100 [00:52<02:45,  2.18s/it]Training Epochs:  25%|██▌       | 25/100 [00:54<02:43,  2.18s/it]Training Epochs:  26%|██▌       | 26/100 [00:56<02:41,  2.18s/it]Training Epochs:  27%|██▋       | 27/100 [00:58<02:38,  2.18s/it]Training Epochs:  28%|██▊       | 28/100 [01:01<02:36,  2.18s/it]Training Epochs:  29%|██▉       | 29/100 [01:03<02:34,  2.18s/it]Training Epochs:  30%|███       | 30/100 [01:05<02:32,  2.18s/it]Training Epochs:  31%|███       | 31/100 [01:07<02:30,  2.19s/it]Training Epochs:  32%|███▏      | 32/100 [01:09<02:28,  2.19s/it]Training Epochs:  33%|███▎      | 33/100 [01:11<02:26,  2.19s/it]Training Epochs:  34%|███▍      | 34/100 [01:14<02:24,  2.19s/it]Training Epochs:  35%|███▌      | 35/100 [01:16<02:22,  2.19s/it]Training Epochs:  36%|███▌      | 36/100 [01:18<02:20,  2.19s/it]Training Epochs:  37%|███▋      | 37/100 [01:20<02:17,  2.19s/it]Training Epochs:  38%|███▊      | 38/100 [01:22<02:15,  2.19s/it]Training Epochs:  39%|███▉      | 39/100 [01:25<02:13,  2.19s/it]Training Epochs:  40%|████      | 40/100 [01:27<02:11,  2.19s/it]Training Epochs:  41%|████      | 41/100 [01:29<02:09,  2.19s/it]Training Epochs:  42%|████▏     | 42/100 [01:31<02:07,  2.19s/it]Training Epochs:  43%|████▎     | 43/100 [01:33<02:04,  2.19s/it]Training Epochs:  44%|████▍     | 44/100 [01:36<02:02,  2.19s/it]Training Epochs:  45%|████▌     | 45/100 [01:38<02:00,  2.19s/it]Training Epochs:  46%|████▌     | 46/100 [01:40<01:58,  2.19s/it]Training Epochs:  47%|████▋     | 47/100 [01:42<01:56,  2.19s/it]Training Epochs:  48%|████▊     | 48/100 [01:44<01:53,  2.19s/it]Training Epochs:  49%|████▉     | 49/100 [01:47<01:51,  2.19s/it]Training Epochs:  50%|█████     | 50/100 [01:49<01:49,  2.19s/it]Training Epochs:  51%|█████     | 51/100 [01:51<01:47,  2.19s/it]Training Epochs:  52%|█████▏    | 52/100 [01:53<01:45,  2.19s/it]Training Epochs:  53%|█████▎    | 53/100 [01:55<01:42,  2.19s/it]Training Epochs:  54%|█████▍    | 54/100 [01:57<01:40,  2.19s/it]Training Epochs:  55%|█████▌    | 55/100 [02:00<01:38,  2.19s/it]Training Epochs:  56%|█████▌    | 56/100 [02:02<01:36,  2.19s/it]Training Epochs:  57%|█████▋    | 57/100 [02:04<01:34,  2.19s/it]Training Epochs:  58%|█████▊    | 58/100 [02:06<01:31,  2.19s/it]Training Epochs:  59%|█████▉    | 59/100 [02:08<01:29,  2.19s/it]Training Epochs:  60%|██████    | 60/100 [02:11<01:27,  2.19s/it]Training Epochs:  61%|██████    | 61/100 [02:13<01:25,  2.19s/it]Training Epochs:  62%|██████▏   | 62/100 [02:15<01:23,  2.19s/it]Training Epochs:  63%|██████▎   | 63/100 [02:17<01:21,  2.19s/it]Training Epochs:  64%|██████▍   | 64/100 [02:19<01:18,  2.19s/it]Training Epochs:  65%|██████▌   | 65/100 [02:22<01:16,  2.19s/it]Training Epochs:  66%|██████▌   | 66/100 [02:24<01:14,  2.19s/it]Training Epochs:  67%|██████▋   | 67/100 [02:26<01:12,  2.19s/it]Training Epochs:  68%|██████▊   | 68/100 [02:28<01:10,  2.19s/it]Training Epochs:  69%|██████▉   | 69/100 [02:30<01:07,  2.19s/it]Training Epochs:  70%|███████   | 70/100 [02:33<01:05,  2.19s/it]Training Epochs:  71%|███████   | 71/100 [02:35<01:03,  2.19s/it]Training Epochs:  72%|███████▏  | 72/100 [02:37<01:01,  2.19s/it]Training Epochs:  73%|███████▎  | 73/100 [02:39<00:59,  2.19s/it]Training Epochs:  74%|███████▍  | 74/100 [02:41<00:56,  2.19s/it]Training Epochs:  75%|███████▌  | 75/100 [02:43<00:54,  2.19s/it]Training Epochs:  76%|███████▌  | 76/100 [02:46<00:52,  2.19s/it]Training Epochs:  77%|███████▋  | 77/100 [02:48<00:50,  2.19s/it]Training Epochs:  78%|███████▊  | 78/100 [02:50<00:48,  2.19s/it]Training Epochs:  79%|███████▉  | 79/100 [02:52<00:46,  2.19s/it]Training Epochs:  80%|████████  | 80/100 [02:54<00:43,  2.19s/it]Training Epochs:  81%|████████  | 81/100 [02:57<00:41,  2.19s/it]Training Epochs:  82%|████████▏ | 82/100 [02:59<00:39,  2.19s/it]Training Epochs:  83%|████████▎ | 83/100 [03:01<00:37,  2.19s/it]Training Epochs:  84%|████████▍ | 84/100 [03:03<00:35,  2.19s/it]Training Epochs:  85%|████████▌ | 85/100 [03:05<00:32,  2.19s/it]Training Epochs:  86%|████████▌ | 86/100 [03:08<00:30,  2.19s/it]Training Epochs:  87%|████████▋ | 87/100 [03:10<00:28,  2.19s/it]Training Epochs:  88%|████████▊ | 88/100 [03:12<00:26,  2.19s/it]Training Epochs:  89%|████████▉ | 89/100 [03:14<00:24,  2.19s/it]Training Epochs:  90%|█████████ | 90/100 [03:16<00:21,  2.19s/it]Training Epochs:  91%|█████████ | 91/100 [03:19<00:19,  2.19s/it]Training Epochs:  92%|█████████▏| 92/100 [03:21<00:17,  2.19s/it]Training Epochs:  93%|█████████▎| 93/100 [03:23<00:15,  2.19s/it]Training Epochs:  94%|█████████▍| 94/100 [03:25<00:13,  2.19s/it]Training Epochs:  95%|█████████▌| 95/100 [03:27<00:10,  2.19s/it]Training Epochs:  96%|█████████▌| 96/100 [03:30<00:08,  2.19s/it]Training Epochs:  97%|█████████▋| 97/100 [03:32<00:06,  2.19s/it]Training Epochs:  98%|█████████▊| 98/100 [03:34<00:04,  2.19s/it]Training Epochs:  99%|█████████▉| 99/100 [03:36<00:02,  2.19s/it]Training Epochs: 100%|██████████| 100/100 [03:38<00:00,  2.19s/it]Training Epochs: 100%|██████████| 100/100 [03:38<00:00,  2.19s/it]
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Running validation function
+Loading: /users/gmurtaza/GrapHiC/weights/graphic(embd-64)_l1loss+tvloss(e-04)_dhash:e8f75f9da30d9a21c85a42ec568fc73073e0313c/99-epoch_0.000890004332177341-loss_model
+Predicting:   0%|          | 0/1 [00:00<?, ?it/s]Predicting: 100%|██████████| 1/1 [00:12<00:00, 12.98s/it]Predicting: 100%|██████████| 1/1 [00:12<00:00, 12.98s/it]
