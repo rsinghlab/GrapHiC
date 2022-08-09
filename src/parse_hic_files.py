@@ -137,13 +137,13 @@ def parse_hic_file(path_to_hic_file, output, resolution=10000):
 
 
 
-def download_hic_file(file_paths):
-    print('Downloading HiC file from {}'.format(file_paths['remote_path']))
+def download_file(file_paths):
+    print('Downloading file from {}'.format(file_paths['remote_path']))
     
     create_entire_path_directory('/'.join(file_paths['local_path'].split('/')[:-1]))
     wget.download(file_paths['remote_path'], file_paths['local_path'])   
 
-    print('HiC file downloaded at {}'.format(file_paths['local_path']))
+    print('File downloaded at {}'.format(file_paths['local_path']))
     
 
 

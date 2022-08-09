@@ -3,8 +3,10 @@ import numpy as np
 
 
 BASE_DIRECTORY = '/users/gmurtaza/GrapHiC/'
-HIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/hic_datasets' # Recommended that this path is on some larger storage device
-PARSED_HIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets'
+HIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/hic_datasets/' # Recommended that this path is on some larger storage device
+PARSED_HIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/parsed_hic_datasets/'
+EPIGENETIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/epigenetic_datasets/' # Recommended that this path is on some larger storage device
+PARSED_EPIGENETIC_FILES_DIRECTORY = '/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/' # Recommended that this path is on some larger storage device
 DATASET_DIRECTORY = '/users/gmurtaza/data/gmurtaza/generated_datasets'
 
 WEIGHTS_DIRECTORY = os.path.join(BASE_DIRECTORY, 'weights') # Recommended to keep weights on the same directory

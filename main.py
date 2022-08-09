@@ -7,9 +7,10 @@ from src.run import run
 
 from src.models.GrapHiC import GrapHiC
 from src.models.HiCPlus import HiCPlus
-from src.parse_hic_files import parse_hic_file, download_hic_file
+from src.parse_hic_files import parse_hic_file, download_file
+from src.epigentic_encodings import parse_node_encoding_file
 from src.dataset_creator import create_dataset_from_hic_files
-from src.utils import HIC_FILES_DIRECTORY, PARSED_HIC_FILES_DIRECTORY, DATASET_DIRECTORY
+from src.utils import EPIGENETIC_FILES_DIRECTORY, HIC_FILES_DIRECTORY, PARSED_EPIGENETIC_FILES_DIRECTORY, PARSED_HIC_FILES_DIRECTORY, DATASET_DIRECTORY
 
 
 ### These are default parameters, to run interesting experiments change these parameters ###
@@ -17,8 +18,8 @@ hic_data_resolution = 10000
 
 # These hyperparameters go to GrapHiC model controlling the training batch size, optimizer parameters 
 HYPERPARAMETERS = {
-    'epochs'            : 100, 
-    'batch_size'        : 128, # Change to control per batch GPU memory requirement
+    'epochs'            : 10, 
+    'batch_size'        : 32, # Change to control per batch GPU memory requirement
     'optimizer_type'    : 'ADAM',
     'learning_rate'     : 0.001,
     'momentum'          : 0.9,
@@ -28,7 +29,7 @@ HYPERPARAMETERS = {
 # These parameters are used by the dataset creator function to describe how to divide the chromosome matrices
 cropping_params = {
     'sub_mat'   :400,
-    'stride'    :50,
+    'stride'    :100,
     'bounds'    :190,
     'padding'   :True
 }
@@ -57,34 +58,103 @@ base_files = ['hic026', 'encode0', 'hic033']
 # These files should exist, (currently not using all of them but would at some point)
 hic_file_paths = {
     'GM12878-geo-raoetal': {
-            'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-raoetal.hic'),
+            'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-raoetal.hic'),
             'remote_path': 'https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE63525&format=file&file=GSE63525%5FGM12878%5Finsitu%5Fprimary%2Breplicate%5Fcombined%5F30%2Ehic'
     },
     'GM12878-encode-0': {
-            'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'encode-0.hic'),
+            'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'encode-0.hic'),
             'remote_path': 'https://www.encodeproject.org/files/ENCFF799QGA/@@download/ENCFF799QGA.hic'
     },
     'GM12878-encode-1': {
-            'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'encode-1.hic'),
+            'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'encode-1.hic'),
             'remote_path': 'https://www.encodeproject.org/files/ENCFF473CAA/@@download/ENCFF473CAA.hic'
     },
     'GM12878-geo-026': {
-            'local_path': os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-026.hic'),
+            'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'GM12878', 'geo-026.hic'),
             'remote_path': 'https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSM1551575&format=file&file=GSM1551575%5FHIC026%5F30%2Ehic'
     },
 }
 
 
+epigenetic_factor_paths = {
+    'GM12878': {
+        'H3K27AC': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k27acStdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k27ac.bigwig'),
+        },
+        'H3K27ME3': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k27me3StdSigV2.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k27me3.bigwig'),
+        },
+        'H3K36ME3': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k36me3StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k36me3.bigwig'),
+        },
+        'H3K4ME1': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k4me1StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k4me1.bigwig'),
+        },
+        'H3K4ME2': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k4me2StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k4me2.bigwig'),
+        },
+        'H3K4ME3': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k4me3StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k4me3.bigwig'),
+        },
+        'H3K79ME2': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k79me2StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k79me2.bigwig'),
+        },
+        'H3K9AC': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k9acStdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k9ac.bigwig'),
+        },
+        'H4K20ME1': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H4k20me1StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h4k20me1.bigwig'),
+        },
+        'H3K9ME3': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878H3k9me3StdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'h3k9me3.bigwig'),
+        },
+        'DNASE-Seq':{
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeOpenChromDnase/wgEncodeOpenChromDnaseGm12878Sig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'dnase.bigwig'),
+        },
+        'ATAC-Seq': {
+            'remote_path': 'https://drive.google.com/file/d/1dfvGmomovO6TLJRPhG13OXL6fdRk5GTQ/view?usp=sharing',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'atacseq.bigwig')
+        }
+    }
+}
+
+
+
+
 # Step 1: Download and parse the HiC files
 for hic_file_key in hic_file_paths.keys():
     if not os.path.exists(hic_file_paths[hic_file_key]['local_path']):
-        download_hic_file(hic_file_paths[hic_file_key])
+        download_file(hic_file_paths[hic_file_key])
     
     parse_hic_file(
         hic_file_paths[hic_file_key]['local_path'], 
         os.path.join(PARSED_HIC_FILES_DIRECTORY, hic_file_key),
         hic_data_resolution
     )
+
+# Download and parse the Epigenetic files
+for cell_line in epigenetic_factor_paths.keys():
+    for histone_mark in epigenetic_factor_paths[cell_line].keys():
+        if not os.path.exists(epigenetic_factor_paths[cell_line][histone_mark]['local_path']):
+            download_file(epigenetic_factor_paths[cell_line][histone_mark])
+        parse_node_encoding_file(
+            epigenetic_factor_paths[cell_line][histone_mark]['local_path'],
+            os.path.join(PARSED_EPIGENETIC_FILES_DIRECTORY, cell_line, histone_mark),
+            hic_data_resolution
+        )
+
+
 
 
 # Step 2: Create Dataset (Currently I am only creating dataset with base:encode-0 and target:rao-et-al)

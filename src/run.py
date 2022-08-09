@@ -57,8 +57,6 @@ def train(model, train_loader, optimizer):
 
 def validate(model, valid_loader):
     model.training = False
-    print('Running validation function')
-
     validation_loss = 0.0
     mse = 0.0
     ssim = 0.0 
@@ -241,6 +239,8 @@ def run(
 
     # Step 3: Enter the main training loop
     for epoch in tqdm(range(model.hyperparameters['epochs']), 'Training Epochs'):
+        print('Running epoch {}'.format(epoch))
+
         training_loss = train(model, train_loader, optimizer)
         validation_loss, mse, ssim, pcc = validate(model, validation_loader)
 
@@ -249,7 +249,7 @@ def run(
         writer.add_scalar("MSE/Validation",     mse,                epoch)
         writer.add_scalar("SSIM/Validation",    ssim,               epoch)
         writer.add_scalar("PCC/Validation",     pcc,                epoch)
-    #     torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, validation_loss)))
+        torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, validation_loss)))
 
     # Step 4: Test the model on testing set
     # Load the best weight
@@ -257,7 +257,7 @@ def run(
     test(model, test_loader, output_path)
 
     # Step 5: Generate chromosome files
-    generate_chromosomes(model, file_test, output_path)
+    # generate_chromosomes(model, file_test, output_path)
 
     
 
