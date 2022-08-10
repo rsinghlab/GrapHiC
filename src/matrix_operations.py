@@ -119,7 +119,7 @@ def divide(mat, chr_num, cropping_params, verbose=False):
     
     for i in range(0, height, stride):
         for j in range(0, width, stride):
-            if abs(i-j)<=bound and i+chunk_size<height and j+chunk_size<width:
+            if abs(i-j)<=bound and (i+chunk_size<height and j+chunk_size<width):
                 subImage = mat[i:i+chunk_size, j:j+chunk_size]
                 result.append([subImage])
                 index.append((int(chr_num), int(size), int(i), int(j)))

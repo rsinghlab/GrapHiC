@@ -55,14 +55,14 @@ class GrapHiC(torch.nn.Module):
             os.mkdir(self.weights_dir)
         
         self.loss_function = GrapHiCLoss(self.variational)
+        
+        self.conv0 = GCNConv(input_embedding_size, 32, 1, normalize=True)
+        self.conv1 = GCNConv(32, 32, 1, normalize=True)
+        self.mu = GCNConv(32, 32, 1, normalize=True)
+        self.logvar = GCNConv(32, 32, 1, normalize=True)
 
-        self.conv0 = GCNConv(input_embedding_size, 64, 1, normalize=True)
-        self.conv1 = GCNConv(64, 64, 1, normalize=True)
-        self.mu = GCNConv(64, 64, 1, normalize=True)
-        self.logvar = GCNConv(64, 64, 1, normalize=True)
 
-
-        self.contact_cnn = ContactCNN(64, 64)
+        self.contact_cnn = ContactCNN(32, 32)
         self.mu_keeper = None
         self.logvar_keeper = None
         self.training = True
@@ -107,6 +107,8 @@ class GrapHiC(torch.nn.Module):
         data = np.load(file_path, allow_pickle=True)
         bases = torch.tensor(data['data'], dtype=torch.float32)
         targets = torch.tensor(data['target'], dtype=torch.float32)
+        print(data['encodings'].shape)
+
         encodings = torch.tensor(data['encodings'], dtype=torch.float32)
         indxs = torch.tensor(data['inds'], dtype=torch.long)
         batch_size = self.hyperparameters['batch_size'] if batch_size == -1 else batch_size

@@ -1,3 +1,4 @@
+from operator import pos
 import os
 import numpy as np
 import time
@@ -55,10 +56,21 @@ def process_compact_idxs(base_compact_idx, target_compact_idx, compact_method='i
 
     return compact_indexes
 
-def merge_encodings(node_features, pos_encoding):
+def merge_encodings(node_features, pos_encoding, merging_type):
     # Currently just returns the positional encodings
-    return pos_encoding
-
+    if merging_type == 'sum':
+        return node_features + pos_encoding
+    elif merging_type == 'mean':
+        return (node_features + pos_encoding)/2
+    elif merging_type == 'concat':
+        return np.concatenate((node_features, pos_encoding), axis=2)
+    elif merging_type == 'positional':
+        return pos_encoding
+    elif merging_type == 'epigenetic':
+        return node_features     
+    else:
+        print('Invalid merging operator defined, Aborting')
+        exit(1)
 
 def process_chromosome_files(args):
     return _process_chromosome_files(*args)
@@ -68,6 +80,7 @@ def _process_chromosome_files(
         path_to_target_chrom,
         positional_encoding_method,
         node_encoding_files,
+        node_embedding_concat_method,
         normalization_params,
         cropping_params,
         compact,
@@ -108,8 +121,8 @@ def _process_chromosome_files(
                  
     if verbose: print('Processing Node Features')
     # Read Node feature files and compile them in a single array
-    node_features = read_node_encoding_files(node_encoding_files, compact_indexes)
-
+    node_features, _ = read_node_encoding_files(node_encoding_files, chromosome, cropping_params, compact_indexes)
+    
     # Normalize the HiC Matrices
     if normalization_params['chrom_wide']:
         if verbose: print('Performing Chromosome wide normalization...')
@@ -120,23 +133,23 @@ def _process_chromosome_files(
         if verbose: print('Adding {} noise to the data'.format(noise))
         base_chrom = noise_types[noise](base_chrom)
         
-
-
     # Divide the HiC Matrices
     if verbose: print('Dividing the Chromosomes...')
     bases, _ = divide(base_chrom, chromosome, cropping_params)        
     targets, inds = divide(target_chrom, chromosome, cropping_params)
-    
+
     if verbose: print('Generating Positional Encodings')
     # 3 out of 4 positional encodings are independent of the graph except the 'graph' encodings
     pos_encodings = []
     for base in bases:
-        pos_encoding = encoding_methods[positional_encoding_method](base)
+        pos_encoding = encoding_methods[positional_encoding_method](base, encoding_dim=node_features.shape[2])
         pos_encodings.append(pos_encoding)
 
     pos_encodings = np.array(pos_encodings)
-    encodings = merge_encodings(node_features, pos_encodings)
     
+
+    encodings = merge_encodings(node_features, pos_encodings, merging_type=node_embedding_concat_method)
+
     return (
             chromosome, 
             bases, 
@@ -154,6 +167,7 @@ def create_dataset_from_hic_files(
                                 path_to_output_folder,
                                 positional_encoding_method, 
                                 node_encoding_files,
+                                node_embedding_concat_method,
                                 cropping_params={
                                 'chunk_size':200,
                                 'stride'    :200,
@@ -213,6 +227,7 @@ def create_dataset_from_hic_files(
             target_chrom_paths,
             repeat(positional_encoding_method),
             repeat(node_encoding_files),
+            repeat(node_embedding_concat_method),
             repeat(normalization_params),
             repeat(cropping_params),
             repeat(compact),

@@ -23,7 +23,7 @@ import wget
 # Main Multiprocessing switch for the HiC parser
 MULTIPROCESSING=True
 
-def process_chromosome(hic, output, resolution, chromosome):
+def process_chromosome(hic, output, resolution, chromosome, debug):
     '''
         This function handles the bulk of the work of extraction of Chromosome from
         the HiC file and storing it in its dense 2D contact map form
@@ -51,10 +51,10 @@ def process_chromosome(hic, output, resolution, chromosome):
         return 
 
     if os.path.exists(output_path):
-        print('Already parsed!')
+        if debug: print('Already parsed!')
         return
 
-    print('Starting parsing Chromosome {}'.format(name))
+    if debug: print('Starting parsing Chromosome {}'.format(name))
 
     
     chromosome_matrix = hic.getMatrixZoomData(
@@ -83,12 +83,12 @@ def process_chromosome(hic, output, resolution, chromosome):
     mat = mat + np.tril(mat, -1).T
 
     np.savez_compressed(output_path, hic=mat, compact=informative_indexes, size=length)
-    print('Saving Chromosome at path {}'.format(output_path))
+    if debug: print('Saving Chromosome at path {}'.format(output_path))
     return True
 
     
     
-def parse_hic_file(path_to_hic_file, output, resolution=10000):
+def parse_hic_file(path_to_hic_file, output, resolution=10000, debug=False):
     '''
         This function provides a wrapper on all the methods that 
         reads the .hic file and stores individual chromosomes in a 
@@ -116,7 +116,7 @@ def parse_hic_file(path_to_hic_file, output, resolution=10000):
         process_pool = []
 
         for idx in range(len(chromosomes)):
-            p = Process(target=process_chromosome, args=(hic, output, resolution, chromosomes[idx], ))
+            p = Process(target=process_chromosome, args=(hic, output, resolution, chromosomes[idx], debug ))
             process_pool.append(p)
             p.start()
         

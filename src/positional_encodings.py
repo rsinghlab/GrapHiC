@@ -8,7 +8,7 @@ from numpy.linalg import eig
 
 
 
-def constant_positional_encoding(matrix):
+def constant_positional_encoding(matrix, encoding_dim=4):
     '''
         The most basic positional encoding method, we assign each node the same position of 1
         @params: matrix <np.array>, 2D Hi-C matrix array
@@ -18,10 +18,10 @@ def constant_positional_encoding(matrix):
     if len(matrix.shape) == 3:
         matrix = matrix[0]
     
-    return np.ones((matrix.shape[0], 1))
+    return np.ones((matrix.shape[0], encoding_dim))
 
 
-def monotonic_positional_encoding(matrix, type='fractional'):
+def monotonic_positional_encoding(matrix, encoding_dim=4, type='fractional'):
     '''
         A positional encoding method that assigns monotonically increasing node position
         @params: matrix <np.array> 2D Hi-C matrix array
@@ -35,9 +35,28 @@ def monotonic_positional_encoding(matrix, type='fractional'):
     
     # Adding a small value so the starting value is not zero
     if type == 'fractional':
-        return np.reshape(np.linspace(0.0, 1.0, num=matrix.shape[0]), (matrix.shape[0], 1))
+        monotonic_encoding = []
+        for i in range(encoding_dim):
+            monotonic_encoding.append([i for i in range(0, matrix.shape[0])])
+
+
+        monotonic_encoding = np.array(monotonic_encoding)
+        monotonic_encoding.astype(float)
+
+        monotonic_encoding = monotonic_encoding/float(matrix.shape[0])
+
+        return monotonic_encoding.T
+
     elif type == 'integer':
-        return np.reshape(np.linspace(0.0, matrix.shape[0], num=matrix.shape[0]), (matrix.shape[0], 1))
+        monotonic_encoding = []
+        for i in range(encoding_dim):
+            monotonic_encoding.append([i for i in range(0, matrix.shape[0])])
+
+
+        monotonic_encoding = np.array(monotonic_encoding)
+        monotonic_encoding.astype(float)
+
+        return monotonic_encoding.T
     else:
         print('Invalid type provided to monotonic positional encoding function')
         exit(1)
@@ -73,7 +92,7 @@ def transformer_positional_encoding(matrix, encoding_dim=4, padding_idx=None):
     if padding_idx is not None:
         # zero vector for padding dimension
         sinusoid_table[padding_idx] = 0.
-
+    sinusoid_table = np.array(sinusoid_table, dtype=float)
     return sinusoid_table
 
 
@@ -98,8 +117,9 @@ def graph_positional_encoding(matrix, encoding_dim=4, upscale=255):
     idx = eigen_vals.argsort()
 
     eigen_vals, eigen_vecs = eigen_vals[idx], np.real(eigen_vecs[:,idx])
-
-    return eigen_vecs[:,1:encoding_dim+1]
+    eigen_vecs = np.array(eigen_vecs[:,1:encoding_dim+1], dtype=float)
+    
+    return eigen_vecs
 
 
 
