@@ -1,0 +1,600 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 5972697
+##  Job Name : oscar_script
+##  Nodelist : gpu2102
+##      CPUs : 32
+##  Mem/Node : 524288 MB
+## Directory : /gpfs/home/gmurtaza/GrapHiC
+##   Job Started : Wed Aug 17 11:17:05 EDT 2022
+###############################################################################
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: loading 'cuda/11.3.1'
+module: cuda: To use: module load gcc/10.2
+module: unloading 'python/2.7.12'
+module: loading 'python/3.7.4'
+Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/geo-raoetal.hic file.
+Parsing took 0.2229764461517334 seconds!
+Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/encode-0.hic file.
+Parsing took 0.19591879844665527 seconds!
+Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/encode-1.hic file.
+Parsing took 0.2024834156036377 seconds!
+Parsing out intra-chromosomal contact matrices from /users/gmurtaza/data/gmurtaza/hic_datasets/GM12878/geo-026.hic file.
+Parsing took 0.1978147029876709 seconds!
+Parsing all files took 0.00031256675720214844 seconds!
+Parsing all files took 0.0002868175506591797 seconds!
+Parsing all files took 0.00026726722717285156 seconds!
+Parsing all files took 0.00027632713317871094 seconds!
+Parsing all files took 0.0002608299255371094 seconds!
+Parsing all files took 0.0002593994140625 seconds!
+Parsing all files took 0.00026226043701171875 seconds!
+Parsing all files took 0.0002675056457519531 seconds!
+Parsing all files took 0.0002713203430175781 seconds!
+Parsing all files took 0.0002574920654296875 seconds!
+Parsing all files took 0.00026035308837890625 seconds!
+Parsing all files took 0.0002772808074951172 seconds!
+Parsing all files took 0.0002639293670654297 seconds!
+Parsing all files took 0.0002655982971191406 seconds!
+Parsing all files took 0.00027561187744140625 seconds!
+base:GM12878-encode-0_target:GM12878-geo-raoetal_c:400_s:50_b:40_n:True_rz:True_sdz:False_p:99.0_r:True_enc:graph_noi:none_nirrm:intersection_epi:H3K27AC+H3K27ME3+H3K36ME3+H3K4ME1+H3K4ME2+H3K4ME3+H3K79ME2+H3K9AC+H4K20ME1+H3K9ME3+DNASE-Seq+ATAC-Seq+CTCF+RNA-Pol2+RAD-21_nconcat:concat/
+Creating test dataset
+Processing chromosome 21
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 22
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 20
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 19
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Saving file: /users/gmurtaza/data/gmurtaza/generated_datasets/7ce606fed2f64d44737b89fdf7cef483009edf74/test.npz
+Creating test dataset took 67.83411717414856 seconds!
+Creating valid dataset
+Processing chromosome 9
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 10
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 11
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Saving file: /users/gmurtaza/data/gmurtaza/generated_datasets/7ce606fed2f64d44737b89fdf7cef483009edf74/valid.npz
+Creating valid dataset took 206.10461854934692 seconds!
+Creating train dataset
+Processing chromosome 15
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 16
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 14
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 13
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 12
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 7
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 6
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 5
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 4
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 3
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 1
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 17
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Processing chromosome 18
+Removing non-infomative rows and columns
+Processing Node Features
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K27ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K36ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K4ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K79ME2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9AC
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H4K20ME1
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/H3K9ME3
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/DNASE-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/ATAC-Seq
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/CTCF
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RNA-Pol2
+/users/gmurtaza/data/gmurtaza/parsed_epigenetic_datasets/GM12878/RAD-21
+Performing Chromosome wide normalization...
+Adding none noise to the data
+Dividing the Chromosomes...
+Generating Positional Encodings
+Saving file: /users/gmurtaza/data/gmurtaza/generated_datasets/7ce606fed2f64d44737b89fdf7cef483009edf74/train.npz
+Creating train dataset took 783.068231344223 seconds!
+/users/gmurtaza/GrapHiC/logdir/graphic(embd-64)_l1loss+tvloss(e-04)_dhash:7ce606fed2f64d44737b89fdf7cef483009edf74/
+Initializing the model parameters
+Initializing the Optimizer
+Loading Training Dataset
+(3881, 400, 30)
+Loading Validation Dataset
+(1017, 400, 30)
+Loading Testing Dataset
+(362, 400, 30)
+Training Epochs:   0%|          | 0/100 [00:00<?, ?it/s]Training Epochs:   1%|          | 1/100 [00:24<40:40, 24.65s/it]Training Epochs:   2%|▏         | 2/100 [00:49<40:09, 24.58s/it]Training Epochs:   3%|▎         | 3/100 [01:13<39:45, 24.60s/it]Training Epochs:   4%|▍         | 4/100 [01:38<39:20, 24.59s/it]Training Epochs:   5%|▌         | 5/100 [02:03<39:01, 24.65s/it]Training Epochs:   6%|▌         | 6/100 [02:27<38:36, 24.64s/it]Training Epochs:   7%|▋         | 7/100 [02:52<38:14, 24.67s/it]Training Epochs:   8%|▊         | 8/100 [03:17<37:53, 24.71s/it]Training Epochs:   9%|▉         | 9/100 [03:42<37:29, 24.71s/it]Training Epochs:  10%|█         | 10/100 [04:06<37:04, 24.72s/it]Training Epochs:  11%|█         | 11/100 [04:31<36:38, 24.70s/it]Training Epochs:  12%|█▏        | 12/100 [04:56<36:15, 24.73s/it]Training Epochs:  13%|█▎        | 13/100 [05:20<35:52, 24.74s/it]Training Epochs:  14%|█▍        | 14/100 [05:45<35:28, 24.75s/it]Training Epochs:  15%|█▌        | 15/100 [06:10<35:05, 24.77s/it]Training Epochs:  16%|█▌        | 16/100 [06:35<34:39, 24.76s/it]Training Epochs:  17%|█▋        | 17/100 [06:59<34:12, 24.73s/it]Training Epochs:  18%|█▊        | 18/100 [07:24<33:47, 24.73s/it]Training Epochs:  19%|█▉        | 19/100 [07:49<33:23, 24.73s/it]Training Epochs:  20%|██        | 20/100 [08:14<32:57, 24.72s/it]Training Epochs:  21%|██        | 21/100 [08:38<32:32, 24.71s/it]Training Epochs:  22%|██▏       | 22/100 [09:03<32:09, 24.73s/it]Training Epochs:  23%|██▎       | 23/100 [09:28<31:45, 24.75s/it]Training Epochs:  24%|██▍       | 24/100 [09:53<31:20, 24.74s/it]Training Epochs:  25%|██▌       | 25/100 [10:17<30:53, 24.72s/it]Training Epochs:  26%|██▌       | 26/100 [10:42<30:29, 24.72s/it]Training Epochs:  27%|██▋       | 27/100 [11:07<30:03, 24.70s/it]Training Epochs:  28%|██▊       | 28/100 [11:31<29:38, 24.70s/it]Training Epochs:  29%|██▉       | 29/100 [11:56<29:12, 24.68s/it]Training Epochs:  30%|███       | 30/100 [12:21<28:48, 24.69s/it]Training Epochs:  31%|███       | 31/100 [12:45<28:25, 24.72s/it]Training Epochs:  32%|███▏      | 32/100 [13:10<28:01, 24.72s/it]Training Epochs:  33%|███▎      | 33/100 [13:35<27:35, 24.71s/it]Training Epochs:  34%|███▍      | 34/100 [14:00<27:10, 24.71s/it]Training Epochs:  35%|███▌      | 35/100 [14:24<26:45, 24.70s/it]Training Epochs:  36%|███▌      | 36/100 [14:49<26:21, 24.71s/it]Training Epochs:  37%|███▋      | 37/100 [15:14<25:57, 24.71s/it]Training Epochs:  38%|███▊      | 38/100 [15:38<25:33, 24.73s/it]Training Epochs:  39%|███▉      | 39/100 [16:03<25:09, 24.75s/it]Training Epochs:  40%|████      | 40/100 [16:28<24:43, 24.72s/it]Training Epochs:  41%|████      | 41/100 [16:53<24:18, 24.72s/it]Training Epochs:  42%|████▏     | 42/100 [17:17<23:54, 24.74s/it]Training Epochs:  43%|████▎     | 43/100 [17:42<23:30, 24.75s/it]Training Epochs:  44%|████▍     | 44/100 [18:07<23:06, 24.76s/it]Training Epochs:  45%|████▌     | 45/100 [18:32<22:41, 24.75s/it]Training Epochs:  46%|████▌     | 46/100 [18:56<22:15, 24.72s/it]Training Epochs:  47%|████▋     | 47/100 [19:21<21:50, 24.73s/it]Training Epochs:  48%|████▊     | 48/100 [19:46<21:26, 24.74s/it]Training Epochs:  49%|████▉     | 49/100 [20:11<21:02, 24.75s/it]Training Epochs:  50%|█████     | 50/100 [20:35<20:35, 24.72s/it]Training Epochs:  51%|█████     | 51/100 [21:00<20:11, 24.72s/it]Training Epochs:  52%|█████▏    | 52/100 [21:25<19:47, 24.74s/it]Training Epochs:  53%|█████▎    | 53/100 [21:50<19:22, 24.74s/it]Training Epochs:  54%|█████▍    | 54/100 [22:14<18:57, 24.73s/it]Training Epochs:  55%|█████▌    | 55/100 [22:39<18:32, 24.71s/it]Training Epochs:  56%|█████▌    | 56/100 [23:04<18:07, 24.72s/it]Training Epochs:  57%|█████▋    | 57/100 [23:28<17:43, 24.72s/it]Training Epochs:  58%|█████▊    | 58/100 [23:53<17:17, 24.71s/it]Training Epochs:  59%|█████▉    | 59/100 [24:18<16:53, 24.72s/it]Training Epochs:  60%|██████    | 60/100 [24:43<16:29, 24.75s/it]Training Epochs:  61%|██████    | 61/100 [25:07<16:05, 24.74s/it]Training Epochs:  62%|██████▏   | 62/100 [25:32<15:40, 24.74s/it]Training Epochs:  63%|██████▎   | 63/100 [25:57<15:14, 24.72s/it]Training Epochs:  64%|██████▍   | 64/100 [26:22<14:50, 24.73s/it]Training Epochs:  65%|██████▌   | 65/100 [26:46<14:26, 24.75s/it]Training Epochs:  66%|██████▌   | 66/100 [27:11<14:00, 24.73s/it]Training Epochs:  67%|██████▋   | 67/100 [27:36<13:35, 24.72s/it]Training Epochs:  68%|██████▊   | 68/100 [28:00<13:11, 24.73s/it]Training Epochs:  69%|██████▉   | 69/100 [28:25<12:46, 24.74s/it]Training Epochs:  70%|███████   | 70/100 [28:50<12:21, 24.73s/it]Training Epochs:  71%|███████   | 71/100 [29:15<11:56, 24.72s/it]Training Epochs:  72%|███████▏  | 72/100 [29:39<11:32, 24.73s/it]Training Epochs:  73%|███████▎  | 73/100 [30:04<11:07, 24.73s/it]Training Epochs:  74%|███████▍  | 74/100 [30:29<10:42, 24.71s/it]Training Epochs:  75%|███████▌  | 75/100 [30:54<10:18, 24.73s/it]Training Epochs:  76%|███████▌  | 76/100 [31:18<09:53, 24.74s/it]Training Epochs:  77%|███████▋  | 77/100 [31:43<09:28, 24.72s/it]Training Epochs:  78%|███████▊  | 78/100 [32:08<09:03, 24.72s/it]Training Epochs:  79%|███████▉  | 79/100 [32:32<08:38, 24.70s/it]Training Epochs:  80%|████████  | 80/100 [32:57<08:14, 24.70s/it]Training Epochs:  81%|████████  | 81/100 [33:22<07:49, 24.72s/it]Training Epochs:  82%|████████▏ | 82/100 [33:46<07:24, 24.70s/it]Training Epochs:  83%|████████▎ | 83/100 [34:11<07:00, 24.71s/it]Training Epochs:  84%|████████▍ | 84/100 [34:36<06:35, 24.71s/it]Training Epochs:  85%|████████▌ | 85/100 [35:01<06:10, 24.70s/it]Training Epochs:  86%|████████▌ | 86/100 [35:25<05:46, 24.72s/it]Training Epochs:  87%|████████▋ | 87/100 [35:50<05:20, 24.69s/it]Training Epochs:  88%|████████▊ | 88/100 [36:15<04:56, 24.70s/it]Training Epochs:  89%|████████▉ | 89/100 [36:39<04:31, 24.71s/it]Training Epochs:  90%|█████████ | 90/100 [37:04<04:06, 24.70s/it]Training Epochs:  91%|█████████ | 91/100 [37:29<03:42, 24.71s/it]Training Epochs:  92%|█████████▏| 92/100 [37:54<03:17, 24.72s/it]Training Epochs:  93%|█████████▎| 93/100 [38:18<02:52, 24.70s/it]Training Epochs:  94%|█████████▍| 94/100 [38:43<02:28, 24.72s/it]Training Epochs:  95%|█████████▌| 95/100 [39:08<02:03, 24.72s/it]Training Epochs:  96%|█████████▌| 96/100 [39:33<01:39, 24.75s/it]Training Epochs:  97%|█████████▋| 97/100 [39:57<01:14, 24.74s/it]Training Epochs:  98%|█████████▊| 98/100 [40:22<00:49, 24.72s/it]Training Epochs:  99%|█████████▉| 99/100 [40:47<00:24, 24.72s/it]Training Epochs: 100%|██████████| 100/100 [41:11<00:00, 24.73s/it]Training Epochs: 100%|██████████| 100/100 [41:11<00:00, 24.72s/it]
+Running epoch 0
+Running epoch 1
+Running epoch 2
+Running epoch 3
+Running epoch 4
+Running epoch 5
+Running epoch 6
+Running epoch 7
+Running epoch 8
+Running epoch 9
+Running epoch 10
+Running epoch 11
+Running epoch 12
+Running epoch 13
+Running epoch 14
+Running epoch 15
+Running epoch 16
+Running epoch 17
+Running epoch 18
+Running epoch 19
+Running epoch 20
+Running epoch 21
+Running epoch 22
+Running epoch 23
+Running epoch 24
+Running epoch 25
+Running epoch 26
+Running epoch 27
+Running epoch 28
+Running epoch 29
+Running epoch 30
+Running epoch 31
+Running epoch 32
+Running epoch 33
+Running epoch 34
+Running epoch 35
+Running epoch 36
+Running epoch 37
+Running epoch 38
+Running epoch 39
+Running epoch 40
+Running epoch 41
+Running epoch 42
+Running epoch 43
+Running epoch 44
+Running epoch 45
+Running epoch 46
+Running epoch 47
+Running epoch 48
+Running epoch 49
+Running epoch 50
+Running epoch 51
+Running epoch 52
+Running epoch 53
+Running epoch 54
+Running epoch 55
+Running epoch 56
+Running epoch 57
+Running epoch 58
+Running epoch 59
+Running epoch 60
+Running epoch 61
+Running epoch 62
+Running epoch 63
+Running epoch 64
+Running epoch 65
+Running epoch 66
+Running epoch 67
+Running epoch 68
+Running epoch 69
+Running epoch 70
+Running epoch 71
+Running epoch 72
+Running epoch 73
+Running epoch 74
+Running epoch 75
+Running epoch 76
+Running epoch 77
+Running epoch 78
+Running epoch 79
+Running epoch 80
+Running epoch 81
+Running epoch 82
+Running epoch 83
+Running epoch 84
+Running epoch 85
+Running epoch 86
+Running epoch 87
+Running epoch 88
+Running epoch 89
+Running epoch 90
+Running epoch 91
+Running epoch 92
+Running epoch 93
+Running epoch 94
+Running epoch 95
+Running epoch 96
+Running epoch 97
+Running epoch 98
+Running epoch 99
+Loading: /users/gmurtaza/GrapHiC/weights/graphic(embd-64)_l1loss+tvloss(e-04)_dhash:7ce606fed2f64d44737b89fdf7cef483009edf74/99-epoch_0.001997040460507075-loss_model
+Predicting:   0%|          | 0/6 [00:00<?, ?it/s]Predicting:  17%|█▋        | 1/6 [00:11<00:59, 11.83s/it]Predicting:  33%|███▎      | 2/6 [00:23<00:47, 11.88s/it]Predicting:  50%|█████     | 3/6 [00:35<00:35, 11.85s/it]Predicting:  67%|██████▋   | 4/6 [00:47<00:23, 11.82s/it]Predicting:  83%|████████▎ | 5/6 [00:59<00:11, 11.81s/it]Predicting: 100%|██████████| 6/6 [01:06<00:00, 10.45s/it]Predicting: 100%|██████████| 6/6 [01:06<00:00, 11.15s/it]

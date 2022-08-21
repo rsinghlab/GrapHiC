@@ -28,9 +28,9 @@ HYPERPARAMETERS = {
 
 # These parameters are used by the dataset creator function to describe how to divide the chromosome matrices
 cropping_params = {
-    'sub_mat'   :200,
-    'stride'    :200,
-    'bounds'    :190,
+    'sub_mat'   :400,
+    'stride'    :50,
+    'bounds'    :40,
     'padding'   :True
 }
 
@@ -47,15 +47,16 @@ normalization_params = {
 
 # Epigenetic features list
 epi_features_list = [
-    'ATAC-Seq', 'DNASE-Seq', 'H3K27ME3', 'H3K27AC', 'H3K36ME3', 'H3K4ME1', 
-    'H3K4ME2', 'H3K4ME3', 'H3K79ME2', 'H3K9AC', 'H4K20ME1', 'H3K9ME3'
+    'RAD-21', 'RNA-Pol2','CTCF', 'ATAC-Seq', 'DNASE-Seq', 'H3K27ME3', 'H3K27AC', 
+    'H3K36ME3', 'H3K4ME1', 'H3K4ME2', 'H3K4ME3', 'H3K79ME2', 'H3K9AC', 'H4K20ME1', 
+    'H3K9ME3'
 ]
 
 # Some other dataset creation paramters
 positional_encoding_method = 'graph' # Required for GrapHiC, can take values between ['constant', 'monotonic', 'transformer', 'graph']
 non_informative_row_resolution_method = 'intersection' # This finds common non-informative rows in both dataset and then removes them. Can take ['ignore', 'target', 'intersection']
 noise_augmentation_method = 'none' # This function adds noise to all the input samples should improve training in certain cases. Can take ['none', 'random', 'uniform', 'gaussian']
-node_embedding_concat_method = 'positional'
+node_embedding_concat_method = 'concat'
 
 
 base_files = ['hic026', 'encode0', 'hic033']
@@ -132,7 +133,19 @@ epigenetic_factor_paths = {
         'ATAC-Seq': {
             'remote_path': 'https://drive.google.com/file/d/1dfvGmomovO6TLJRPhG13OXL6fdRk5GTQ/view?usp=sharing',
             'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'atacseq.bigwig')
-        }
+        }, 
+        'CTCF': {
+            'remote_path': 'http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneGm12878CtcfStdSig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'ctcf.bigwig')
+        },
+        'RNA-Pol2': {
+            'remote_path': 'https://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeOpenChromChip/wgEncodeOpenChromChipGm12878Pol2Sig.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'rnapol2.bigwig')
+        }, 
+        'RAD-21': {
+            'remote_path': 'https://encode-public.s3.amazonaws.com/2012/07/01/bb401e4f-91f5-4ddc-ac2b-2b36a56ec114/ENCFF000WCT.bigWig',
+            'local_path': os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'rad21.bigwig')
+        },
     }
 }
 
