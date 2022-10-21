@@ -81,3 +81,13 @@ All the static paths used during the testing and development phase are stored in
 1) BASE_DIRECTORY path points or stores the absolute path of the directory where you pulled this codebase. If you have changed the path of your terminal since the start of this installation process running 'pwd' command would give you the absolute path. Update the value of BASE_DIRECTORY to the output of pwd command. 
 2) HIC_FILES_DIRECTORY, PARSED_HIC_FILES_DIRECTORY and DATASET_DIRECTORY can be anywhere in your filesystem just make sure that whatever filesystem they are on, it has enough space to store ~200GBs of both raw and processed .hic datasets. 
 3) WEIGHTS_DIRECTORY and GENERATED_DATA_DIRECTORY are currently setup to be automatically adjusted based on the BASE_DIRECTORY but if you want to store these somewhere else feel free to change them as well. WEIGHTS_DIRECTORY stores the weights of the models (for each epoch in current implementation) and GENERATED_DATA_DIRECTORY all the generated visualizations.  
+
+
+### Training and Testing GrapHiC
+Once you have installed all the GrapHiC requirements and setup the paths accordingly, you can run the command:
+```
+python grapHiC.py
+```
+
+This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. 
+
