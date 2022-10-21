@@ -89,5 +89,5 @@ Once you have installed all the GrapHiC requirements and setup the paths accordi
 python grapHiC.py
 ```
 
-This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. 
+This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. The training and testing scripts for HiCReg, HiCNN and different versions of GrapHiC follow the same workflow and we have created distinct .py files for each having a similar workflows. 
 
