@@ -7,10 +7,9 @@ import torch
 import numpy as np
 from tqdm import tqdm
 
-from src.utils import BASE_DIRECTORY, create_entire_path_directory, delete_files, GENERATED_DATA_DIRECTORY
+from src.utils import BASE_DIRECTORY, create_entire_path_directory, delete_files, GENERATED_DATA_DIRECTORY, PREDICTED_FILES_DIRECTORY
 from src.matrix_operations import process_graph_batch, spreadM, together
 from src.evaluations import MSE, SSIM, PCC
-from torch.utils.tensorboard import SummaryWriter
 from src.visualizations import visualize
 
 def data_info(data):
@@ -27,7 +26,8 @@ def save_data(predicted_hic, compact, size, file):
 
 
 def train(model, train_loader, optimizer):
-    model.training = True
+    model.train()
+    
     epoch_loss = 0.0
     num_batches = 0
     for i, (data) in enumerate(train_loader):
@@ -35,6 +35,8 @@ def train(model, train_loader, optimizer):
             continue
         
         data = data.to(model.device)
+        print(data.x.shape)
+        
         optimizer.zero_grad()
         
         output = model(data)
@@ -56,11 +58,8 @@ def train(model, train_loader, optimizer):
 
 
 def validate(model, valid_loader):
-    model.training = False
+    model.eval()
     validation_loss = 0.0
-    mse = 0.0
-    ssim = 0.0 
-    pcc = 0.0 
 
     num_batches = 0
 
@@ -75,24 +74,18 @@ def validate(model, valid_loader):
         batch_loss = model.loss(output, targets)
 
         validation_loss = validation_loss + batch_loss.item()
-        
-        mse = mse + MSE(output, targets)
-        ssim = ssim + SSIM(output, targets)
-        pcc = pcc + PCC(output, targets)
+    
         
         num_batches += 1
     
     validation_loss = float(validation_loss)/(num_batches*model.hyperparameters['batch_size']) 
-    mse = float(mse)/(num_batches) 
-    ssim = float(ssim)/(num_batches) 
-    pcc = float(validation_loss)/(num_batches)
-
-    return validation_loss, mse, ssim, pcc
+    
+    return validation_loss
 
 
-def test(model, test_loader, output_path):
-    model.training = False
-
+def test(model, test_loader, output_path, base):
+    model.train()
+    
     baseline_mse_score = 0.0
     baseline_ssim_score = 0.0
     baseline_pcc_score = 0.0
@@ -104,12 +97,27 @@ def test(model, test_loader, output_path):
 
     total_batches = 0
     
+    input_samples = []
+    predicted_samples = []
+    target_samples = []
+    indices = []
+
+    
     for data in tqdm(test_loader, desc='Predicting: '):
         data = data.to(model.device)
         outputs = model(data)
         targets = process_graph_batch(model, data.y, data.batch)
         inputs = process_graph_batch(model, data.input, data.batch)
+        
+        # We handle pos_idx seperately because its harder to generalize this 
+        idx = torch.reshape(data.pos_indx, ((int(data.batch.max()) + 1), 4))
+        print(idx.shape, idx[:1])
 
+        
+        input_samples.append(inputs.to('cpu').numpy())
+        target_samples.append(targets.to('cpu').numpy())
+        predicted_samples.append(outputs.detach().to('cpu').numpy())
+        indices.append(idx.to('cpu').numpy())
 
 
         baseline_mse_score += MSE(inputs, targets)
@@ -127,6 +135,7 @@ def test(model, test_loader, output_path):
 
 
     with open(os.path.join(output_path, 'metrics.dump'), 'a+') as dump_file:
+        dump_file.write('Upscaling file: {}'.format(base))
         dump_file.write('Mean Squared Error --- Baseline: {}, Generated: {}\n'.format(
             (baseline_mse_score/total_batches), (upscaled_mse_score/total_batches)
         ))
@@ -137,48 +146,71 @@ def test(model, test_loader, output_path):
             (baseline_pcc_score/total_batches), (upscaled_pcc_score/total_batches)
         ))
 
+    samples_path = os.path.join(PREDICTED_FILES_DIRECTORY, model.model_name, base)
+    create_entire_path_directory(samples_path)
+
+    file = os.path.join(samples_path, 'predicted_samples.npz')
+
+    input_samples = np.concatenate(input_samples, axis=0)
+    predicted_samples = np.concatenate(predicted_samples, axis=0)
+    target_samples = np.concatenate(target_samples, axis=0)
+    indices = np.concatenate(indices, axis=0).reshape(-1, 4)
+
+    np.savez_compressed(
+        file, 
+        input=input_samples, 
+        target=target_samples,
+        graphic=predicted_samples, 
+        index=indices
+    )
+    print('All the predicted samples saved at {}'.format(file))
 
 
 
-def generate_chromosomes(model, file_test, output_path):
-    model.training = False
+def save_samples(model, file_test, output_path, base):
+    model.eval()
+
     loader = model.load_data(
         file_test, 
         1,
         False
     )
 
-
-    result_data = []
-    result_inds = []
-    
-    _, compacts, sizes = data_info(np.load(file_test, allow_pickle=True))
-    output_path = os.path.join(output_path, 'chromosomes')
+    output_path = os.path.join(output_path, base)
     create_entire_path_directory(output_path)
 
+
+    file = os.path.join(output_path, 'predicted_samples.npz')
+
+    input_samples = []
+    predicted_samples = []
+    target_samples = []
+    indices = []
+    
     for i, data in enumerate(loader):
-        if i == (len(loader) - 1):
-            continue
         data = data.to(model.device)
         outputs = model(data)
+        targets = process_graph_batch(model, data.y, data.batch)
+        inputs = process_graph_batch(model, data.input, data.batch)
+        
+        input_samples.append(inputs.to('cpu').numpy())
+        target_samples.append(targets.to('cpu').numpy())
+        predicted_samples.append(outputs.detach().to('cpu').numpy())
+        indices.append(data.pos_indx.to('cpu').numpy())
 
-        result_data.append(outputs.detach().to('cpu').numpy())
-        result_inds.append(data.pos_indx.to('cpu').numpy())
-    
-    
-    result_data = np.concatenate(result_data, axis=0)
-    result_inds = np.concatenate(result_inds, axis=0).reshape(-1, 4)
-    
-    predicted = together(result_data, result_inds, tag='Reconstructing: ')
+    input_samples = np.concatenate(input_samples, axis=0)
+    predicted_samples = np.concatenate(predicted_samples, axis=0)
+    target_samples = np.concatenate(target_samples, axis=0)
+    indices = np.concatenate(indices, axis=0).reshape(-1, 4)
 
-    def save_data_n(key):
-        file = os.path.join(output_path, f'chr{key}.npz')
-        save_data(predicted[key], compacts[key], sizes[key], file)
-
-    print(f'Saving predicted data as individual chromosome files')
-
-    for key in compacts.keys():
-        save_data_n(key)
+    np.savez_compressed(
+        file, 
+        input=input_samples, 
+        target=target_samples,
+        graphic=predicted_samples, 
+        index=indices
+    )
+    print('All the predicted samples saved at {}'.format(file))
 
 
 
@@ -190,9 +222,11 @@ def run(
         file_train, 
         file_validation,
         file_test,
-        clean_existing_weights=False, 
+        base,
+        retrain=True, 
         debug=True
     ):
+
     '''
         This function trains, validates, and tests the provided model
     '''
@@ -204,19 +238,17 @@ def run(
     if not os.path.exists(tensor_board_writer_path):
         create_entire_path_directory(tensor_board_writer_path)
     
-    # Create tensorboard writer
-    writer = SummaryWriter(os.path.join(tensor_board_writer_path, model.model_name))
-
     # Weights directory exists
     if not os.path.exists(model.weights_dir):
         create_entire_path_directory(model.weights_dir)
     
     # Clean the existing sets of weights in the model.dir_model directory
-    if clean_existing_weights:
+    if retrain:
         delete_files(model.weights_dir)
 
     # Create and clean the output directory 
     output_path = os.path.join(GENERATED_DATA_DIRECTORY, model.model_name)
+
     if not os.path.exists(output_path):
         create_entire_path_directory(output_path)
 
@@ -228,36 +260,44 @@ def run(
     if debug: print('Initializing the Optimizer')
     # Initialize the optimizer  TODO: Make this generic as well
     optimizer = model.create_optimizer()
-
-    # Step 2: Load the datasets into host memory
-    if debug: print('Loading Training Dataset')
-    train_loader = model.load_data(file_train)
-    if debug: print('Loading Validation Dataset')
-    validation_loader = model.load_data(file_validation)
+    training_losses = []
+    validation_losses = []
+    
+    min_loss = None
+    # Step 2: Enter the main training loop if the retrain flag is set
+    if retrain:
+        if debug: print('Loading Training Dataset')
+        train_loader = model.load_data(file_train)
+        if debug: print('Loading Validation Dataset')
+        validation_loader = model.load_data(file_validation)
+        for epoch in tqdm(range(model.hyperparameters['epochs']), 'Training Epochs'):
+            training_loss = train(model, train_loader, optimizer)
+            validation_loss = validate(model, validation_loader)
+            training_losses.append(training_losses)
+            validation_losses.append(validation_losses)
+            if min_loss == None:
+                print('Updating MinLoss to {}'.format(min_loss))
+                min_loss = validation_loss
+            
+            if validation_loss <= min_loss:
+                print('Updating MinLoss to {}'.format(min_loss))
+                min_loss = validation_loss
+                torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(0, 0)))
+            
+    print(training_losses)
+    print(validation_losses)
+    
+    # Load the testing loader
     if debug: print('Loading Testing Dataset')
     test_loader = model.load_data(file_test)
-
-    # Step 3: Enter the main training loop
-    for epoch in tqdm(range(model.hyperparameters['epochs']), 'Training Epochs'):
-        print('Running epoch {}'.format(epoch))
-
-        training_loss = train(model, train_loader, optimizer)
-        validation_loss, mse, ssim, pcc = validate(model, validation_loader)
-
-        writer.add_scalar("Loss/Training",      training_loss,      epoch)
-        writer.add_scalar("Loss/Validation",    validation_loss,    epoch)
-        writer.add_scalar("MSE/Validation",     mse,                epoch)
-        writer.add_scalar("SSIM/Validation",    ssim,               epoch)
-        writer.add_scalar("PCC/Validation",     pcc,                epoch)
-        torch.save(model.state_dict(), os.path.join(model.weights_dir, '{}-epoch_{}-loss_model'.format(epoch, validation_loss)))
 
     # Step 4: Test the model on testing set
     # Load the best weight
     model.load_weights()
-    test(model, test_loader, output_path)
+    test(model, test_loader, output_path, base)
 
-    # Step 5: Generate chromosome files
-    # generate_chromosomes(model, file_test, output_path)
+    # Step 5: we save all the samples instead of the chromosomes for easier evaluation
+    # save_samples(model, file_test, output_path_chrom, base)
 
     
 

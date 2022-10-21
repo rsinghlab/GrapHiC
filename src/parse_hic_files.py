@@ -15,9 +15,8 @@ import time
 from functools import partial
 import multiprocessing
 from multiprocessing import Process
-from src.utils import create_entire_path_directory
+from src.utils import create_entire_path_directory, hic_file_paths, PARSED_HIC_FILES_DIRECTORY, hic_data_resolution, download_file
 
-import wget
 
 
 # Main Multiprocessing switch for the HiC parser
@@ -137,19 +136,20 @@ def parse_hic_file(path_to_hic_file, output, resolution=10000, debug=False):
 
 
 
-def download_file(file_paths):
-    print('Downloading file from {}'.format(file_paths['remote_path']))
-    
-    create_entire_path_directory('/'.join(file_paths['local_path'].split('/')[:-1]))
-    wget.download(file_paths['remote_path'], file_paths['local_path'])   
-
-    print('File downloaded at {}'.format(file_paths['local_path']))
-    
 
 
 
 
-
+def download_all_hic_datasets():
+    for hic_file_key in hic_file_paths.keys():
+        if not os.path.exists(hic_file_paths[hic_file_key]['local_path']):
+            download_file(hic_file_paths[hic_file_key])
+        
+        parse_hic_file(
+            hic_file_paths[hic_file_key]['local_path'], 
+            os.path.join(PARSED_HIC_FILES_DIRECTORY, hic_file_key),
+            hic_data_resolution
+        )
 
 
 

@@ -7,3 +7,5 @@ grapHiC/
 main.out
 visualization.png
 testing.py
+*.png	
+*.out

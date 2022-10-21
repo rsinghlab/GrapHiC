@@ -41,45 +41,45 @@ class HiCPlus(nn.Module):
 
         
 
-    def forward(self, data):
+    def forward(self, x):
         '''
             Forward pass of the model
 
             @params: x <torch.tensor> input to the model with shape (batch_size, 1, 40 ,40)
             @returns <torch.tensor> out of the model with shape (batch_size, 1, 28, 28)
         '''
-        x = self.process_graph_batch(data.input, data.batch)
-        x = x.reshape(x.shape[0], 1, x.shape[1], x.shape[2])
-
+        
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         return F.relu(self.conv3(x))
     
     
-    def load_data(self, file_path):
+    def load_data(self, file_path, batch_size=-1, shuffle=True):
         '''
             Loads the data file in a dataloader that is appropriate for the model
             @params file_path <string> path to the file that we need to load for the model
             @returns <torch.DataLoader> dataloader object 
         '''
+        batch_size = self.hyperparameters['batch_size'] if batch_size == -1 else batch_size
         # Decompress the file
         data = np.load(file_path, allow_pickle=True)
         
         # Get the individual data objects
-        bases = torch.tensor(data['data'], dtype=torch.float32)
-        targets = torch.tensor(data['target'], dtype=torch.float32)
-        encodings = torch.tensor(data['encodings'], dtype=torch.float32)
+        base = torch.tensor(data['data'], dtype=torch.float32)
+        target = torch.tensor(data['target'], dtype=torch.float32)
         indxs = torch.tensor(data['inds'], dtype=torch.long)
 
         # Targets need to be reshaped to compare the output
-        targets_reshaped = np.zeros((targets.shape[0], 1, 28, 28))
+        target_reshaped = np.zeros((target.shape[0], 1, 28, 28))
         
-        for i in range(targets.shape[0]):
-            targets_reshaped[i] = targets[i, 0, 6:34, 6:34]
+        for i in range(target.shape[0]):
+            target_reshaped[i] = target[i, 0, 6:34, 6:34]
         
-        targets_reshaped = torch.tensor(targets_reshaped, dtype=torch.float32)
-
-        data_loader = create_graph_dataloader(bases, targets_reshaped, encodings, indxs, self.hyperparameters['batch_size'], False)
+        # Create the dataloader object
+        data_loader = torch.utils.data.DataLoader(
+            torch.utils.data.TensorDataset(base, torch.from_numpy(target_reshaped), indxs, target), 
+            batch_size=batch_size, shuffle=shuffle
+        )
 
         return data_loader
     
@@ -91,24 +91,24 @@ class HiCPlus(nn.Module):
             print('Optimizer {} not currently support!'.format(self.hyperparameters['optimizer_type']))
             exit(1)
     
-    
-    def process_graph_batch(self, graph_batch, batch_idx):
-        num_targets = int(batch_idx.max()) + 1
-        return graph_batch.reshape(num_targets, int(graph_batch.shape[0]/num_targets), graph_batch.shape[1])
-
-    
-    def loss(self, preds, target):
-        return self.loss_function(preds.float(), target.float())
-        
-    def load_weights(self, scheme='min-valid-loss'):
+    def load_weights(self, scheme='last-epoch'):
         if scheme not in ['min-valid-loss', 'last-epoch']:
             print('Weight loading scheme not supported!')
             exit(1)
-        
+        if scheme == 'min-valid-loss':
+            weights = list(map(lambda x: (float(x.split('_')[1].split('-')[0]) ,os.path.join(self.weights_dir, x)), os.listdir(self.weights_dir)))
+            req_weights = min(weights, key=itemgetter(0))[1]
 
-        req_weights = list(filter(lambda x: '99-epoch' in x, os.listdir(self.weights_dir)))[0]
-        req_weights = os.path.join(self.weights_dir, req_weights)
-        # weights = list(map(lambda x: (float(x.split('_')[1].split('-')[0]) ,os.path.join(self.weights_dir, x)), os.listdir(self.weights_dir)))
-        # req_weights = min(weights,key=itemgetter(0))[1]
+            print("Loading: {}".format(req_weights))
+
+            self.load_state_dict(torch.load(req_weights, map_location=self.device))
         
-        self.load_state_dict(torch.load(req_weights, map_location=self.device))
+        if scheme == 'last-epoch':
+            weights = list(map(lambda x: (float(x.split('_')[0].split('-')[0]) ,os.path.join(self.weights_dir, x)), os.listdir(self.weights_dir)))
+            req_weights = max(weights, key=itemgetter(0))[1]
+            print("Loading: {}".format(req_weights))
+
+            self.load_state_dict(torch.load(req_weights, map_location=self.device))
+
+    def loss(self, preds, target):
+        return self.loss_function(preds.float(), target.float())

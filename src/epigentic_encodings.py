@@ -17,11 +17,14 @@ import os
 import numpy as np
 import pyBigWig
 import time
-from src.utils import create_entire_path_directory
+from src.parse_hic_files import download_file
+from src.utils import create_entire_path_directory, epigenetic_factor_paths, hic_data_resolution, PARSED_EPIGENETIC_FILES_DIRECTORY, download_file
 
 
 def parse_node_encoding_file(file_path, output_path, resolution=10000, debug=False):
     # Currently we are assuming all the files are bigwig files
+    print(file_path)
+    
     bw = pyBigWig.open(file_path)
     if not bw.isBigWig():
         print('Currently only supporting BigWig file formats...')
@@ -53,7 +56,7 @@ def parse_node_encoding_file(file_path, output_path, resolution=10000, debug=Fal
     print('Parsing all files took {} seconds!'.format(end_time - start_time))
 
 
-def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, compact_idx=[]):
+def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, compact_idx=[], divided=True):
     node_encodings = []
     for node_encoding_file in node_encoding_files:
         print(node_encoding_file)
@@ -84,9 +87,15 @@ def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, c
     node_encodings = normalize_epigenetic_encodings(node_encodings)
 
 
+    # Control flow for the hicreg parser
+    if not divided:
+        return node_encodings, []
+
+
     divided_signal, idxs = divide_signal(node_encodings, chromosome, cropping_params)
     
     divided_signal = divided_signal[:, 0, :, :]
+
 
     # Return in numpy.array format
     return divided_signal, idxs
@@ -134,3 +143,15 @@ def normalize_epigenetic_encodings(encodings):
     return encodings
 
 
+
+def download_all_epigenetic_datasets():
+    for cell_line in epigenetic_factor_paths.keys():
+        for histone_mark in epigenetic_factor_paths[cell_line].keys():
+            if not os.path.exists(epigenetic_factor_paths[cell_line][histone_mark]['local_path']):
+                download_file(epigenetic_factor_paths[cell_line][histone_mark])
+            parse_node_encoding_file(
+                epigenetic_factor_paths[cell_line][histone_mark]['local_path'],
+                os.path.join(PARSED_EPIGENETIC_FILES_DIRECTORY, cell_line, histone_mark),
+                hic_data_resolution
+            )
+            

@@ -16,8 +16,8 @@ def MSE(outputs, targets):
     batch_mse = 0.0
     for i in range(outputs.shape[0]):
         batch_mse += mean_squared_error(
-            outputs[i, 0, :, :].detach().to('cpu').numpy(),
-            targets[i, 0, :, :].to('cpu').numpy()
+            outputs[i, 0, :, :].detach().to('cpu').numpy().astype(float),
+            targets[i, 0, :, :].to('cpu').numpy().astype(float)
         )
     
     return batch_mse/outputs.shape[0]
@@ -26,9 +26,13 @@ def MSE(outputs, targets):
 def SSIM(outputs, targets):
     batch_structural_similarity = 0.0
     for i in range(outputs.shape[0]):
+        x = outputs[i, 0, :, :].detach().to('cpu').numpy().astype(float)
+        y = targets[i, 0, :, :].to('cpu').numpy().astype(float)
+        
         batch_structural_similarity += structural_similarity(
-            outputs[i, 0, :, :].detach().to('cpu').numpy(),
-            targets[i, 0, :, :].to('cpu').numpy()
+            x,
+            y,
+            data_range=x.max() - x.min()
         )
     
     return batch_structural_similarity/outputs.shape[0]
@@ -37,8 +41,8 @@ def PCC(outputs, targets):
     batch_pcc = 0.0
     for i in range(outputs.shape[0]):
         r, _ = pearsonr(
-            outputs[i, 0, :, :].detach().to('cpu').numpy().flatten(),
-            targets[i, 0, :, :].to('cpu').numpy().flatten()
+            outputs[i, 0, :, :].detach().to('cpu').numpy().flatten().astype(float),
+            targets[i, 0, :, :].to('cpu').numpy().flatten().astype(float)
         )
         batch_pcc += r
     

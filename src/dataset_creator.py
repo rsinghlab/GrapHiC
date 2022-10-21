@@ -24,9 +24,10 @@ MULTIPROCESSING = True
 
 dataset_partitions = {
     'train': [1, 2, 3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 18],
-    'valid': [8, 9, 10, 11],
-    'test': [19, 20, 21, 22],
-    'debug': [19],
+    'valid': [8, 19, 10, 22],
+    'test': [20, 21, 11],
+    'debug_train': [19],
+    'debug_test': [20], 
     'all': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 }
 
@@ -67,7 +68,7 @@ def merge_encodings(node_features, pos_encoding, merging_type):
     elif merging_type == 'positional':
         return pos_encoding
     elif merging_type == 'epigenetic':
-        return node_features     
+        return node_features  
     else:
         print('Invalid merging operator defined, Aborting')
         exit(1)
@@ -78,13 +79,8 @@ def process_chromosome_files(args):
 def _process_chromosome_files(
         path_to_base_chrom, 
         path_to_target_chrom,
-        positional_encoding_method,
         node_encoding_files,
-        node_embedding_concat_method,
-        normalization_params,
-        cropping_params,
-        compact,
-        noise,
+        PARAMETERS,
         verbose
     ):
     chromosome = int(path_to_base_chrom.split('/')[-1].split('.')[0].split('chr')[1])
@@ -95,6 +91,8 @@ def _process_chromosome_files(
         base_data = load_hic_file(path_to_base_chrom)
         target_data = load_hic_file(path_to_target_chrom)
     except FileNotFoundError:
+        print(path_to_base_chrom, path_to_target_chrom)
+        
         print('Skipping chromosome {} because file is missing'.format(chromosome))
         return ()
 
@@ -115,40 +113,72 @@ def _process_chromosome_files(
         return ()
         
 
-    compact_indexes = process_compact_idxs(base_compact_idx, target_compact_idx, compact_method=compact)
+    compact_indexes = process_compact_idxs(
+        base_compact_idx, 
+        target_compact_idx, 
+        compact_method=PARAMETERS['non_informative_row_resolution_method']
+    )
+
     base_chrom = compactM(base_chrom, compact_indexes)
     target_chrom = compactM(target_chrom, compact_indexes)
                  
     if verbose: print('Processing Node Features')
     # Read Node feature files and compile them in a single array
-    node_features, _ = read_node_encoding_files(node_encoding_files, chromosome, cropping_params, compact_indexes)
+    node_features, _ = read_node_encoding_files(
+        node_encoding_files, 
+        chromosome, 
+        PARAMETERS, 
+        compact_indexes
+    )
     
     # Normalize the HiC Matrices
-    if normalization_params['chrom_wide']:
+    if PARAMETERS['chrom_wide']:
         if verbose: print('Performing Chromosome wide normalization...')
-        base_chrom = normalize_hic_matrix(base_chrom, normalization_params, chromosome=chromosome)
-        target_chrom = normalize_hic_matrix(target_chrom, normalization_params, chromosome=chromosome)
+        base_chrom = normalize_hic_matrix(base_chrom, 
+            PARAMETERS, 
+            chromosome=chromosome, 
+            target=False
+        )
+        target_chrom = normalize_hic_matrix(
+            target_chrom, 
+            PARAMETERS, 
+            chromosome=chromosome, 
+            target=True
+        )
 
-    if noise:
-        if verbose: print('Adding {} noise to the data'.format(noise))
-        base_chrom = noise_types[noise](base_chrom)
+    if PARAMETERS['noise']:
+        if verbose: print('Adding {} noise to the data'.format(PARAMETERS['noise']))
+        base_chrom = noise_types[PARAMETERS['noise']](base_chrom)
         
     # Divide the HiC Matrices
     if verbose: print('Dividing the Chromosomes...')
-    bases, _ = divide(base_chrom, chromosome, cropping_params)        
-    targets, inds = divide(target_chrom, chromosome, cropping_params)
+    bases, _ = divide(base_chrom, chromosome, PARAMETERS)        
+    targets, inds = divide(target_chrom, chromosome, PARAMETERS)
+
+    if PARAMETERS['node_embedding_concat_method'] in ['concat', 'positional']:
+        encoding_dim = PARAMETERS['positional_encoding_dim']
+    else:
+        encoding_dim = node_features.shape[2]
 
     if verbose: print('Generating Positional Encodings')
     # 3 out of 4 positional encodings are independent of the graph except the 'graph' encodings
     pos_encodings = []
     for base in bases:
-        pos_encoding = encoding_methods[positional_encoding_method](base, encoding_dim=node_features.shape[2])
+        pos_encoding = encoding_methods[PARAMETERS['positional_encoding_method']](
+            base, encoding_dim=encoding_dim
+        )
         pos_encodings.append(pos_encoding)
 
     pos_encodings = np.array(pos_encodings)
-    
+    print(pos_encodings.shape)
 
-    encodings = merge_encodings(node_features, pos_encodings, merging_type=node_embedding_concat_method)
+    encodings = merge_encodings(
+        node_features, 
+        pos_encodings, 
+        merging_type=PARAMETERS['node_embedding_concat_method']
+    )
+    
+    print(encodings.shape)
 
     return (
             chromosome, 
@@ -165,25 +195,8 @@ def create_dataset_from_hic_files(
                                 path_to_base_files,
                                 path_to_target_files, 
                                 path_to_output_folder,
-                                positional_encoding_method, 
                                 node_encoding_files,
-                                node_embedding_concat_method,
-                                cropping_params={
-                                'chunk_size':200,
-                                'stride'    :200,
-                                'bounds'    :190,
-                                'padding'   :True
-                                },
-                                normalization_params={
-                                'norm'              : True,
-                                'remove_zeros'      : True,
-                                'set_diagonal_zero' : False,
-                                'cutoff'            : 95.0,
-                                'rescale'           : True,
-                                'draw_dist_graphs'  : False
-                                },
-                                noise=None,
-                                compact='intersection',
+                                PARAMETERS,
                                 datasets=[
                                 'train', 
                                 'valid', 
@@ -225,13 +238,8 @@ def create_dataset_from_hic_files(
         args = zip(
             base_chrom_paths, 
             target_chrom_paths,
-            repeat(positional_encoding_method),
             repeat(node_encoding_files),
-            repeat(node_embedding_concat_method),
-            repeat(normalization_params),
-            repeat(cropping_params),
-            repeat(compact),
-            repeat(noise),
+            repeat(PARAMETERS),
             repeat(verbose),
         )
         num_cpus = multiprocessing.cpu_count() if MULTIPROCESSING else 1

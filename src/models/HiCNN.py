@@ -8,6 +8,7 @@ from torch.autograd import Variable
 import numpy as np
 import os
 from operator import itemgetter
+from src.utils import WEIGHTS_DIRECTORY
 
 torch.manual_seed(0)
 
@@ -17,15 +18,20 @@ torch.manual_seed(0)
 
 
 class HiCNN(nn.Module):
-    def __init__(self, HYPERPARAMETERS, device, dir_model ='weights/hicnn/'):
+    def __init__(self, HYPERPARAMETERS, device, model_name, 
+                input_size=40, base_dir=WEIGHTS_DIRECTORY):
         super(HiCNN, self).__init__()
-        # Initializing variables
+        # Initialize the control parameters
+        self.model_type = 'Image'
         self.hyperparameters = HYPERPARAMETERS
         self.device = device
-        self.dir_model = dir_model
-        if not os.path.exists(self.dir_model):
-            os.mkdir(self.dir_model)
+        self.model_name = model_name
+        self.weights_dir = os.path.join(base_dir, model_name)
+
+        # Initialize the Loss Function
         self.loss_function = nn.MSELoss()
+        if not os.path.exists(self.weights_dir):
+            os.mkdir(self.weights_dir)
         
         
         # Initializing layers
@@ -66,12 +72,13 @@ class HiCNN(nn.Module):
         return out
     
     
-    def load_data(self, file_path):
+    def load_data(self, file_path,  batch_size=-1, shuffle=True):
         '''
             Loads the data file in a dataloader that is appropriate for the model
             @params file_path <string> path to the file that we need to load for the model
             @returns <torch.DataLoader> dataloader object 
         '''
+        batch_size = self.hyperparameters['batch_size'] if batch_size == -1 else batch_size
         # Decompress the file
         data = np.load(file_path, allow_pickle=True)
         
@@ -88,8 +95,8 @@ class HiCNN(nn.Module):
         
         # Create the dataloader object
         data_loader = torch.utils.data.DataLoader(
-            torch.utils.data.TensorDataset(base, torch.from_numpy(target_reshaped), indxs), 
-            batch_size=self.hyperparameters['batch_size'], shuffle=True
+            torch.utils.data.TensorDataset(base, torch.from_numpy(target_reshaped), indxs, target), 
+            batch_size=batch_size, shuffle=shuffle
         )
 
         return data_loader
@@ -106,11 +113,22 @@ class HiCNN(nn.Module):
         if scheme not in ['min-valid-loss', 'last-epoch']:
             print('Weight loading scheme not supported!')
             exit(1)
+        if scheme == 'min-valid-loss':
+            print(self.weights_dir)
+            weights = list(map(lambda x: (float(x.split('_')[1].split('-')[0]) ,os.path.join(self.weights_dir, x)), os.listdir(self.weights_dir)))
+            req_weights = min(weights, key=itemgetter(0))[1]
+
+            print("Loading: {}".format(req_weights))
+            
+
+            self.load_state_dict(torch.load(req_weights, map_location=self.device))
         
-        weights = list(map(lambda x: (float(x.split('_')[1].split('-')[0]) ,os.path.join(self.dir_model, x)), os.listdir(self.dir_model)))
-        req_weights = max(weights,key=itemgetter(0))[1]
-        
-        self.load_state_dict(torch.load(req_weights, map_location=self.device))
+        if scheme == 'last-epoch':
+            weights = list(map(lambda x: (float(x.split('_')[0].split('-')[0]) ,os.path.join(self.weights_dir, x)), os.listdir(self.weights_dir)))
+            req_weights = max(weights, key=itemgetter(0))[1]
+            print("Loading: {}".format(req_weights))
+
+            self.load_state_dict(torch.load(req_weights, map_location=self.device))
 
 
     def loss(self, preds, target):

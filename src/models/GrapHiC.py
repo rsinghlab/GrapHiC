@@ -1,10 +1,13 @@
 import torch
 import torch.nn.functional as F 
 import torch.nn as nn
+from torchvision.models.vgg import vgg16
 
-from torch.nn import L1Loss
-from torch_geometric.nn import GCNConv
+from torch.nn import Linear, BatchNorm1d, ModuleList
+from torch_geometric.nn.norm import GraphNorm
+from torch_geometric.nn import GCNConv, TransformerConv, GraphConv, GATConv
 import torch.optim as optim
+
 from torch.utils.data import TensorDataset, DataLoader
 from operator import itemgetter
 import numpy as np
@@ -13,102 +16,191 @@ from src.matrix_operations import create_graph_dataloader
 from src.utils import WEIGHTS_DIRECTORY
 from src.models.ContactCNN import ContactCNN
 from src.models.TVLoss import TVLoss
+from src.models.Insulation import InsulationLoss
 
 torch.manual_seed(0)
 
+class SpectralLoss(nn.Module):
+    def __init__(self, n=10):
+        super(SpectralLoss, self).__init__()
+        self.eigen_values = torch.linalg.eigvals
+        self.n = n
 
-class GrapHiCLoss(torch.nn.Module):
-    def __init__(self, variational):
+    def forward(self, outputs, targets):
+        outputs_eigen_values = self.eigen_values(outputs) 
+        targets_eigen_values = self.eigen_values(targets) 
+        
+        return torch.dist(outputs_eigen_values[:self.n], targets_eigen_values[:self.n])
+
+
+class GCNBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, normalize=False, add_self_loops=False, act=torch.relu):
+        super(GCNBlock, self).__init__()
+        self.conv = GCNConv(in_channels, out_channels, 
+                            normalize=normalize, 
+                            add_self_loops=add_self_loops
+                        )
+
+        self.bn= GraphNorm(out_channels)
+        self.act = act
+
+    def forward(self, x, edge_index, edge_attr, batch_index):
+        x = self.conv(x, edge_index, edge_attr)
+        x = self.act(x)
+        x = self.bn(x, batch_index)
+        return x
+
+class GraphConvBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, act=torch.relu):
+        super(GraphConvBlock, self).__init__()
+        self.conv = GraphConv(in_channels, out_channels)
+        self.bn= GraphNorm(out_channels)
+        self.act = act
+
+    def forward(self, x, edge_index, edge_attr, batch_index):
+        x = self.conv(x, edge_index, edge_attr)
+        x = self.act(x)
+        x = self.bn(x, batch_index)
+        return x
+
+class GATConvBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, heads=4, edge_dim=1, act=torch.relu):
+        super(GATConvBlock, self).__init__()
+        self.conv = GATConv(
+                                    in_channels, 
+                                    out_channels, 
+                                    heads=heads, 
+                                    edge_dim=edge_dim,
+                                    concat=True
+                    ) 
+        
+        self.bn= GraphNorm(out_channels)
+        self.act = act
+
+    def forward(self, x, edge_index, edge_attr, batch_index):
+        x = self.conv(x, edge_index, edge_attr)
+        x = self.bn(x, batch_index)
+        return x
+
+class TransformerBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, heads=4, edge_dim=1, act=torch.relu):
+        super(TransformerBlock, self).__init__()
+        # Transformation layer
+        self.conv = TransformerConv(
+                                    in_channels, 
+                                    out_channels, 
+                                    heads=heads, 
+                                    edge_dim=edge_dim,
+                                    beta=True,
+                                    dropout=0.3
+                                ) 
+
+        self.linear = Linear(
+            out_channels*heads, 
+            out_channels
+        )
+        self.bn= GraphNorm(out_channels)
+        self.act = act
+
+    def forward(self, x, edge_index, edge_attr, batch_index):
+        x = self.conv(x, edge_index, edge_attr)
+        x = self.act(self.linear(x))
+        x = self.bn(x, batch_index)
+        return x
+
+
+
+
+
+class GrapHiCLoss(nn.Module):
+    def __init__(self, device):
         super(GrapHiCLoss, self).__init__()
-        self.variational = variational
-        self.mse_lambda = 1
-        self.tv_lambda = 0.0001
-        self.kld_lambda = 0.1
-        self.mse = L1Loss()
-        self.tvloss = TVLoss(self.tv_lambda)
+        self.mse_loss = nn.MSELoss().to(device)
 
-    def kld(self, mu, logvar):
-        return (-0.5 / mu.shape[1] * torch.mean(torch.sum(
-        1 + 2 * logvar - mu.pow(2) - logvar.exp().pow(2), 1)))
+    def forward(self, out_images, target_images):
+        image_loss = self.mse_loss(out_images, target_images)
+        
+        return image_loss 
 
-    def forward(self, output, target, mu, logvar):
-        l1_loss = self.mse_lambda*self.mse(output, target)
-        tv_loss = self.tvloss(output)
-        kld_loss = self.kld_lambda * self.kld(mu, logvar) if self.variational else 0
 
-        return l1_loss + tv_loss + kld_loss
+
+
+
+class InnerProductDecoder(torch.nn.Module):
+    def __init__(self, act=torch.sigmoid):
+        super(InnerProductDecoder, self).__init__()
+        self.act = act
+
+    def forward(self, z_0, z_1):
+        z_1 = torch.transpose(z_1, 1, 2)
+        adj = self.act(torch.matmul(z_0, z_1))
+        adj = adj.reshape(adj.shape[0], 1, adj.shape[1], adj.shape[2])
+        return adj
 
 
 
 class GrapHiC(torch.nn.Module):
     def __init__(self, HYPERPARAMETERS,  device, model_name, input_embedding_size=4, base_dir=WEIGHTS_DIRECTORY):
         super(GrapHiC, self).__init__()
-        self.model_type = 'Graph'
         self.hyperparameters = HYPERPARAMETERS
         self.device = device
         self.model_name = model_name
         self.weights_dir = os.path.join(base_dir, model_name)
-        self.variational = False
-
-
+        self.num_transform_blocks = HYPERPARAMETERS['transformblocks']
+        
         if not os.path.exists(self.weights_dir):
             os.mkdir(self.weights_dir)
         
-        self.loss_function = GrapHiCLoss(self.variational)
+        self.loss_function = GrapHiCLoss(device)
         
-        self.conv0 = GCNConv(input_embedding_size, 32, 1, normalize=True)
-        self.conv1 = GCNConv(32, 32, 1, normalize=True)
-        self.mu = GCNConv(32, 32, 1, normalize=True)
-        self.logvar = GCNConv(32, 32, 1, normalize=True)
+        self.input_block = TransformerBlock(
+            input_embedding_size,
+            self.hyperparameters['embedding_size']
+        )
+        self.transform_blocks = [
+            TransformerBlock(
+                self.hyperparameters['embedding_size'], self.hyperparameters['embedding_size']
+            ) 
+            for _ in range(self.num_transform_blocks - 1)
+        ]
 
 
-        self.contact_cnn = ContactCNN(32, 32)
-        self.mu_keeper = None
-        self.logvar_keeper = None
-        self.training = True
-        
+        # Pytorch for some reasons dont move the class to the required device
+        for transform_block in self.transform_blocks:
+            transform_block.to(device)
+
+
+        # Decoder
+        self.contact_cnn = ContactCNN(
+            self.hyperparameters['embedding_size'], 
+            self.hyperparameters['embedding_size'],
+            residual_blocks=HYPERPARAMETERS['resblocks']
+        )
+
 
     def encode(self, x, edge_index, edge_attr, batch_index):
-        x = torch.relu(self.conv0(x=x, edge_index=edge_index, edge_weight=edge_attr))
-        x = torch.relu(self.conv1(x=x, edge_index=edge_index, edge_weight=edge_attr))
-        mu = torch.relu(self.mu(x=x, edge_index=edge_index, edge_weight=edge_attr))
-        logvar = torch.relu(self.logvar(x=x, edge_index=edge_index, edge_weight=edge_attr))
-
-        mu = self.process_graph_batch(mu, batch_index)
-        logvar = self.process_graph_batch(logvar, batch_index)
-
-        return mu, logvar
-
+        x = self.input_block(x, edge_index, edge_attr, batch_index)
+        for i in range(len(self.transform_blocks) - 1):
+            x = self.transform_blocks[i](x, edge_index, edge_attr, batch_index)
+        Z = self.process_graph_batch(x, batch_index)
+        
+        return Z
 
     def decode(self, Z):
         Z = self.contact_cnn(Z, Z)
-        return Z        
-
-    def reparametrize(self, mu, logvar):
-        if self.training and self.variational:
-            std = torch.exp(logvar)
-            eps = torch.randn_like(std)
-            return eps.mul(std).add_(mu)
-        else:
-            return mu
+        return Z
 
 
     def forward(self, data):
-        mu, logvar = self.encode(data.x, data.edge_index, data.edge_attr, data.batch)
-        self.mu_keeper = mu
-        self.logvar_keeper = logvar
-
-        Z = self.reparametrize(mu, logvar)
-
-        return self.decode(Z)
+        Z = self.encode(data.x, data.edge_index, data.edge_attr, data.batch)
+        Z = self.decode(Z)
+        return Z
 
 
     def load_data(self, file_path, batch_size=-1, shuffle=False):
         data = np.load(file_path, allow_pickle=True)
         bases = torch.tensor(data['data'], dtype=torch.float32)
         targets = torch.tensor(data['target'], dtype=torch.float32)
-        print(data['encodings'].shape)
-
         encodings = torch.tensor(data['encodings'], dtype=torch.float32)
         indxs = torch.tensor(data['inds'], dtype=torch.long)
         batch_size = self.hyperparameters['batch_size'] if batch_size == -1 else batch_size
@@ -120,14 +212,17 @@ class GrapHiC(torch.nn.Module):
 
     def create_optimizer(self):
         if self.hyperparameters['optimizer_type'] == 'ADAM':
-            self.optimizer = optim.Adam(self.parameters(), lr=self.hyperparameters['learning_rate'])
+            self.optimizer = optim.Adam(
+                self.parameters(), 
+                lr=self.hyperparameters['learning_rate']
+            )
             return self.optimizer
         else:
             print('Optimizer {} not currently support!'.format(self.hyperparameters['optimizer_type']))
             exit(1)
 
     def loss(self, preds, target):
-        return self.loss_function(preds.float(), target.float(), self.mu_keeper, self.logvar_keeper)
+        return self.loss_function(preds.float(), target.float())
         
 
     def process_graph_batch(self, graph_batch, batch_idx):

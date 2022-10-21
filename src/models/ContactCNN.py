@@ -1,6 +1,26 @@
-
+import torch
 import torch.nn.functional as F 
 import torch.nn as nn
+
+
+def swish(x):
+    return x * torch.sigmoid(x)
+
+class residualBlock(nn.Module):
+    def __init__(self, channels, k=3, s=1):
+        super(residualBlock, self).__init__()
+
+        self.conv1 = nn.Conv2d(channels, channels, k, stride=s, padding=1)
+        self.bn1 = nn.BatchNorm2d(channels)
+        # a swish layer here
+        self.conv2 = nn.Conv2d(channels, channels, k, stride=s, padding=1)
+        self.bn2 = nn.BatchNorm2d(channels)
+
+    def forward(self, x):
+        residual = swish(self.bn1(self.conv1(x)))
+        residual =       self.bn2(self.conv2(residual))
+        return x + residual
+
 
 
 class FullyConnected(nn.Module):
@@ -17,7 +37,7 @@ class FullyConnected(nn.Module):
     :type activation: torch.nn.Module
     """
 
-    def __init__(self, embed_dim, hidden_dim, activation=nn.ReLU()):
+    def __init__(self, embed_dim, hidden_dim, activation=nn.LeakyReLU(0.2)):
         super(FullyConnected, self).__init__()
 
         self.D = embed_dim
@@ -63,13 +83,20 @@ class ContactCNN(nn.Module):
     """
 
     def __init__(
-        self, embed_dim, hidden_dim=128, width=7, activation=nn.Sigmoid()
+        self, embed_dim, hidden_dim=32, 
+        residual_blocks=5, width=7, 
+        activation=nn.Sigmoid()
     ):
         super(ContactCNN, self).__init__()
 
         self.hidden = FullyConnected(embed_dim, hidden_dim)
+        
+        resblocks = [residualBlock(hidden_dim) for _ in range(residual_blocks)]
+        self.resblocks = nn.Sequential(*resblocks)
 
         self.conv = nn.Conv2d(hidden_dim, 1, width, padding=width // 2)
+        self.clip()
+        
         self.activation = activation
         
     def clip(self):
@@ -90,9 +117,9 @@ class ContactCNN(nn.Module):
         :return: Predicted contact map :math:`(b \\times N \\times M)`
         :rtype: torch.Tensor
         """
-
-        C = self.cmap(z0, z1)
+        C = self.resblocks(self.cmap(z0, z1))
         return self.predict(C)
+
 
     def cmap(self, z0, z1):
         """

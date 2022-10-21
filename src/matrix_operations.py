@@ -64,7 +64,7 @@ def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
         index = indices[loci]
         width = index[0,1]
         full_mat = np.zeros((width, width))
-        full_mat_mask = np.ones((width, width))
+        full_mat_mask = np.zeros((width, width))
         
         for sub, pos in zip(sub_mats, index):            
             i, j = pos[-2], pos[-1]
@@ -81,10 +81,11 @@ def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
             full_mat[i:i+h, j:j+w] = sub
             full_mat_mask[i:i+h, j:j+w] += np.ones_like(sub[0, :, :])
             
-        plt.matshow(full_mat_mask)
-        plt.savefig('visualization.png')
+        # full_mat = full_mat / full_mat_mask
+        # full_mat[full_mat == np.inf] = 0
 
         results[n] = full_mat
+    
     return results
 
 

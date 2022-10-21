@@ -16,7 +16,7 @@ SAMPLE_HIC_NORMALIZATION_PARAMS = {
     'draw_dist_graphs'  : False  # Visualize the distribution of the chromosome
 }
 
-def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1'):
+def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1', target=True):
     '''
         This fuction performs chromosome wide normalization of the HiC matrices 
         @params: hic_matrix <np.array>, 2D array that contains all the intra-chromosomal contacts
@@ -59,8 +59,17 @@ def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1'):
     hic_matrix = np.minimum(cutoff_value, hic_matrix)
     hic_matrix = np.maximum(hic_matrix, 0)
 
+    
+
     # Rescale
     if params['rescale']:
         hic_matrix = hic_matrix / (np.max(cutoff_value) + 1)
+
+    hic_matrix[hic_matrix < 0.001] = 0 # Nice magic number here mate
+
+    # Set edges to a particular value
+    if params['edge_culling'] != -1 and target == False:
+        print('Setting all edges to {}'.format(params['edge_culling']))
+        hic_matrix[:] = params['edge_culling']
 
     return hic_matrix
