@@ -22,7 +22,7 @@ experiment = 'graphic-best'
 
 # Concerned cell lines
 base = 'GM12878-encode-0'
-target = 'K562-geo-raoetal'
+target = 'GM12878-geo-raoetal'
 
 # Epigenetic features set
 epi_features_set = 'All'
@@ -36,7 +36,7 @@ download_all_epigenetic_datasets()
 
 
 
-for base in ['GM12878-geo-026']:
+for base in ['GM12878-encode-0', 'GM12878-encode-1', 'GM12878-encode-2', 'GM12878-geo-026', 'GM12878-geo-033']:
     ############################################## TRAIN AND RUN GRAPHIC MODEL ###############################################################
     # Step 2: Setup the experiment by creating the datasets and required directories
     dataset_name = 'exp:{}_base:{}_target:{}_nenc:{}/'.format(
@@ -45,10 +45,10 @@ for base in ['GM12878-geo-026']:
             target,
             'All'
     )
-    # if base == 'GM12878-encode-0':
-    #     retrain = True
-    # else:
-    #     retrain = False
+     if base == 'GM12878-encode-0':
+         retrain = True
+     else:
+         retrain = False
 
     # # Change target when doing cross cell type predictions
     # if base == 'K562-geo-073':
@@ -103,7 +103,7 @@ for base in ['GM12878-geo-026']:
         os.path.join(dataset_path, 'train.npz'),
         os.path.join(dataset_path, 'valid.npz'),
         os.path.join(dataset_path, 'test.npz'),
-        'cross-celltype-k562',
+        base,
         retrain
     )
    ############################################################################################################################################
