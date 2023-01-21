@@ -49,7 +49,7 @@ def spreadM(c_mat, compact_idx, full_size, convert_int=True, verbose=False):
 
 
 
-def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
+def together(matlist, indices, corp=0, species='hsa', tag='HiC', merge_method='overwrite'):
     chr_nums = sorted(list(np.unique(indices[:,0])))
     # convert last element to str 'X'
     if chr_nums[-1] in except_chr[species]: chr_nums[-1] = except_chr[species][chr_nums[-1]]
@@ -64,7 +64,7 @@ def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
         index = indices[loci]
         width = index[0,1]
         full_mat = np.zeros((width, width))
-        full_mat_mask = np.zeros((width, width))
+        full_mat_mask = np.ones((width, width))
         
         for sub, pos in zip(sub_mats, index):            
             i, j = pos[-2], pos[-1]
@@ -73,16 +73,17 @@ def together(matlist, indices, corp=0, species='hsa', tag='HiC'):
                 _, h, w = sub.shape
             # Handle the cases where our samples are spilling outside the bounds of chromosome    
             if (i+h) >= width:
-                sub = sub[:,:h-((i+h) -width),:]
+                sub = sub[:,:h-((i+h) - width),:]
                 
             if (j+w) >= width:
                 sub = sub[:,:,:h-((j+h) - width)]
                 
-            full_mat[i:i+h, j:j+w] = sub
+            full_mat[i:i+h, j:j+w] += sub[0, :, :]
             full_mat_mask[i:i+h, j:j+w] += np.ones_like(sub[0, :, :])
             
-        # full_mat = full_mat / full_mat_mask
-        # full_mat[full_mat == np.inf] = 0
+        full_mat_mask[full_mat_mask == 2] = 1
+        full_mat = full_mat / full_mat_mask
+        
 
         results[n] = full_mat
     

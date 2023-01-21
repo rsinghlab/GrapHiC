@@ -129,9 +129,9 @@ def run(
 ):
     
     generated_chrom_path = os.path.join(
-        PREDICTED_FILES_DIRECTORY, 
-        'HiCReg',
-        cell_line
+        PREDICTED_FILES_DIRECTORY,
+        cell_line,
+        'HiCReg'
     )
     create_entire_path_directory(generated_chrom_path)
 

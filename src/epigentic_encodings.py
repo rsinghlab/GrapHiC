@@ -58,6 +58,8 @@ def parse_node_encoding_file(file_path, output_path, resolution=10000, debug=Fal
 
 def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, compact_idx=[], divided=True):
     node_encodings = []
+    node_encodings_order = []
+    
     for node_encoding_file in node_encoding_files:
         print(node_encoding_file)
 
@@ -71,12 +73,17 @@ def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, c
         # Read the npz file 
         node_encoding_data = np.load(node_encoding_file_path, allow_pickle=True)
         node_encoding_data = node_encoding_data['epi']
-       
+        
+        print(node_encoding_data.shape)
+        
+        node_encodings_order.append(node_encoding_file.split('/')[-1])
 
         # Only take the node encodings that are informative in HiC data as well
         if len(compact_idx) != 0:
             node_encoding_data = node_encoding_data.take(compact_idx)
         
+        
+        print(node_encoding_data.shape)
         # Append the encodings
         node_encodings.append(node_encoding_data)
     
@@ -96,9 +103,8 @@ def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, c
     
     divided_signal = divided_signal[:, 0, :, :]
 
-
     # Return in numpy.array format
-    return divided_signal, idxs
+    return divided_signal, idxs, node_encodings_order
 
 
 
@@ -139,7 +145,8 @@ def normalize_epigenetic_encodings(encodings):
     encodings = np.minimum(percentile, encodings)
     encodings = np.maximum(encodings, 0)
     encodings = encodings / (np.max(encodings) + 1)
-
+    
+    
     return encodings
 
 

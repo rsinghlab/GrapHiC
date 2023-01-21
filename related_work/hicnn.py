@@ -1,4 +1,6 @@
-from operator import pos
+import sys
+sys.path.append('../GrapHiC/')
+
 import os
 import numpy as np
 import time
@@ -386,6 +388,7 @@ def run(
         file_validation,
         file_test,
         base,
+        target,
         retrain=True, 
         debug=True
     ):
@@ -413,7 +416,7 @@ def run(
 
     # Create and clean the output directory 
     output_path = os.path.join(GENERATED_DATA_DIRECTORY, model.model_name)
-    output_path_chrom = os.path.join(PREDICTED_FILES_DIRECTORY, 'HiCNN')
+    output_path_chrom = os.path.join(PREDICTED_FILES_DIRECTORY, base + '@' + target, model.model_name)
     if not os.path.exists(output_path):
         create_entire_path_directory(output_path)
 
@@ -441,7 +444,7 @@ def run(
             training_loss = train(model, train_loader, optimizer)
             validation_loss = validate(model, validation_loader)
 
-            training_losses.append(training_losses)
+            training_losses.append(training_loss)
             validation_losses.append(validation_loss)
             if min_loss == None:
                 print('Updating MinLoss to {}'.format(min_loss))

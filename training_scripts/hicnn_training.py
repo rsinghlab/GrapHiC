@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../GrapHiC/')
 import os
 import torch
 import json, hashlib
@@ -45,7 +47,7 @@ normalization_params = {
     'norm'              : True,   # To normalize or not
     'remove_zeros'      : True,   # Remove zero before percentile calculation
     'set_diagonal_zero' : False,  # Remove the diagonal before percentile calculation
-    'percentile'        : 99.75,  # Percentile 
+    'percentile'        : 99.90,  # Percentile 
     'rescale'           : True,   # After applying cutoff, rescale between 0 and 1
     'chrom_wide'        : True,   # Apply it on chromosome scale #TODO: Sample wise normalization isn't implemented
     'draw_dist_graphs'  : False,  # Visualize the distribution of the chromosome
@@ -53,12 +55,16 @@ normalization_params = {
 }
 non_informative_row_resolution_method = 'intersection' # This finds common non-informative rows in both dataset and then removes them. Can take ['ignore', 'target', 'intersection']
 
-retrain = False
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda:0" if use_cuda else "cpu")
 
 # First we construct a string that is the dataset path
-target = 'K562-geo-raoetal'
+target = 'GM12878-geo-raoetal'
 
-for base in ['GM12878-encode-2']:
+
+
+for base in ['GM12878-encode-0', 'GM12878-encode-1', 'GM12878-encode-2', 'GM12878-geo-026', 'GM12878-geo-033']:
+    
     dataset_name = 'base:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_nirrm:{}/'.format(
         base,
         target,
@@ -72,15 +78,7 @@ for base in ['GM12878-encode-2']:
         normalization_params['rescale'],
         non_informative_row_resolution_method,
     )
-
-    # if base == 'GM12878-encode-2':
-    #     retrain = True
-    # else: 
-    #     retrain = False    
-
     
-    print(dataset_name)
-
     # We create a hash because the path length is too long, we remember the hash to name correspondances in an external JSON. 
 
     dataset_name_hash = hashlib.sha1(dataset_name.encode('ascii')).hexdigest()
@@ -111,23 +109,15 @@ for base in ['GM12878-encode-2']:
     else:
         print('Dataset already exists!')
 
-
-
-
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda:0" if use_cuda else "cpu")
-
-
-    model_name = 'hicnn/'
-
+    model_name = 'hicnn-{}/'.format(base)
     hicnn_model = HiCNN(HYPERPARAMETERS, device, model_name)
-
-
+    
     run(
         hicnn_model,
         os.path.join(dataset_path, 'train.npz'),
         os.path.join(dataset_path, 'valid.npz'),
         os.path.join(dataset_path, 'test.npz'),
-        'crosscelltype_' + base,
-        retrain
+        base,
+        True
     )
+    

@@ -15,6 +15,7 @@ from src.utils import load_hic_file
 from src.utils import create_entire_path_directory
 
 from src.epigentic_encodings import read_node_encoding_files
+from src.generate_expected_hic import generate_and_add_expected_contact_matrix, generate_expected_contact_matrix
 from src.normalizations import normalize_hic_matrix
 from src.positional_encodings import encoding_methods
 from src.noise import noise_types
@@ -59,6 +60,10 @@ def process_compact_idxs(base_compact_idx, target_compact_idx, compact_method='i
 
 def merge_encodings(node_features, pos_encoding, merging_type):
     # Currently just returns the positional encodings
+    
+    print(np.min(node_features), np.max(node_features), node_features.shape)
+    print(np.min(pos_encoding), np.max(pos_encoding), pos_encoding.shape)
+    
     if merging_type == 'sum':
         return node_features + pos_encoding
     elif merging_type == 'mean':
@@ -99,6 +104,8 @@ def _process_chromosome_files(
     base_chrom = base_data['hic']
     target_chrom = target_data['hic']
     
+    print(base_chrom.shape, target_chrom.shape)
+    
     # Ensure that that shapes match, otherwise we can not proceede
     assert(base_chrom.shape[0] == target_chrom.shape[0])
     full_size = base_chrom.shape[0]
@@ -121,10 +128,12 @@ def _process_chromosome_files(
 
     base_chrom = compactM(base_chrom, compact_indexes)
     target_chrom = compactM(target_chrom, compact_indexes)
-                 
+    
+    print(base_chrom.shape, target_chrom.shape)
+          
     if verbose: print('Processing Node Features')
     # Read Node feature files and compile them in a single array
-    node_features, _ = read_node_encoding_files(
+    node_features, _, order = read_node_encoding_files(
         node_encoding_files, 
         chromosome, 
         PARAMETERS, 
@@ -154,12 +163,24 @@ def _process_chromosome_files(
     if verbose: print('Dividing the Chromosomes...')
     bases, _ = divide(base_chrom, chromosome, PARAMETERS)        
     targets, inds = divide(target_chrom, chromosome, PARAMETERS)
-
+    print(bases.shape)
+    
+    
+    if PARAMETERS['add_expected_hic']:
+        bases = np.array(list(map(lambda x: generate_and_add_expected_contact_matrix(x), bases)))
+    
+    
+    if PARAMETERS['replace_with_expected_hic']:
+        bases = np.array(list(map(lambda x: generate_expected_contact_matrix(x), bases)))
+    
+    print(bases.shape)
+    
     if PARAMETERS['node_embedding_concat_method'] in ['concat', 'positional']:
         encoding_dim = PARAMETERS['positional_encoding_dim']
     else:
         encoding_dim = node_features.shape[2]
 
+    
     if verbose: print('Generating Positional Encodings')
     # 3 out of 4 positional encodings are independent of the graph except the 'graph' encodings
     pos_encodings = []
@@ -168,18 +189,16 @@ def _process_chromosome_files(
             base, encoding_dim=encoding_dim
         )
         pos_encodings.append(pos_encoding)
-
+    
     pos_encodings = np.array(pos_encodings)
-    print(pos_encodings.shape)
-
+    order = ['pe']*pos_encodings.shape[-1] + order
+     
     encodings = merge_encodings(
         node_features, 
         pos_encodings, 
         merging_type=PARAMETERS['node_embedding_concat_method']
     )
     
-    print(encodings.shape)
-
     return (
             chromosome, 
             bases, 
@@ -188,6 +207,7 @@ def _process_chromosome_files(
             encodings,
             compact_indexes,
             full_size,
+            order
         )
 
 
@@ -258,12 +278,11 @@ def create_dataset_from_hic_files(
         
         compacts = {r[0]: r[5] for r in results}
         sizes = {r[0]: r[6] for r in results}
-
-        
+        orders = {r[0]: r[7] for r in results}
+         
         print('Saving file:', output_file)
-        np.savez_compressed(output_file, data=data, target=target, inds=inds, encodings=encodings, compacts=compacts, sizes=sizes)
+        np.savez_compressed(output_file, data=data, target=target, inds=inds, encodings=encodings, compacts=compacts, sizes=sizes, enc_order=orders)
         end_time = time.time()
 
         print('Creating {} dataset took {} seconds!'.format(dataset, end_time-start_time))
-
 

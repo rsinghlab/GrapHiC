@@ -6,6 +6,10 @@ grapHiC/
 *.pyc
 main.out
 visualization.png
+datasets.json
 testing.py
 *.png	
 *.out
+archive/
+oscar_outputs/
+oscar_scripts/

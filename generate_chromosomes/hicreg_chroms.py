@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../GrapHiC/')
+
 import os
 import numpy as np
 
@@ -34,11 +37,13 @@ for cell_line in epigenetic_factor_paths.keys():
             os.path.join(PARSED_EPIGENETIC_FILES_DIRECTORY, cell_line, histone_mark),
             hic_data_resolution
         )
-
+        
 
 # Step 2: Run the script and generate the results 
-run(
-    'K562',
-    10000,
-    train=False
-)
+for cell_line in ['GM12878', 'IMR90', 'K562']:
+    run(
+        cell_line,
+        10000,
+        train=False
+    )
+    

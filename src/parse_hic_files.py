@@ -55,12 +55,15 @@ def process_chromosome(hic, output, resolution, chromosome, debug):
 
     if debug: print('Starting parsing Chromosome {}'.format(name))
 
-    
-    chromosome_matrix = hic.getMatrixZoomData(
-        chromosome.name, chromosome.name, 
-        'observed', 'KR', 'BP', resolution                                          
-    )
-    
+    try:
+        chromosome_matrix = hic.getMatrixZoomData(
+            chromosome.name, chromosome.name, 
+            'observed', 'KR', 'BP', resolution                                          
+        )
+    except:
+        print('Chromosome {} doesnt contain any informative rows'.format(name))
+        return 
+
     informative_indexes = np.array(chromosome_matrix.getNormVector(index))
     informative_indexes = np.where(np.isnan(informative_indexes)^True)[0]
     print(informative_indexes.shape)
@@ -123,18 +126,12 @@ def parse_hic_file(path_to_hic_file, output, resolution=10000, debug=False):
             process.join()
     else:
         for idx in range(len(chromosomes)):
-            process_chromosome(hic, output, resolution, chromosomes[idx])
+            process_chromosome(hic, output, resolution, chromosomes[idx], True)
 
 
     end_time = time.time()
     
     print('Parsing took {} seconds!'.format(end_time - start_time))
-
-
-
-
-
-
 
 
 
@@ -150,8 +147,6 @@ def download_all_hic_datasets():
             os.path.join(PARSED_HIC_FILES_DIRECTORY, hic_file_key),
             hic_data_resolution
         )
-
-
 
 
 

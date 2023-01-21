@@ -26,8 +26,8 @@ def invalid_comparisons(x, y):
 
 def mse(args):
     x, y = args
-    #x = x*255
-    #y = y*255
+    # x = x*255
+    # y = y*255
     if invalid_comparisons(x, y):
         return -100
     return mean_squared_error(x, y)
@@ -56,14 +56,21 @@ def psnr(args):
 
 def ssim(args):
     x, y = args
-    #x = x*255
-    #y = y*255
+    # x = x*255
+    # y = y*255
+    # if invalid_comparisons(x, y):
+    #     return -100
+    # #data_range = y.max()-y.min()
+    # if (x.flatten() == y.flatten()).all():
+    #     return -100
+    # return structural_similarity(x, y)
     if invalid_comparisons(x, y):
         return -100
     data_range = x.max()-x.min()
     if (x.flatten() == y.flatten()).all():
         return -100
     return structural_similarity(x, y, data_range=data_range)
+
 
 def pearsons(args):
     x, y = args
@@ -110,12 +117,11 @@ def hic_spector(args):
 
 list_of_eval_funcs = {
     'MSE': mse,
-    'MAE': mae,
-    'PSNR': psnr,
+    # 'MAE': mae,
+    # 'PSNR': psnr,
     'SSIM': ssim,
     'PCC': pearsons,
     'SCC': spearmans,
-    'INS': compute_insulation_score,
 }
 
 def evaluate(y, y_bar, func):
@@ -128,16 +134,11 @@ def evaluate(y, y_bar, func):
         @returns <np.array>, list : all errors and statistics of the errors.
     """
 
-    num_cpus = multiprocessing.cpu_count() if MULTIPROCESSING else 1
-    
     y_list = [y[x, 0, :, :] for x in range(y.shape[0])]
     y_bar_list = [y_bar[x, 0, :, :] for x in range(y_bar.shape[0])]
     args = zip(y_list, y_bar_list)
     
     errors = list(map(func, args))
-
-    # with multiprocessing.Pool(num_cpus) as pool:
-    #     errors = pool.map(func, args)
 
     return errors
 

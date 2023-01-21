@@ -1,7 +1,6 @@
 import torch
 import torch.nn.functional as F 
 import torch.nn as nn
-from torchvision.models.vgg import vgg16
 
 from torch.nn import Linear, BatchNorm1d, ModuleList
 from torch_geometric.nn.norm import GraphNorm
@@ -73,12 +72,16 @@ class GATConvBlock(nn.Module):
                                     edge_dim=edge_dim,
                                     concat=True
                     ) 
-        
+        self.linear = Linear(
+            out_channels*heads, 
+            out_channels
+        )
         self.bn= GraphNorm(out_channels)
         self.act = act
 
     def forward(self, x, edge_index, edge_attr, batch_index):
         x = self.conv(x, edge_index, edge_attr)
+        x = self.act(self.linear(x))
         x = self.bn(x, batch_index)
         return x
 
@@ -111,17 +114,70 @@ class TransformerBlock(nn.Module):
 
 
 
+def create_graph_conv_block(in_channels, out_channels, block_type='Transformer', num_blocks=2):
+    if block_type == 'Transformer':
+        input_block = TransformerBlock(
+                in_channels,
+                out_channels
+            )
+        hidden_blocks = [
+            GATConvBlock(in_channels, out_channels) 
+            for _ in range(num_blocks - 1)
+        ]
+    elif block_type == 'GAT':
+        input_block = GATConvBlock(
+                in_channels,
+                out_channels
+            )
+        hidden_blocks = [
+            GATConvBlock(in_channels, out_channels) 
+            for _ in range(num_blocks - 1)
+        ]
+    elif block_type == 'GConv':
+        input_block = GraphConvBlock(
+                in_channels,
+                out_channels
+            )
+        hidden_blocks = [
+            GraphConvBlock(in_channels, out_channels) 
+            for _ in range(num_blocks - 1)
+        ]
+    elif block_type == 'GCN':
+        input_block = GCNBlock(
+                in_channels,
+                out_channels
+            )
+        hidden_blocks = [
+            GCNBlock(in_channels, out_channels) 
+            for _ in range(num_blocks - 1)
+        ]
+    else:
+        print('Invalid Block type')
+        exit(1)
+    
+    
+    
+    return input_block, hidden_blocks
+
+
+
 
 class GrapHiCLoss(nn.Module):
-    def __init__(self, device):
+    def __init__(self, device, loss_func):
         super(GrapHiCLoss, self).__init__()
         self.mse_loss = nn.MSELoss().to(device)
-
-    def forward(self, out_images, target_images):
-        image_loss = self.mse_loss(out_images, target_images)
+        self.l1_loss = nn.L1Loss().to(device)
+        self.loss_func = loss_func
         
-        return image_loss 
-
+    def forward(self, out_images, target_images):
+        if self.loss_func == 'MSE':
+            mse_loss = self.mse_loss(out_images, target_images)
+            return mse_loss
+        elif self.loss_func == 'L1':
+            l1_loss = self.l1_loss(out_images, target_images)
+            return l1_loss
+        else:
+            exit(1)
 
 
 
@@ -146,24 +202,18 @@ class GrapHiC(torch.nn.Module):
         self.device = device
         self.model_name = model_name
         self.weights_dir = os.path.join(base_dir, model_name)
-        self.num_transform_blocks = HYPERPARAMETERS['transformblocks']
+        self.num_transform_blocks = HYPERPARAMETERS['graphconvblocks']
         
         if not os.path.exists(self.weights_dir):
             os.mkdir(self.weights_dir)
         
-        self.loss_function = GrapHiCLoss(device)
+        self.loss_function = GrapHiCLoss(device, HYPERPARAMETERS['loss_func'])
         
-        self.input_block = TransformerBlock(
-            input_embedding_size,
-            self.hyperparameters['embedding_size']
+        self.input_block, self.transform_blocks = create_graph_conv_block(
+            input_embedding_size, self.hyperparameters['embedding_size'], 
+            num_blocks= self.num_transform_blocks, 
+            block_type=self.hyperparameters['graphconvalgo']
         )
-        self.transform_blocks = [
-            TransformerBlock(
-                self.hyperparameters['embedding_size'], self.hyperparameters['embedding_size']
-            ) 
-            for _ in range(self.num_transform_blocks - 1)
-        ]
-
 
         # Pytorch for some reasons dont move the class to the required device
         for transform_block in self.transform_blocks:
@@ -234,6 +284,7 @@ class GrapHiC(torch.nn.Module):
         if scheme not in ['min-valid-loss', 'last-epoch']:
             print('Weight loading scheme not supported!')
             exit(1)
+        print(self.weights_dir)
         
         weights = list(map(lambda x: (float(x.split('_')[1].split('-')[0]) ,os.path.join(self.weights_dir, x)), os.listdir(self.weights_dir)))
         req_weights = min(weights,key=itemgetter(0))[1]

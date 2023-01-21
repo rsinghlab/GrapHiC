@@ -82,5 +82,19 @@
     "48f1dff9cb0c3d024176429bf16ce92755af73b5": "base:GM12878-encode-0_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.75_r:True_nirrm:intersection/",
     "d633729313758b5320d3b1590b692568c84f1d3f": "base:K562-geo-073_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.75_r:True_nirrm:intersection/",
     "7683fcca2c2a8556f2243184e4f4f3f097bb8eef": "base:GM12878-geo-026_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.75_r:True_nirrm:intersection/",
-    "77ac3e5a7841a5daba6bed046a7f51b00833907c": "base:GM12878-encode-2_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.75_r:True_nirrm:intersection/"
+    "77ac3e5a7841a5daba6bed046a7f51b00833907c": "base:GM12878-encode-2_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.75_r:True_nirrm:intersection/",
+    "8b7b0fe8fcbab1326a0f7e1ae969173369042954": "base:IMR90-geo-057_target:IMR90-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.9_r:True_nirrm:intersection/",
+    "ebda8233482c34f7d0f860bdcf1877ecdef05a87": "base:K562-geo-057_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.9_r:True_nirrm:intersection/",
+    "8919ef5b42fd124f9fcc68bb6d3147073f146c77": "base:GM12878-encode-0_target:GM12878-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "b5d147c9c44e9dc4ffb18d9b890901b1cef4bd45": "base:GM12878-encode-1_target:GM12878-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "df4060e08d7b48b096573b295fad997f97817b4d": "base:GM12878-encode-2_target:GM12878-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "5861973a45252783ba075563cef80c05b377e271": "base:GM12878-geo-026_target:GM12878-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "5b69b7ce18d0501ad426223a6cbf541c60bb4bad": "base:GM12878-geo-033_target:GM12878-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "af77db4d228e681bbadc81963911380f529d21c7": "base:IMR90-geo-057_target:IMR90-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "b8394fdb2e730796f03162d89c7b9f95bcdbb219": "base:K562-geo-057_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "33129196cd0630ab597963327130e14dfe8fe3e4": "base:K562-geo-073_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:intersection/",
+    "1434ff568e3da6f91943f381496ab29e4a0f8849": "base:IMR90-geo-057_target:IMR90-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:target/",
+    "947520e2d9552d15f82f6373e138664b45e6d888": "base:K562-geo-073_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:target/",
+    "43c5aabc4fa61e764b4b01817cd8b5174a9d15c3": "base:GM12878-encode-1_target:IMR90-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:target/",
+    "b2a5af9ca3535aca484c882c35729be5bb6db3c9": "base:GM12878-encode-1_target:K562-geo-raoetal_c:40_s:28_b:201_n:True_rz:True_sdz:False_p:99.99_r:True_nirrm:target/"
 }
