@@ -47,7 +47,6 @@ This should install pytorch 1.11.0 and its sub-modules compatible with CUDA vers
 Finally, to install pytorch geometric I ran this command, 
 ```
 pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.11.0+cu113.html
-Looking in links: https://data.pyg.org/whl/torch-1.11.0+cu113.html
 ```
 
 This should install appropriate required packages of pygeometric and ideally after this step everything should run fine without broken symbolic links. 
