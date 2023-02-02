@@ -13,3 +13,9 @@ testing.py
 archive/
 oscar_outputs/
 oscar_scripts/
+datasets.json
+src/difficult_to_map_region_analysis.py
+src/predict_imagebased.py 
+src/predict_graphbased.py 
+src/train_graphbased.py
+src/train_imagebased.py

@@ -114,8 +114,6 @@ def test(model, file_test, output_path, base, target):
         inputs = process_graph_batch(model, data.input, data.batch)
         encodings = process_graph_batch(model, data.x, data.batch)
         
-        print(np.min(encodings.to('cpu').numpy()), np.max(encodings.to('cpu').numpy()))
-        
         # We handle pos_idx seperately because its harder to generalize this 
         idx = torch.reshape(data.pos_indx, ((int(data.batch.max()) + 1), 4))
         
@@ -181,50 +179,50 @@ def test(model, file_test, output_path, base, target):
 
 
 
-# def save_chromosomes(model, file_test, output_path, base):
-#     model.eval()
+def save_chromosomes(model, file_test, output_path, base):
+    model.eval()
 
-#     loader = model.load_data(
-#         file_test, 
-#         1,
-#         False
-#     )
+    loader = model.load_data(
+        file_test, 
+        1,
+        False
+    )
 
-#     result_data = []
-#     result_inds = []
+    result_data = []
+    result_inds = []
     
-#     _, compacts, sizes = data_info(np.load(file_test, allow_pickle=True))
-#     chroms_path = os.path.join(PREDICTED_FILES_DIRECTORY, model.model_name, base)
-#     create_entire_path_directory(chroms_path)
+    _, compacts, sizes = data_info(np.load(file_test, allow_pickle=True))
+    chroms_path = os.path.join(PREDICTED_FILES_DIRECTORY, model.model_name, base)
+    create_entire_path_directory(chroms_path)
 
-#     for i, data in enumerate(loader):
-#         if i == (len(loader) - 1):
-#             continue
+    for i, data in enumerate(loader):
+        if i == (len(loader) - 1):
+            continue
         
-#         data = data.to(model.device)
-#         outputs = model(data)
-#         result_inds.append(data.pos_indx.to('cpu').numpy())
+        data = data.to(model.device)
+        outputs = model(data)
+        result_inds.append(data.pos_indx.to('cpu').numpy())
        
-#         result_data.append(outputs.detach().to('cpu').numpy())
+        result_data.append(outputs.detach().to('cpu').numpy())
         
     
-#     result_data = np.concatenate(result_data, axis=0)
-#     result_inds = np.concatenate(result_inds, axis=0).reshape(-1, 4)
+    result_data = np.concatenate(result_data, axis=0)
+    result_inds = np.concatenate(result_inds, axis=0).reshape(-1, 4)
     
-#     print(sorted(list(np.unique(result_inds[:,0]))))
+    print(sorted(list(np.unique(result_inds[:,0]))))
     
     
     
-#     predicted = together(result_data, result_inds, tag='Reconstructing: ')
+    predicted = together(result_data, result_inds, tag='Reconstructing: ')
 
-#     def save_data_n(key):
-#         file = os.path.join(chroms_path, f'chr{key}.npz')
-#         save_data(predicted[key], compacts[key], sizes[key], file)
+    def save_data_n(key):
+        file = os.path.join(chroms_path, f'chr{key}.npz')
+        save_data(predicted[key], compacts[key], sizes[key], file)
 
-#     print(f'Saving predicted data as individual chromosome files')
+    print(f'Saving predicted data as individual chromosome files')
 
-#     for key in compacts.keys():
-#         save_data_n(key)
+    for key in compacts.keys():
+        save_data_n(key)
 
 
 def plot_loss_curve(training_losses, validation_losses, epochs, output_path):
@@ -316,7 +314,7 @@ def run(
     test(model, file_test, output_path, base, target)
 
     # Step 5: we save all the samples instead of the chromosomes for easier evaluation
-    # save_chromosomes(model, file_test, output_path, base)
+    save_chromosomes(model, file_test, output_path, base)
 
     
 
