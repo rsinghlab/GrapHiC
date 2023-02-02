@@ -69,12 +69,17 @@ I used static file paths defined in the src/utils.py for almost the entire testi
 I have many wrapper functions that ensure that all the files and folders are in the correct order. However, if you still have issues setting your paths please feel free to reach out. 
 
 
-### Training GrapHiC
+## Datasets
+All the remote paths and the local paths of all the datasets used in this project are defined in the src/utils.py file. We download 3 high-resolution Hi-C datasets, 7 low-resolution Hi-C datasets and 42 epigenetic datasets through various portals. If you want to add datasets for other cell lines, add a new entry in the datasets path dictionary similar to the existing entries. For Hi-C datasets you only need to define the label of the dataset that is in format $cell-line-source-id$ and link to the remote database that contains that dataset. For epigenetic datasets you need to put it under a sub-dictionary of the $cell-line$ labeled with appropriate experiment id such as H3K27ME3. 
+
+
+## Training GrapHiC 
 Once you have installed all the GrapHiC requirements and setup the paths accordingly, you can run the command:
-
 ```
-python grapHiC.py
+python training_scripts/graphic_training.py
 ```
+This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. The training and testing scripts for HiCReg, HiCNN and different versions of GrapHiC follow the same workflow and we have created distinct .py files in the same folder. 
 
-This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. The training and testing scripts for HiCReg, HiCNN and different versions of GrapHiC follow the same workflow and we have created distinct .py files for each having a similar workflows. 
+## Imputing Hi-C reads with GrapHiC
+
 
