@@ -96,6 +96,11 @@ This script would generate aggregate results for all the test chromosomes in the
 3DChromatin_ReplicateQC replicate pipeline. 
 
 
+## Online App
+GrapHiC is also available as an app on [superbio.ai](https://app.superbio.ai/apps/196?id=63888da92ffa50c6deecdca2).
+
+
+
 
 
 
