@@ -19,3 +19,10 @@ src/predict_imagebased.py
 src/predict_graphbased.py 
 src/train_graphbased.py
 src/train_imagebased.py
+evaluation/
+figures/
+archive/
+related_work/
+other_tools/
+training_scripts/
+env/

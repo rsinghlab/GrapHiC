@@ -51,8 +51,6 @@ graphic_ablations =[
 
 
 
-
-
 def upscale(model, target, bases, epi_feature_set):
     cell_line = target.split('-')[0]
     for base in bases:        
@@ -112,15 +110,18 @@ def upscale(model, target, bases, epi_feature_set):
         )    
 
 ###################################################################################################
-# # Upscale GM12878 Cell line datasets
-# target = 'GM12878-geo-raoetal'
-# bases = ['GM12878-encode-0'] #, 'GM12878-encode-1', 'GM12878-encode-2', 'GM12878-geo-026', 'GM12878-geo-033']
+# Upscale GM12878 Cell line datasets
+target = 'GM12878-geo-raoetal'
+bases = ['GM12878-encode-0'] #, 'GM12878-encode-1', 'GM12878-encode-2', 'GM12878-geo-026', 'GM12878-geo-033']
 
 
 
-# # Upscale with graphic-large
-# for model in graphic_large_models:
-#     upscale(model, target, bases, 'All')
+PARAMETERS['decoderstyle'] = 'ContactCNN'
+dataset_creation_parameters['sub_mat'] = 230 
+
+# Upscale with graphic-large
+for model in graphic_large_models:
+    upscale(model, target, bases, 'All')
 
 
 # # Upscale with graphic-medium
@@ -148,90 +149,125 @@ def upscale(model, target, bases, epi_feature_set):
 
 
 
-###################################################################################################
-# # Upscale IMR90 datasets
-target = 'IMR90-geo-raoetal'
-bases = ['IMR90-geo-057']
+# ###################################################################################################
+# # # Upscale IMR90 datasets
+# target = 'IMR90-geo-raoetal'
+# bases = ['IMR90-geo-057']
 
-dataset_creation_parameters['non_informative_row_resolution_method'] = 'target'
-dataset_creation_parameters['add_expected_hic'] = True
-# Upscale with graphic-large
-for model in graphic_large_models:
-    upscale(model, target, bases, 'All')
+# dataset_creation_parameters['non_informative_row_resolution_method'] = 'target'
+# dataset_creation_parameters['add_expected_hic'] = True
+# # Upscale with graphic-large
+# for model in graphic_large_models:
+#     upscale(model, target, bases, 'All')
 
-# Upscale with graphic-medium
-for model in graphic_medium_models:
-    upscale(model, target, bases, 'GrapHiC-Med')
+# # Upscale with graphic-medium
+# for model in graphic_medium_models:
+#     upscale(model, target, bases, 'GrapHiC-Med')
 
-# Upscale with graphic-small
-for model in graphic_small_models:
-    upscale(model, target, bases, 'RAD-21')
-dataset_creation_parameters['add_expected_hic'] = False
+# # Upscale with graphic-small
+# for model in graphic_small_models:
+#     upscale(model, target, bases, 'RAD-21')
+# dataset_creation_parameters['add_expected_hic'] = False
 
 
-# Upscale in cross cell type setting
-bases = ['GM12878-encode-1']
-# Upscale with graphic-large
-for model in graphic_large_models:
-    upscale(model, target, bases, 'All')
+# # Upscale in cross cell type setting
+# bases = ['GM12878-encode-1']
+# # Upscale with graphic-large
+# for model in graphic_large_models:
+#     upscale(model, target, bases, 'All')
 
-# Upscale with graphic-medium
-for model in graphic_medium_models:
-    upscale(model, target, bases, 'GrapHiC-Med')
+# # Upscale with graphic-medium
+# for model in graphic_medium_models:
+#     upscale(model, target, bases, 'GrapHiC-Med')
 
-# Upscale with graphic-small
-for model in graphic_small_models:
-    upscale(model, target, bases, 'RAD-21')
+# # Upscale with graphic-small
+# for model in graphic_small_models:
+#     upscale(model, target, bases, 'RAD-21')
 
-dataset_creation_parameters['non_informative_row_resolution_method'] = 'intersection'
+# dataset_creation_parameters['non_informative_row_resolution_method'] = 'intersection'
+
+
+# # ###################################################################################################
+# # Upscale K562 datasets
+# target = 'K562-geo-raoetal'
+# bases = ['K562-geo-073']
+# dataset_creation_parameters['non_informative_row_resolution_method'] = 'target'
+
+# dataset_creation_parameters['add_expected_hic'] = True
+# # Upscale with graphic-large
+# for model in graphic_large_models:
+#     upscale(model, target, bases, 'All')
+
+# # Upscale with graphic-medium
+# for model in graphic_medium_models:
+#     upscale(model, target, bases, 'GrapHiC-Med')
+
+# # Upscale with graphic-small
+# for model in graphic_small_models:
+#     upscale(model, target, bases, 'RAD-21')
+
+# dataset_creation_parameters['add_expected_hic'] = False
+
+
+# # Upscale in cross cell type setting
+# bases = ['GM12878-encode-1']
+# # Upscale with graphic-large
+# for model in graphic_large_models:
+#     upscale(model, target, bases, 'All')
+
+# # Upscale with graphic-medium
+# for model in graphic_medium_models:
+#     upscale(model, target, bases, 'GrapHiC-Med')
+
+# # Upscale with graphic-small
+# for model in graphic_small_models:
+#     upscale(model, target, bases, 'RAD-21')
+# dataset_creation_parameters['non_informative_row_resolution_method'] = 'intersection'
 
 
 # ###################################################################################################
-# Upscale K562 datasets
-target = 'K562-geo-raoetal'
-bases = ['K562-geo-073']
-dataset_creation_parameters['non_informative_row_resolution_method'] = 'target'
-
-dataset_creation_parameters['add_expected_hic'] = True
-# Upscale with graphic-large
-for model in graphic_large_models:
-    upscale(model, target, bases, 'All')
-
-# Upscale with graphic-medium
-for model in graphic_medium_models:
-    upscale(model, target, bases, 'GrapHiC-Med')
-
-# Upscale with graphic-small
-for model in graphic_small_models:
-    upscale(model, target, bases, 'RAD-21')
-
-dataset_creation_parameters['add_expected_hic'] = False
+# Upscale H1 datasets
+# target = 'H1-geo-raoetal'
+# bases = ['H1-4dn-0']
+# dataset_creation_parameters['non_informative_row_resolution_method'] = 'target'
 
 
-# Upscale in cross cell type setting
-bases = ['GM12878-encode-1']
-# Upscale with graphic-large
-for model in graphic_large_models:
-    upscale(model, target, bases, 'All')
+# # Upscale with graphic-large
+# for model in graphic_large_models:
+#     upscale(model, target, bases, 'All')
 
-# Upscale with graphic-medium
-for model in graphic_medium_models:
-    upscale(model, target, bases, 'GrapHiC-Med')
+# # Upscale with graphic-medium
+# for model in graphic_medium_models:
+#     upscale(model, target, bases, 'GrapHiC-Med')
 
-# Upscale with graphic-small
-for model in graphic_small_models:
-    upscale(model, target, bases, 'RAD-21')
-dataset_creation_parameters['non_informative_row_resolution_method'] = 'intersection'
+# # Upscale with graphic-small
+# for model in graphic_small_models:
+#     upscale(model, target, bases, 'RAD-21')
 
 
+# # ###################################################################################################
+# # Upscale HUVEC datasets
+# target = 'HUVEC-geo-raoetal'
+# bases = ['HUVEC-geo-059']
+# dataset_creation_parameters['non_informative_row_resolution_method'] = 'target'
 
+# dataset_creation_parameters['add_expected_hic'] = True
+# # Upscale with graphic-large
+# for model in graphic_large_models:
+#     upscale(model, target, bases, 'All')
 
+# # Upscale with graphic-medium
+# for model in graphic_medium_models:
+#     upscale(model, target, bases, 'GrapHiC-Med')
 
+# # Upscale with graphic-small
+# for model in graphic_small_models:
+#     upscale(model, target, bases, 'RAD-21')
+# dataset_creation_parameters['add_expected_hic'] = False
 
 
 
-
-#dataset_creation_parameters['replace_with_expected_hic'] = True
+# dataset_creation_parameters['replace_with_expected_hic'] = True
 
 # target = 'IMR90-geo-raoetal'
 

@@ -10,7 +10,7 @@ from matplotlib.gridspec import GridSpec
 
 REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
 
-epi_labels = ['RAD-21', 'CTCF', 'DNASE-Seq']
+epi_labels = ['H3K27ME3', 'CTCF', 'DNASE-Seq']
 epi_colors = ['#1E88E5' , '#FFC107', '#D81B60']
 
 
@@ -119,26 +119,37 @@ def plot_hic_with_epi_features(hic, epis,
     plt.close()
     
 
-def percentile_cutoff(hic, percentile=99):
+def percentile_cutoff(hic, percentile=98):
     cutoff = np.percentile(hic, percentile)
     hic = np.minimum(cutoff, hic)
     hic = np.maximum(hic, 0)
     return hic
     
 
+def visualize_hic_square_format(hic, output):
+    f, (ax0) = plt.subplots(1, 1)
+    ax0.matshow(hic, cmap=REDMAP)
+    ax0.axis('off')
+    plt.tight_layout()
+    plt.savefig(output, bbox_inches='tight')
+    plt.close()
+    
+
+
 
 def visualize_samples(samples, indexes, input_encodings, enc_order, path):
     for i in range(samples.shape[0]): 
         idx = indexes[i, :]
-        input_encoding = input_encodings[i, 0, :200, :]
+        #input_encoding = input_encodings[i, 0, :200, :]
         hic = percentile_cutoff(samples[i, 0, :200, :200])
         
-        epis = []
-        for epi in epi_labels:
-            index_of_epi = enc_order.item()[idx[0]].index(epi)
-            epis.append(input_encoding[:, index_of_epi])
+        # epis = []
+        # for epi in epi_labels:
+        #     index_of_epi = enc_order.item()[idx[0]].index(epi)
+        #     epis.append(input_encoding[:, index_of_epi])
         
-        plot_hic_with_epi_features(
-            hic, epis, 
-            os.path.join(path, 'chrom-{}_i-{}_j-{}.png'.format(idx[0], idx[2], idx[3]))
-        )
+        visualize_hic_square_format(hic, os.path.join(path, 'chrom-{}_i-{}_j-{}.png'.format(idx[0], idx[2], idx[3])))
+        # plot_hic_with_epi_features(
+        #     hic, epis, 
+        #     os.path.join(path, 'chrom-{}_i-{}_j-{}.png'.format(idx[0], idx[2], idx[3]))
+        # )

@@ -8,6 +8,7 @@ from pyrandwalk import *
 import torch
 from torch_geometric.data import Dataset, Data
 from torch_geometric.loader import DataLoader
+from torch_geometric.utils import get_laplacian
 import matplotlib.pyplot as plt
 
 except_chr = {'hsa': {'X': 23, 23: 'X'}, 'mouse': {'X': 20, 20: 'X'}}
@@ -131,25 +132,6 @@ def divide(mat, chr_num, cropping_params, verbose=False):
     return result, index
 
 
-
-
-def graph_rw_smoothing(adj_matrix, steps=3):
-    smoothed = np.copy(adj_matrix)
-    states = np.arange(adj_matrix.shape[0])
-    rw = RandomWalk(states, adj_matrix)
-
-    for step in range(steps):
-        smoothed += rw.trans_power(step + 1)
-    
-    smoothed = smoothed / (steps + 1)
-
-    return smoothed
-
-
-
-
-
-
 def get_node_features(encoding):
     return torch.tensor(encoding, dtype=torch.float)
 
@@ -167,7 +149,7 @@ def get_edge_indexes(matrix):
 
     return edge_indices
 
-def create_graph_dataloader(base, targets, encodings, pos_indxs, batch_size, shuffle):
+def create_graph_dataloader(base, targets, encodings, pos_indxs, batch_size, shuffle, parameters=None):
     graphs = []
     for idx in range(base.shape[0]):
         matrix = base[idx, 0, :, :].cpu().detach().numpy()
@@ -179,6 +161,11 @@ def create_graph_dataloader(base, targets, encodings, pos_indxs, batch_size, shu
         x = get_node_features(encoding)
         edge_attrs = get_edge_attrs(matrix)
         edge_indexes = get_edge_indexes(matrix)
+        
+        if parameters['laplacian_norm']:
+            edge_indexes, edge_attrs = get_laplacian(edge_indexes, edge_attrs)
+            
+        
         
         graph = Data(
                         x=x, 

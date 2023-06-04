@@ -27,7 +27,7 @@ dataset_partitions = {
     'train': [1, 2, 3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 18],
     'valid': [8, 19, 10, 22],
     'test': [20, 21, 11],
-    'debug_train': [19],
+    'debug_train': [17],
     'debug_test': [20], 
     'all': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 }
@@ -60,9 +60,8 @@ def process_compact_idxs(base_compact_idx, target_compact_idx, compact_method='i
 
 def merge_encodings(node_features, pos_encoding, merging_type):
     # Currently just returns the positional encodings
-    
-    print(np.min(node_features), np.max(node_features), node_features.shape)
-    print(np.min(pos_encoding), np.max(pos_encoding), pos_encoding.shape)
+    print('NODE FEATURES:',np.min(node_features), np.max(node_features), node_features.shape)
+    print('POS FEATURES:',np.min(pos_encoding), np.max(pos_encoding), pos_encoding.shape)
     
     if merging_type == 'sum':
         return node_features + pos_encoding
@@ -104,7 +103,7 @@ def _process_chromosome_files(
     base_chrom = base_data['hic']
     target_chrom = target_data['hic']
     
-    print(base_chrom.shape, target_chrom.shape)
+    #print(base_chrom.shape, target_chrom.shape)
     
     # Ensure that that shapes match, otherwise we can not proceede
     assert(base_chrom.shape[0] == target_chrom.shape[0])
@@ -129,7 +128,7 @@ def _process_chromosome_files(
     base_chrom = compactM(base_chrom, compact_indexes)
     target_chrom = compactM(target_chrom, compact_indexes)
     
-    print(base_chrom.shape, target_chrom.shape)
+    #print(base_chrom.shape, target_chrom.shape)
           
     if verbose: print('Processing Node Features')
     # Read Node feature files and compile them in a single array
@@ -139,6 +138,8 @@ def _process_chromosome_files(
         PARAMETERS, 
         compact_indexes
     )
+    print(node_features.shape)
+    
     
     # Normalize the HiC Matrices
     if PARAMETERS['chrom_wide']:
@@ -163,17 +164,12 @@ def _process_chromosome_files(
     if verbose: print('Dividing the Chromosomes...')
     bases, _ = divide(base_chrom, chromosome, PARAMETERS)        
     targets, inds = divide(target_chrom, chromosome, PARAMETERS)
-    print(bases.shape)
-    
     
     if PARAMETERS['add_expected_hic']:
         bases = np.array(list(map(lambda x: generate_and_add_expected_contact_matrix(x), bases)))
     
-    
     if PARAMETERS['replace_with_expected_hic']:
         bases = np.array(list(map(lambda x: generate_expected_contact_matrix(x), bases)))
-    
-    print(bases.shape)
     
     if PARAMETERS['node_embedding_concat_method'] in ['concat', 'positional']:
         encoding_dim = PARAMETERS['positional_encoding_dim']
@@ -185,14 +181,40 @@ def _process_chromosome_files(
     # 3 out of 4 positional encodings are independent of the graph except the 'graph' encodings
     pos_encodings = []
     for base in bases:
-        pos_encoding = encoding_methods[PARAMETERS['positional_encoding_method']](
-            base, encoding_dim=encoding_dim
-        )
-        pos_encodings.append(pos_encoding)
+        if PARAMETERS['positional_encoding_method'] in ['constant', 'monotonic', 'transformer', 'graph']:
+            pos_encoding = encoding_methods[PARAMETERS['positional_encoding_method']](
+                base, encoding_dim=encoding_dim
+            )
+            pos_encodings.append(pos_encoding)
+        elif PARAMETERS['positional_encoding_method'] == 'graph_lap_pe':
+            pos_encoding = encoding_methods[PARAMETERS['positional_encoding_method']](
+                base, encoding_dim=encoding_dim, 
+                lap_norm=PARAMETERS['lap_norm'],
+                eig_norm=PARAMETERS['eig_norm']
+            )
+            pos_encodings.append(pos_encoding)
+       
+        elif PARAMETERS['positional_encoding_method'] == 'rw_se':
+            pos_encoding = encoding_methods[PARAMETERS['positional_encoding_method']](
+                base, encoding_dim=encoding_dim, 
+            )
+            pos_encodings.append(pos_encoding)
+        
+        elif PARAMETERS['positional_encoding_method'] == 'heat_kernel_se':
+            pos_encoding = encoding_methods[PARAMETERS['positional_encoding_method']](
+                base, encoding_dim=encoding_dim, 
+            )
+            pos_encodings.append(pos_encoding)
+
+        else:
+            print('Invalid PE operator')
+            exit(1)
+    
+    
     
     pos_encodings = np.array(pos_encodings)
     order = ['pe']*pos_encodings.shape[-1] + order
-     
+    
     encodings = merge_encodings(
         node_features, 
         pos_encodings, 

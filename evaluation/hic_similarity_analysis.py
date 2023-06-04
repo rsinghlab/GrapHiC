@@ -9,14 +9,14 @@ PARAMETERS_FILE =  os.path.join(
     'parameters.txt'
 )
 
-def create_bins_file(hic_similarity_files_directory, resolution, chr, sub_mat=230):
+def create_bins_file(hic_similarity_files_directory, resolution, chr, sub_mat=256):
     output_path = os.path.join(
         hic_similarity_files_directory, 
         'chr{}_bins.bed'.format(chr)
     )
     
-    if os.path.exists(output_path):
-        return
+    # if os.path.exists(output_path):
+    #     return
     
     with open(output_path, 'w') as f:
         # will we support arbitrary starting locations?

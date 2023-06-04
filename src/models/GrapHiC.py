@@ -5,6 +5,7 @@ import torch.nn as nn
 from torch.nn import Linear, BatchNorm1d, ModuleList
 from torch_geometric.nn.norm import GraphNorm
 from torch_geometric.nn import GCNConv, TransformerConv, GraphConv, GATConv
+from src.models.GPSConv import GPSConv
 import torch.optim as optim
 
 from torch.utils.data import TensorDataset, DataLoader
@@ -14,8 +15,8 @@ import os
 from src.matrix_operations import create_graph_dataloader
 from src.utils import WEIGHTS_DIRECTORY
 from src.models.ContactCNN import ContactCNN
-from src.models.TVLoss import TVLoss
-from src.models.Insulation import InsulationLoss
+from src.models.Unet import UNet
+
 
 torch.manual_seed(0)
 
@@ -66,12 +67,12 @@ class GATConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, heads=4, edge_dim=1, act=torch.relu):
         super(GATConvBlock, self).__init__()
         self.conv = GATConv(
-                                    in_channels, 
-                                    out_channels, 
-                                    heads=heads, 
-                                    edge_dim=edge_dim,
-                                    concat=True
-                    ) 
+            in_channels, 
+            out_channels, 
+            heads=heads, 
+            edge_dim=edge_dim,
+            concat=True
+        ) 
         self.linear = Linear(
             out_channels*heads, 
             out_channels
@@ -112,7 +113,26 @@ class TransformerBlock(nn.Module):
         return x
 
 
-
+class GPSConvBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, heads=1, edge_dim=1, act=nn.ReLU()):
+        super(GPSConvBlock, self).__init__()
+        self.linear = Linear(
+            in_channels, 
+            out_channels
+        )
+        self.conv = GPSConv(
+            out_channels,
+            edge_dim,
+            heads=heads,
+            attn_dropout=0.5,
+            act=act
+        )
+        
+    def forward(self, x, edge_index, edge_attr, batch_index):
+        x = self.linear(x)
+        x = self.conv(x, edge_index, edge_attr, batch_index)
+        return x
+        
 
 def create_graph_conv_block(in_channels, out_channels, block_type='Transformer', num_blocks=2):
     if block_type == 'Transformer':
@@ -151,11 +171,19 @@ def create_graph_conv_block(in_channels, out_channels, block_type='Transformer',
             GCNBlock(in_channels, out_channels) 
             for _ in range(num_blocks - 1)
         ]
+    elif block_type == 'GPSConv':
+        input_block = GPSConvBlock(
+                in_channels,
+                out_channels
+            )
+        hidden_blocks = [
+            GPSConvBlock(in_channels, out_channels) 
+            for _ in range(num_blocks - 1)
+        ]
+    
     else:
         print('Invalid Block type')
         exit(1)
-    
-    
     
     return input_block, hidden_blocks
 
@@ -183,15 +211,31 @@ class GrapHiCLoss(nn.Module):
 
 
 class InnerProductDecoder(torch.nn.Module):
-    def __init__(self, act=torch.sigmoid):
+    def __init__(self):
         super(InnerProductDecoder, self).__init__()
-        self.act = act
-
+        
     def forward(self, z_0, z_1):
         z_1 = torch.transpose(z_1, 1, 2)
         adj = self.act(torch.matmul(z_0, z_1))
         adj = adj.reshape(adj.shape[0], 1, adj.shape[1], adj.shape[2])
         return adj
+
+
+
+class UnetDecoder(torch.nn.Module):
+    def __init__(self, device, embedd_dim=32, act=nn.Sigmoid()):
+        super(UnetDecoder, self).__init__()
+        self.device = device
+        self.unet = UNet(1, embedd_dim, ).to(self.device)
+        self.act = act
+        
+    def forward(self, z0, z1):
+        batch_size = z0.shape[0]
+        z1 = torch.transpose(z1, 1, 2)
+        adj = self.act(torch.matmul(z0, z1))
+        adj = adj.reshape(adj.shape[0], 1, adj.shape[1], adj.shape[2])
+        t = torch.randint(0, 10000, (batch_size,),  dtype=torch.long, device=self.device)
+        return self.unet(adj, t)
 
 
 
@@ -219,27 +263,44 @@ class GrapHiC(torch.nn.Module):
         for transform_block in self.transform_blocks:
             transform_block.to(device)
 
-
-        # Decoder
-        self.contact_cnn = ContactCNN(
-            self.hyperparameters['embedding_size'], 
-            self.hyperparameters['embedding_size'],
-            residual_blocks=HYPERPARAMETERS['resblocks']
-        )
-
-
+        if self.hyperparameters['decoderstyle'] == 'InnerProductDecoder':
+            print('InnerProductDecoder')
+            self.decoder = InnerProductDecoder()
+        elif self.hyperparameters['decoderstyle'] == 'Unet':
+            print('Unet')
+            self.unetdecoder = UnetDecoder(
+                device,
+                self.hyperparameters['embedding_size']
+            )
+        elif self.hyperparameters['decoderstyle'] == 'ContactCNN':
+            print('ContactCNN')
+            self.contact_cnn = ContactCNN(
+                self.hyperparameters['embedding_size'], 
+                self.hyperparameters['embedding_size'],
+                residual_blocks=HYPERPARAMETERS['resblocks']
+            )
+            
+        else:
+            print('Wrong decoder type {} provided, exiting'.format(self.hyperparameters['decoderstyle']))
+            exit(1)
+        
+        
     def encode(self, x, edge_index, edge_attr, batch_index):
         x = self.input_block(x, edge_index, edge_attr, batch_index)
         for i in range(len(self.transform_blocks) - 1):
             x = self.transform_blocks[i](x, edge_index, edge_attr, batch_index)
         Z = self.process_graph_batch(x, batch_index)
-        
         return Z
 
     def decode(self, Z):
-        Z = self.contact_cnn(Z, Z)
+        if self.hyperparameters['decoderstyle'] == 'InnerProductDecoder':
+            Z = self.decoder(Z, Z)
+        elif self.hyperparameters['decoderstyle'] == 'Unet':
+            Z = self.unetdecoder(Z, Z)
+        elif self.hyperparameters['decoderstyle'] == 'ContactCNN':
+            Z = self.contact_cnn(Z, Z)
+        
         return Z
-
 
     def forward(self, data):
         Z = self.encode(data.x, data.edge_index, data.edge_attr, data.batch)
@@ -254,7 +315,7 @@ class GrapHiC(torch.nn.Module):
         encodings = torch.tensor(data['encodings'], dtype=torch.float32)
         indxs = torch.tensor(data['inds'], dtype=torch.long)
         batch_size = self.hyperparameters['batch_size'] if batch_size == -1 else batch_size
-        data_loader = create_graph_dataloader(bases, targets, encodings, indxs, batch_size , shuffle)
+        data_loader = create_graph_dataloader(bases, targets, encodings, indxs, batch_size, shuffle, self.hyperparameters)
         
         return data_loader
 
@@ -290,7 +351,8 @@ class GrapHiC(torch.nn.Module):
         req_weights = min(weights,key=itemgetter(0))[1]
 
         print("Loading: {}".format(req_weights))
-
+        print(req_weights)
+        
         self.load_state_dict(torch.load(req_weights, map_location=self.device))
 
         

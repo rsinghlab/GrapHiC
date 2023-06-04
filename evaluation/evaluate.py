@@ -27,9 +27,12 @@ rp_values = {
 relevant_directories = [sys.argv[1]]
 
 
-#relevant_directories = list(filter(lambda x: '@' in x, os.listdir(PREDICTED_FILES_DIRECTORY)))
+# relevant_directories = list(filter(lambda x: '@' in x, os.listdir(PREDICTED_FILES_DIRECTORY)))
 # relevant_directories = ['GM12878-encode-0@GM12878-geo-raoetal']
 relevant_directories = list(map(lambda x: os.path.join(PREDICTED_FILES_DIRECTORY, x) , relevant_directories))
+
+print(relevant_directories)
+
 
 
 test_chroms = dataset_partitions['test']
@@ -37,6 +40,7 @@ test_chroms = dataset_partitions['test']
 def read_and_crop_chrom_files(path, cpt_idx_dict):
     predicted = []
     inds = []
+    
     for chrom in test_chroms:
         chrom_path = os.path.join(path, 'chr{}.npz'.format(chrom))
         predicted_chrom_data = np.load(chrom_path)
@@ -64,6 +68,7 @@ def read_and_crop_chrom_files(path, cpt_idx_dict):
 def get_every_nth_element(data, step=10):
     num = data.shape[0]//step
     array = data[np.round(np.linspace(1, data.shape[0]-1, num=num)).astype(int)]
+    
     return array
 
 
@@ -101,8 +106,8 @@ for relevant_directory in relevant_directories:
         if method == 'inputs' or method == 'target' or method=='hic_similarity_analysis':
             continue
 
-        print('Reading samples from {}'.format(method))
-        predicted_data_directory = os.path.join(relevant_directory, method)       
+        predicted_data_directory = os.path.join(relevant_directory, method)
+        print('Reading samples from {}'.format(predicted_data_directory))       
         if 'graphic' in predicted_data_directory:
             predicted_samples = np.load(os.path.join(predicted_data_directory, 'predicted_samples.npz'), allow_pickle=True)
             if inputs.shape[0] == 0:
@@ -116,8 +121,8 @@ for relevant_directory in relevant_directories:
             if indexes.shape[0] == 0:
                 indexes = predicted_samples['index']
             if method not in samples_dictionary.keys():
-                samples_dictionary[method] = predicted_samples['graphic']            
-        
+                samples_dictionary[method] = predicted_samples['graphic']
+                
         else:
             predicted, idxes, cmpt_idx = read_and_crop_chrom_files(
                 os.path.join(
@@ -150,6 +155,8 @@ for relevant_directory in relevant_directories:
     # Now we start setting up the evaluation files and visualizations
     for key in samples_dictionary.keys():
         output_path = os.path.join(relevant_directory, key)
+        print(output_path)
+
         # Step 1: Do visualizations with the epigenetic features
         visualization_path = os.path.join(output_path, 'visualizations')
         create_entire_path_directory(visualization_path)
@@ -162,24 +169,25 @@ for relevant_directory in relevant_directories:
             visualization_path
         )
         
-        # Step 2: Setup the 3D recon analysis files
-        recon_analysis_path = os.path.join(output_path, 'recon_analysis')
-        create_entire_path_directory(recon_analysis_path)
-        print('Creating Recon analysis files for {}'.format(key))
-        recon_analysis_files[key] = generate_models(samples_dictionary[key], indexes, recon_analysis_path)
+        # # Step 2: Setup the 3D recon analysis files
+        # recon_analysis_path = os.path.join(output_path, 'recon_analysis')
+        # create_entire_path_directory(recon_analysis_path)
+        # print('Creating Recon analysis files for {}'.format(key))
+        # recon_analysis_files[key] = generate_models(samples_dictionary[key], indexes, recon_analysis_path)
         
         # Step 3: Setup the bio feature analysis files
         bio_feature_analysis_path = os.path.join(output_path, 'bio_feature_analysis')
         create_entire_path_directory(bio_feature_analysis_path)
         print('Creating biological feature analysis files for {}'.format(key))
-        loops, borders, hairpins = extract_features(samples_dictionary[key], indexes, bio_feature_analysis_path)
-        bio_feature_analysis_files[key] = {
-            'loops': loops,
-            'borders': borders, 
-            'hairpins': hairpins
-        }
-        
-        # Step 4: Setup Hi-C similarity analysis files
+        if key != 'inputs':
+            loops, borders, hairpins = extract_features(samples_dictionary[key], indexes, bio_feature_analysis_path)
+            bio_feature_analysis_files[key] = {
+                'loops': loops,
+                'borders': borders, 
+                'hairpins': hairpins
+            }
+            
+        # # Step 4: Setup Hi-C similarity analysis files
         hic_similarity_analysis_path = os.path.join(output_path, 'hic_similarity_analysis')
         create_entire_path_directory(hic_similarity_analysis_path)
         print('Creating Hi-C similarity files for {}'.format(key))
@@ -203,8 +211,9 @@ for relevant_directory in relevant_directories:
     
     # Now we run actual evaluations
     for key in samples_dictionary.keys():
-        if key == 'target':
+        if key == 'target' or key == 'inputs':
             continue
+        
         # Step 1: Compute the correlation metrics
         print('Running correlation evaluations for {}'.format(key))
         results = compute_correlation_metrics(samples_dictionary[key], samples_dictionary['target'])
@@ -213,12 +222,12 @@ for relevant_directory in relevant_directories:
             correlation_results[key][result] = float(np.mean(results[result]))
         
            
-        # Step 2: Compute 3D Recon results
-        print('Running reconstruction evaluations for {}'.format(key))
-        results = reconstruction_score(recon_analysis_files[key], recon_analysis_files['target'])
-        reconstruction_results[key] = {}
-        for result in results:
-            reconstruction_results[key][result] = float(np.mean(results[result]))
+        # # Step 2: Compute 3D Recon results
+        # print('Running reconstruction evaluations for {}'.format(key))
+        # results = reconstruction_score(recon_analysis_files[key], recon_analysis_files['target'])
+        # reconstruction_results[key] = {}
+        # for result in results:
+        #     reconstruction_results[key][result] = float(np.mean(results[result]))
         
         # Step 3: Compute Bio feature results
         print('Running loop feature analysis evaluations for {}'.format(key))
@@ -251,13 +260,13 @@ for relevant_directory in relevant_directories:
             'correlation_results.json'
         )
     )
-    save_results(
-        reconstruction_results, 
-        os.path.join(
-            results_directory, 
-            'recon_results.json'
-        )
-    )
+    # save_results(
+    #     reconstruction_results, 
+    #     os.path.join(
+    #         results_directory, 
+    #         'recon_results.json'
+    #     )
+    # )
     save_results(
         borders_feature_results, 
         os.path.join(

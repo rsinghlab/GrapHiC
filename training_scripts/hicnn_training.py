@@ -53,7 +53,7 @@ normalization_params = {
     'draw_dist_graphs'  : False,  # Visualize the distribution of the chromosome
     'edge_culling'      : -1,
 }
-non_informative_row_resolution_method = 'intersection' # This finds common non-informative rows in both dataset and then removes them. Can take ['ignore', 'target', 'intersection']
+non_informative_row_resolution_method = 'target' # This finds common non-informative rows in both dataset and then removes them. Can take ['ignore', 'target', 'intersection']
 
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
@@ -63,7 +63,7 @@ target = 'GM12878-geo-raoetal'
 
 
 
-for base in ['GM12878-encode-0', 'GM12878-encode-1', 'GM12878-encode-2', 'GM12878-geo-026', 'GM12878-geo-033']:
+for base in ['GM12878-encode-0']:
     
     dataset_name = 'base:{}_target:{}_c:{}_s:{}_b:{}_n:{}_rz:{}_sdz:{}_p:{}_r:{}_nirrm:{}/'.format(
         base,
@@ -118,6 +118,7 @@ for base in ['GM12878-encode-0', 'GM12878-encode-1', 'GM12878-encode-2', 'GM1287
         os.path.join(dataset_path, 'valid.npz'),
         os.path.join(dataset_path, 'test.npz'),
         base,
+        target,
         True
     )
     

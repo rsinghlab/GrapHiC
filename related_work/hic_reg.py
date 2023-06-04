@@ -21,7 +21,7 @@ normalization_params = {
     'norm'              : True,  # To normalize or not
     'remove_zeros'      : True,  # Remove zero before percentile calculation
     'set_diagonal_zero' : False, # Remove the diagonal before percentile calculation
-    'percentile'        : 99.5,  # Percentile 
+    'percentile'        : 99.90,  # Percentile 
     'rescale'           : True,  # After applying cutoff, rescale between 0 and 1
     'chrom_wide'        : True,  # Apply it on chromosome scale #TODO: Sample wise normalization isn't implemented
     'draw_dist_graphs'  : False,  # Visualize the distribution of the chromosome
@@ -37,7 +37,7 @@ epi_features_list = [
 def load_dataset(
     cell_line,
     resolution,
-    max_distance = 200,
+    max_distance = 256,
     dataset='debug'
 ):  
     output_path = os.path.join(
@@ -49,18 +49,9 @@ def load_dataset(
     
     output_file = os.path.join(output_path, '{}.npz'.format(dataset))
     
-    # if os.path.exists(output_file):
-    #     print('File already exists, reading the existing dataset and returning')
-    #     data = np.load(output_file)['data']
-
-    #     return data
-    
     # we store a generated array for each chrom 
     # and then merge them and shuffle them
     final_dataset = []
-
-
-
 
     for chrom in dataset_partitions[dataset]:
         # Load the hic dataset
@@ -88,26 +79,45 @@ def load_dataset(
                 if col < hic_data.shape[1]:
                     idxes.append((row, col))
 
-        # 2 times epi features for each bin, 2 for chrom id and size and 2 for hic count and distance
-        chrom_dataset = np.zeros((len(idxes), (2*epi_features.shape[1] + 2 + 2)))
-
+        # 2 times epi features for each bin, 1 times epi features for window, 2 for chrom id and size and 2 for hic count and distance and 2 for indexes
+        chrom_dataset = np.zeros((len(idxes), (3*epi_features.shape[1] + 2 + 2 + 2)))
+        
         for index, idx in enumerate(idxes):
             i, j = idx
             distance = abs((i*resolution) - (j*resolution))
             actual_hic_count = hic_data[i, j]
             epi_i = epi_features[i, :]
             epi_j = epi_features[j, :]
+            averaged_signal = np.zeros_like(epi_i)
+            min_max = sorted([i, j])
+            min = min_max[0]
+            max = min_max[1]
+            
+            count = 0
+            
+            for x in range(min, max, 1):
+                averaged_signal += epi_features[x, :]
+                count += 1 
+        
+            if count == 0:
+                averaged_signal = epi_features[min, :]
+            else:
+                averaged_signal = averaged_signal / count
+
             
             chrom_dataset[index, 0] = chrom
             chrom_dataset[index, 1] = hic_data.shape[0]
             chrom_dataset[index, 2] = i
             chrom_dataset[index, 3] = j
             chrom_dataset[index, 4:(4+epi_features.shape[1])] = epi_i
-            chrom_dataset[index, (4+epi_features.shape[1]):((4+epi_features.shape[1])+epi_features.shape[1])] = epi_j
+            chrom_dataset[index, (4+epi_features.shape[1]):(4+2*epi_features.shape[1])] = epi_j
+            chrom_dataset[index, (4+(2*epi_features.shape[1])):(4+(3*epi_features.shape[1]))] = averaged_signal
             chrom_dataset[index, -2] = distance
             chrom_dataset[index, -1] = actual_hic_count
 
-        
+            
+            
+            
         final_dataset.append(chrom_dataset)
     
     final_dataset = np.concatenate(final_dataset, axis=0)
@@ -146,7 +156,7 @@ def run(
 
     if train:
         train_dataset = load_dataset(cell_line, resolution, dataset='train')
-        training_features = train_dataset[:, 4:(len(epi_features_list)*2 + 1)]
+        training_features = train_dataset[:, 4:(len(epi_features_list)*3 + 1)]
         training_labels = train_dataset[:, -1]
         hic_reg.fit(training_features, training_labels)
         joblib.dump(
@@ -160,17 +170,15 @@ def run(
 
     test_dataset = load_dataset(cell_line, resolution, dataset='test')
 
-    
-
-    testing_features = test_dataset[:, 4:(len(epi_features_list)*2 + 1)]
-    testing_chrom_and_pos = test_dataset[:, :4]
+    testing_features = test_dataset[:, 4:(len(epi_features_list)*3 + 1)]
+    testing_chrom_and_pos = test_dataset[:, :4] 
     
     # Predict on test chromomsomes
     test_predictions = hic_reg.predict(testing_features)
 
     # Save test chromosomes
     test_chroms = np.unique(testing_chrom_and_pos[:, 0]).astype(int)    
-
+    
     for chrom in test_chroms:
         # output path
         output_path = os.path.join(
@@ -180,7 +188,9 @@ def run(
             )
         )
         # get all rows that have current test chrom
+        
         chrom_positions = np.argwhere(testing_chrom_and_pos[:, 0] == chrom)
+        
         # Chrom shape
         chrom_shape = int(testing_chrom_and_pos[chrom_positions[0]][0, 1])
         output_chrom = np.zeros((chrom_shape, chrom_shape))

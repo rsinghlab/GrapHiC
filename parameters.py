@@ -10,17 +10,19 @@ hic_data_resolution = 10000
 
 # These hyperparameters go to GrapHiC model controlling the training batch size, optimizer parameters 
 PARAMETERS = {
-    'epochs'                                : 250,             # We used 250 for most of the architecture search
-    'batch_size'                            : 16,               # Change to control per batch GPU memory requirement
+    'epochs'                                : 250,              # We used 250 for most of the architecture search
+    'batch_size'                            : 8,                # Change to control per batch GPU memory requirement
     'optimizer_type'                        : 'ADAM',           # We used the same optimizer ADAM
-    'learning_rate'                         : 0.0001,               # Optimzer parameters
-    'momentum'                              : 0.9,                  # Optimizer parameters
+    'learning_rate'                         : 0.0001,           # Optimzer parameters
+    'momentum'                              : 0.9,              # Optimizer parameters
     'num_heads'                             : 4,                # Number of heads a parameter required for TransformerConv layer and GAT layers (if applicable)
     'embedding_size'                        : 32,               # Size of the embeddings, latent dimensions and number of filters
     'resblocks'                             : 5,                # Number of resblocks for Decoder 
     'graphconvblocks'                       : 1,                # Number of Graph convolution layers for Encoder
     'graphconvalgo'                         : 'Transformer',    # Graph convolution function
-    'loss_func'                             : 'MSE'
+    'loss_func'                             : 'MSE',
+    'decoderstyle'                          : 'Unet',           # Graph decoding algoritm, defaults to ContactCNN
+    'laplacian_norm'                        : False,
 }
 
 
@@ -36,14 +38,17 @@ dataset_creation_parameters = {
     'draw_dist_graphs'                      : False,            # Visualize the distribution of the chromosome
     'positional_encoding_method'            : 'graph',          # Required for GrapHiC, can take values between ['constant', 'monotonic', 'transformer', 'graph']
     'positional_encoding_dim'               : 8,                # Dimension of positional encodings
-    'non_informative_row_resolution_method' : 'intersection',   # This finds common non-informative rows in both dataset and then removes them. Can take ['ignore', 'target', 'intersection']
+    'lap_norm'                              : 'sym',            # If the positional encoding method is graph_lap_pe, we use this method to create the laplacian
+    'eig_norm'                              : 'L2',             # If the positional encoding method is graph_lap_pe, we use this method to normalize our eigen vectors
+    'non_informative_row_resolution_method' : 'target',         # This finds common non-informative rows in both dataset and then removes them. Can take ['ignore', 'target', 'intersection']
     'noise'                                 : 'none',           # This function adds noise to all the input samples should improve training in certain cases. Can take ['none', 'random', 'uniform', 'gaussian']
     'node_embedding_concat_method'          : 'concat',         # Method to merge the positional and node encodings
-    'sub_mat'                               : 230,              # Size of the submatrices  
+    'sub_mat'                               : 256,              # Size of the submatrices  
     'stride'                                : 30,               # Stride after sampling each submatrix
     'bounds'                                : 20,               # Bounds to stay within, 20 ensures that we never sample anything outside 2MB
     'padding'                               : True,             # To pad the matrices with 0 for the last sample
     'add_expected_hic'                      : False,            # If the input matrix structure is weak, we add an expected Hi-C matrix to provide support for our graph model
+    'add_expected_hic_merge'                : False,
     'replace_with_expected_hic'             : False
 } 
 
@@ -74,5 +79,6 @@ epigenetic_features = {
     'H3K9AC': ['H3K9AC'],
     'H4K20ME1': ['H4K20ME1'],
     'H3K9ME3': ['H3K9ME3'],
-    'GrapHiC-Med': ['CTCF', 'RAD-21', 'DNASE-Seq']
+    'GrapHiC-Med': ['CTCF', 'RAD-21', 'DNASE-Seq'],
+    'GrapHiC-Trimmed': ['CTCF', 'DNASE-Seq', 'H3K4ME3', 'H3K27AC', 'H3K27ME3'],
 } 

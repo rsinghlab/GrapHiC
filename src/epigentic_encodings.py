@@ -74,16 +74,15 @@ def read_node_encoding_files(node_encoding_files, chromosome, cropping_params, c
         node_encoding_data = np.load(node_encoding_file_path, allow_pickle=True)
         node_encoding_data = node_encoding_data['epi']
         
-        print(node_encoding_data.shape)
-        
         node_encodings_order.append(node_encoding_file.split('/')[-1])
 
+        print(node_encoding_data.shape, len(compact_idx))
+        
         # Only take the node encodings that are informative in HiC data as well
         if len(compact_idx) != 0:
             node_encoding_data = node_encoding_data.take(compact_idx)
         
         
-        print(node_encoding_data.shape)
         # Append the encodings
         node_encodings.append(node_encoding_data)
     

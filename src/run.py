@@ -106,6 +106,10 @@ def test(model, file_test, output_path, base, target):
     target_samples = []
     indices = []
 
+    total_params = sum(
+	    param.numel() for param in model.parameters()
+    )
+    print('Total parameters: {}'.format(total_params))
     
     for data in tqdm(test_loader, desc='Predicting: '):
         data = data.to(model.device)
@@ -150,6 +154,8 @@ def test(model, file_test, output_path, base, target):
         dump_file.write('Pearson\'s Correlation Coefficient --- Baseline: {}, Generated: {}\n'.format(
             (baseline_pcc_score/total_batches), (upscaled_pcc_score/total_batches)
         ))
+
+    print(PREDICTED_FILES_DIRECTORY, base, target, model.model_name)
 
     samples_path = os.path.join(PREDICTED_FILES_DIRECTORY, base + '@' + target, model.model_name)
     create_entire_path_directory(samples_path)
@@ -256,6 +262,7 @@ def run(
     
     # Clean the existing sets of weights in the model.dir_model directory
     if retrain:
+        print("Retraining")
         delete_files(model.weights_dir)
 
     # Create and clean the output directory 

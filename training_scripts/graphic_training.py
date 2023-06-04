@@ -32,7 +32,7 @@ download_all_hic_datasets()
 download_all_epigenetic_datasets()
 
 
-for base in ['GM12878-encode-0', 'GM12878-encode-1', 'GM12878-encode-2','GM12878-geo-026', 'GM12878-geo-033']:
+for base in ['GM12878-encode-0']: #, 'GM12878-encode-1', 'GM12878-encode-2','GM12878-geo-026', 'GM12878-geo-033']:
     dataset_name = 'base:{}_target:{}_nenc:{}/'.format(
             base,
             target,

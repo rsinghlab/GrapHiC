@@ -20,7 +20,7 @@ from src.utils import create_entire_path_directory, hic_file_paths, PARSED_HIC_F
 
 
 # Main Multiprocessing switch for the HiC parser
-MULTIPROCESSING=True
+MULTIPROCESSING=False
 
 def process_chromosome(hic, output, resolution, chromosome, debug):
     '''
@@ -41,12 +41,14 @@ def process_chromosome(hic, output, resolution, chromosome, debug):
     )
     create_entire_path_directory(output_path)
     
+    name = name.split('chr')[-1]
+
     output_path = os.path.join(
         output_path, 
         'chr{}.npz'.format(name)
     )
 
-    if name in ['Y','MT']:
+    if name in ['Y','MT', 'M']:
         return 
 
     if os.path.exists(output_path):
@@ -61,13 +63,17 @@ def process_chromosome(hic, output, resolution, chromosome, debug):
             'observed', 'KR', 'BP', resolution                                          
         )
     except:
-        print('Chromosome {} doesnt contain any informative rows'.format(name))
-        return 
+        try: 
+            chromosome_matrix = hic.getMatrixZoomData(
+                chromosome.name, chromosome.name, 
+                'observed', 'SCALE', 'BP', resolution                                          
+            )
+        except:
+            print('Chromosome {} doesnt contain any informative rows'.format(name))
+            return 
 
     informative_indexes = np.array(chromosome_matrix.getNormVector(index))
     informative_indexes = np.where(np.isnan(informative_indexes)^True)[0]
-    print(informative_indexes.shape)
-
 
     if len(informative_indexes) == 0:
         print('Chromosome {} doesnt contain any informative rows'.format(name))
@@ -85,7 +91,7 @@ def process_chromosome(hic, output, resolution, chromosome, debug):
     mat = mat + np.tril(mat, -1).T
 
     np.savez_compressed(output_path, hic=mat, compact=informative_indexes, size=length)
-    if debug: print('Saving Chromosome at path {}'.format(output_path))
+    print('Saving Chromosome at path {}'.format(output_path))
     return True
 
     

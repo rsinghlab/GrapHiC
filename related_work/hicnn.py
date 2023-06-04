@@ -29,7 +29,6 @@ from tqdm import tqdm
 from src.utils import BASE_DIRECTORY, create_entire_path_directory, delete_files, GENERATED_DATA_DIRECTORY, PREDICTED_FILES_DIRECTORY
 from src.matrix_operations import process_graph_batch, spreadM, together
 from src.evaluations import MSE, SSIM, PCC
-from torch.utils.tensorboard import SummaryWriter
 from src.visualizations import visualize
 
 dataset_partitions = {
@@ -44,7 +43,7 @@ dataset_partitions = {
 
 
 
-def process_compact_idxs(base_compact_idx, target_compact_idx, compact_method='intersection'):
+def process_compact_idxs(base_compact_idx, target_compact_idx, compact_method='target'):
     '''
         Processes the compact indexes based on the method type provided.
         @params: base_compact_idx <List>, Compaction indices of the base matrix
@@ -395,17 +394,7 @@ def run(
     '''
         This function trains, validates, and tests the provided model
     '''
-    # Step 0: Setup the tensorboard writer, create or ensure the required directories exist
-    # Tensor board writer
-    tensor_board_writer_path = os.path.join(BASE_DIRECTORY, 'logdir', model.model_name)
-    print(tensor_board_writer_path)
-
-    if not os.path.exists(tensor_board_writer_path):
-        create_entire_path_directory(tensor_board_writer_path)
     
-    # Create tensorboard writer
-    writer = SummaryWriter(os.path.join(tensor_board_writer_path, model.model_name))
-
     # Weights directory exists
     if not os.path.exists(model.weights_dir):
         create_entire_path_directory(model.weights_dir)

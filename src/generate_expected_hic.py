@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def generate_and_add_expected_contact_matrix(matrix, decay_constant=0.2):
+def generate_and_add_expected_contact_matrix(matrix, decay_constant=0.2, replace=False):
   """
   Generates an expected Hi-C contact matrix for the given genome.
   
@@ -27,7 +27,11 @@ def generate_and_add_expected_contact_matrix(matrix, decay_constant=0.2):
   # Update the contact matrix with the expected number of contacts
   contact_matrix[0, i, j] = expected_contacts
   
-  return (matrix + contact_matrix)
+  
+  if replace == True:
+      return np.copyto(contact_matrix, matrix, where= matrix != 0)
+  else:
+    return (matrix + contact_matrix)
 
 
 def generate_expected_contact_matrix(matrix, decay_constant=0.2):
