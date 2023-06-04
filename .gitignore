@@ -10,6 +10,8 @@ datasets.json
 testing.py
 *.png	
 *.out
+*.txt
+*.json
 archive/
 oscar_outputs/
 oscar_scripts/
