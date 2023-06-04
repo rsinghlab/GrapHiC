@@ -27,3 +27,9 @@ related_work/
 other_tools/
 training_scripts/
 env/
+cross_celltype_data_genomedisco.png
+cross_celltype_data_loops.png
+cross_celltype_data_ssim.png
+sparsity_data_genomedisco.png
+sparsity_data_loops.png
+sparsity_data_ssim.png
