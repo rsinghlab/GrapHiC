@@ -81,5 +81,27 @@ python training_scripts/graphic_training.py
 This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. The training and testing scripts for HiCReg, HiCNN and different versions of GrapHiC follow the same workflow and we have created distinct .py files in the same folder. 
 
 ## Imputing Hi-C reads with GrapHiC
+Once you have retrained GrapHiC (or downloaded the provided weights), you can run the command:
+```
+python generate_chromosomes/graphic_chroms.py
+```
+To generate imputed samples for all the datasets and analysis we performed in our manuscript. Similar scripts are provided for HiCNN and HiCReg to impute Hi-C data for all the datasets. 
+
+## Running analysis
+Once you have generated all the data, you can run the command to run analysis scripts and evaluate and compare the performance of GrapHiC against other methods:
+```
+python evaluation/evaluate.py
+```
+This script would generate aggregate results for all the test chromosomes in the RESULTS_DIRECTORY folder defined in the utils.py file along with visualization of the generated chromosomes. Unfortunatly, for Hi-C similarity we generate script files that run an 
+3DChromatin_ReplicateQC replicate pipeline. 
+
+
+## Online App
+GrapHiC is also available as an app on [superbio.ai](https://app.superbio.ai/apps/196?id=63888da92ffa50c6deecdca2).
+
+
+
+
+
 
 
