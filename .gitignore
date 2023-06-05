@@ -27,6 +27,7 @@ related_work/
 other_tools/
 training_scripts/
 env/
+generate_chromosomes/
 cross_celltype_data_genomedisco.png
 cross_celltype_data_loops.png
 cross_celltype_data_ssim.png

@@ -65,7 +65,7 @@ def read_and_crop_chrom_files(path, cpt_idx_dict):
 
 
 
-def get_every_nth_element(data, step=10):
+def get_every_nth_element(data, step=1):
     num = data.shape[0]//step
     array = data[np.round(np.linspace(1, data.shape[0]-1, num=num)).astype(int)]
     
