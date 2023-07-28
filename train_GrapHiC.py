@@ -91,4 +91,11 @@ def train_grapHiC(base, target, epi_factors, model_name):
     )
 
 
-train_grapHiC('GM12878-encode-0', 'GM12878-geo-raoetal', 'GrapHiC-Trimmed', 'graphic-final')
+lrc_file = 'GM12878-encode-0'
+hrc_file = 'GM12878-geo-raoetal'
+epi_feature_set = 'GrapHiC-Trimmed'
+model_name = 'graphic-final'
+
+
+train_grapHiC(lrc_file, hrc_file, epi_feature_set, model_name)
+

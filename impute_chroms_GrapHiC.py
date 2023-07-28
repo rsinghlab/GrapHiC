@@ -90,21 +90,17 @@ def upscale(model, target, base, epi_feature_set, experiment):
 datasets = {
     # GM12878 Datasets
     'GM12878-encode-0'  : 'GM12878-geo-raoetal',
-    # 'GM12878-encode-1'  : 'GM12878-geo-raoetal',
-    # 'GM12878-encode-2'  : 'GM12878-geo-raoetal',
-    # 'GM12878-geo-026'   : 'GM12878-geo-raoetal',
-    # 'GM12878-geo-033'   : 'GM12878-geo-raoetal',
-    # # Cross-celltype
-    # 'IMR90-geo-057'     : 'IMR90-geo-raoetal'  ,
-    # 'K562-geo-073'      : 'K562-geo-raoetal'   ,
-    # # Cross Species 
-    # 'CH12.LX-encode-MM10-lrc-0': 'CH12.LX-encode-MM10-hrc-0',
+    'GM12878-encode-1'  : 'GM12878-geo-raoetal',
+    'GM12878-encode-2'  : 'GM12878-geo-raoetal',
+    'GM12878-geo-026'   : 'GM12878-geo-raoetal',
+    'GM12878-geo-033'   : 'GM12878-geo-raoetal',
+    # Cross-celltype
+    'IMR90-geo-057'     : 'IMR90-geo-raoetal'  ,
+    'K562-geo-073'      : 'K562-geo-raoetal'   ,
 }
 
 models = {
-    # 'graphic-final-GM12878-encode-0-CTCF'    : 'CTCF' 
-    # 'graphic-final-pos-GM12878-encode-0-CTCF' : 'CTCF',
-    'graphic-simple-prior-final-GM12878-encode-0-GrapHiC-Trimmed'        : 'GrapHiC-Trimmed',
+    'graphic-final-encode-0-GrapHiC-Trimmed'
 }
 
 
