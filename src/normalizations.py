@@ -5,17 +5,6 @@
 import numpy as np
 from src import visualizations
 
-
-SAMPLE_HIC_NORMALIZATION_PARAMS = {
-    'norm'              : True,  # To normalize or not
-    'remove_zeros'      : True,  # Remove zero before percentile calculation
-    'set_diagonal_zero' : False, # Remove the diagonal before percentile calculation
-    'percentile'        : 95.0,  # Percentile 
-    'rescale'           : True,  # After applying cutoff, rescale between 0 and 1
-    'chrom_wide'        : True,  # Apply it on chromosome scale #TODO: Sample wise normalization isn't implemented
-    'draw_dist_graphs'  : False  # Visualize the distribution of the chromosome
-}
-
 def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1', target=True):
     '''
         This fuction performs chromosome wide normalization of the HiC matrices 
@@ -65,7 +54,8 @@ def normalize_hic_matrix(hic_matrix, params, cell_line='H1', chromosome='chr1', 
     if params['rescale']:
         hic_matrix = hic_matrix / (np.max(cutoff_value) + 1)
 
-    hic_matrix[hic_matrix < 0.001] = 0 # Nice magic number here mate
+    # Sparsification to improve memory utilization (removing insignificant contacts)
+    hic_matrix[hic_matrix < 0.001] = 0
 
     # Set edges to a particular value
     if params['edge_culling'] != -1 and target == False:

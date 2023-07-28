@@ -1,12 +1,11 @@
 import os, shutil, gzip
 import numpy as np
 import wget
+import sys
+sys.path.append('../GrapHiC/')
 
-hic_data_resolution = 10000
+from parameters import DATA_DIRECTORY, BASE_DIRECTORY, hic_data_resolution
 
-
-BASE_DIRECTORY = '/users/gmurtaza/GrapHiC/'
-DATA_DIRECTORY = '/users/gmurtaza/data/gmurtaza/'
 
 HIC_FILES_DIRECTORY = os.path.join(DATA_DIRECTORY, 'hic_datasets') # Recommended that this path is on some larger storage device
 PARSED_HIC_FILES_DIRECTORY = os.path.join(DATA_DIRECTORY, 'parsed_hic_datasets') # Recommended that this path is on some larger storage device
@@ -21,8 +20,6 @@ WEIGHTS_DIRECTORY = os.path.join(BASE_DIRECTORY, 'weights') # Recommended to kee
 GENERATED_DATA_DIRECTORY = os.path.join(BASE_DIRECTORY, 'outputs')
 
 JAR_LOCATION = os.path.join(BASE_DIRECTORY, 'other_tools', '3DMax.jar')
-
-# Dataset file paths
 
 # These files should exist, (currently not using all of them but would at some point)
 hic_file_paths = {
@@ -138,6 +135,14 @@ hic_file_paths = {
     #     'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'HFF-GRCH38', 'encode-grch38-hrc-0.hic'),
     #     'remote_path': 'https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/7d00531a-e616-469b-af52-5b028270e2ce/4DNFIFLJLIS5.hic'
     # },
+    # 'CH12.LX-encode-MM10-hrc-0':{
+    #     'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'encode-mm10-hrc-0.hic'),
+    #     'remote_path': 'https://www.encodeproject.org/files/ENCFF076GYR/@@download/ENCFF076GYR.hic'
+    # },
+    # 'CH12.LX-encode-MM10-lrc-0':{
+    #     'local_path' : os.path.join(HIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'encode-mm10-lrc-0.hic'),
+    #     'remote_path': 'https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/3b416382-ae5d-469f-9e9a-85a3e2ce9793/4DNFI8KBXYNL.hic'
+    # },
 }
 
 
@@ -199,6 +204,15 @@ epigenetic_factor_paths = {
             'remote_path': 'https://encode-public.s3.amazonaws.com/2012/07/01/bb401e4f-91f5-4ddc-ac2b-2b36a56ec114/ENCFF000WCT.bigWig',
             'local_path': os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'rad21.bigwig')
         },
+        'RNA-Seq+': {
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF090MCX/@@download/ENCFF090MCX.bigWig',
+            'local_path': os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'rnaseq+.bigwig')
+        },
+        'RNA-Seq-': {
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF825OPU/@@download/ENCFF825OPU.bigWig',
+            'local_path': os.path.join(EPIGENETIC_FILES_DIRECTORY, 'GM12878', 'rnaseq-.bigwig')
+        }
+        
     },
     'H1': {
         'H3K27AC': {
@@ -432,7 +446,6 @@ epigenetic_factor_paths = {
             'local_path': os.path.join(EPIGENETIC_FILES_DIRECTORY, 'K562', 'rad21.bigwig')
         },
     },
-
     'GM12878-GRCH38': {
         'H3K27AC': {
             'remote_path': 'https://www.encodeproject.org/files/ENCFF798KYP/@@download/ENCFF798KYP.bigWig',
@@ -557,29 +570,50 @@ epigenetic_factor_paths = {
             'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'H1-GRCH38', 'ctcf.bigwig')
         },
     },
-    'HFF-GRCH38': {
+    # 'HFF-GRCH38': {
+    #     'H3K27AC': {
+    #         'remote_path': 'https://www.encodeproject.org/files/ENCFF644GJB/@@download/ENCFF644GJB.bigWig',
+    #         'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'HFF-GRCH38', 'h3k27ac.bigwig'),
+    #     },
+    #     'H3K27ME3': {
+    #         'remote_path': 'https://www.encodeproject.org/files/ENCFF979AVA/@@download/ENCFF979AVA.bed.gz',
+    #         'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'HFF-GRCH38', 'h3k27me3.bigwig'),
+    #     },
+    #     'H3K4ME3': {
+    #         'remote_path': 'https://www.encodeproject.org/files/ENCFF598MLG/@@download/ENCFF598MLG.bigWig',
+    #         'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'HFF-GRCH38', 'h3k4me3.bigwig'),
+    #     },
+    #     'DNASE-Seq':{
+    #         'remote_path': 'https://www.encodeproject.org/files/ENCFF623ZIV/@@download/ENCFF623ZIV.bigWig',
+    #         'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'HFF-GRCH38', 'dnase.bigwig'),
+    #     },
+    #     'CTCF': {
+    #         'remote_path': 'https://www.encodeproject.org/files/ENCFF209TQB/@@download/ENCFF209TQB.bigWig',
+    #         'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'HFF-GRCH38', 'ctcf.bigwig')
+    #     },
+    # },
+    'CH12.LX-MM10': {
         'H3K27AC': {
-            'remote_path': 'https://www.encodeproject.org/files/ENCFF644GJB/@@download/ENCFF644GJB.bigWig',
-            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'H1-GRCH38', 'h3k27ac.bigwig'),
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF664URY/@@download/ENCFF664URY.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'h3k27ac.bigwig'),
         },
         'H3K27ME3': {
-            'remote_path': 'https://www.encodeproject.org/files/ENCFF979AVA/@@download/ENCFF979AVA.bed.gz',
-            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'H1-GRCH38', 'h3k27me3.bigwig'),
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF752TMA/@@download/ENCFF752TMA.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'h3k27me3.bigwig'),
         },
         'H3K4ME3': {
-            'remote_path': 'https://www.encodeproject.org/files/ENCFF598MLG/@@download/ENCFF598MLG.bigWig',
-            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'H1-GRCH38', 'h3k4me3.bigwig'),
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF346SJT/@@download/ENCFF346SJT.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'h3k4me3.bigwig'),
         },
         'DNASE-Seq':{
-            'remote_path': 'https://www.encodeproject.org/files/ENCFF623ZIV/@@download/ENCFF623ZIV.bigWig',
-            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'H1-GRCH38', 'dnase.bigwig'),
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF228LWM/@@download/ENCFF228LWM.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'dnase.bigwig'),
         },
         'CTCF': {
-            'remote_path': 'https://www.encodeproject.org/files/ENCFF209TQB/@@download/ENCFF209TQB.bigWig',
-            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'H1-GRCH38', 'ctcf.bigwig')
+            'remote_path': 'https://www.encodeproject.org/files/ENCFF923OBH/@@download/ENCFF923OBH.bigWig',
+            'local_path' : os.path.join(EPIGENETIC_FILES_DIRECTORY, 'CH12.LX-MM10', 'ctcf.bigwig')
         },
     },
-
 }
 
 

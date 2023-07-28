@@ -6,6 +6,9 @@
 ### These are default parameters, to run interesting experiments change these parameters ###
 hic_data_resolution = 10000
 
+# Paths
+BASE_DIRECTORY = '/users/gmurtaza/GrapHiC/'
+DATA_DIRECTORY = '/users/gmurtaza/data/gmurtaza/'
 
 
 # These hyperparameters go to GrapHiC model controlling the training batch size, optimizer parameters 
@@ -81,4 +84,6 @@ epigenetic_features = {
     'H3K9ME3': ['H3K9ME3'],
     'GrapHiC-Med': ['CTCF', 'RAD-21', 'DNASE-Seq'],
     'GrapHiC-Trimmed': ['CTCF', 'DNASE-Seq', 'H3K4ME3', 'H3K27AC', 'H3K27ME3'],
+    'RNA-Seq': ['RNA-Seq+', 'RNA-Seq-'],
+    'scGrapHiC': ['RNA-Seq+', 'RNA-Seq-', 'DNASE-Seq'],
 } 

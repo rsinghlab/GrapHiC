@@ -12,6 +12,9 @@ from src.utils import BASE_DIRECTORY, create_entire_path_directory, delete_files
 from src.matrix_operations import process_graph_batch, spreadM, together
 from src.evaluations import MSE, SSIM, PCC
 from src.visualizations import visualize
+from src.npz_to_cool_converter import create_cool_file_from_numpy
+
+
 
 def data_info(data):
     indices = data['inds']
@@ -224,6 +227,11 @@ def save_chromosomes(model, file_test, output_path, base):
     def save_data_n(key):
         file = os.path.join(chroms_path, f'chr{key}.npz')
         save_data(predicted[key], compacts[key], sizes[key], file)
+        from matplotlib.colors import LinearSegmentedColormap
+        REDMAP = LinearSegmentedColormap.from_list("bright_red", [(1,1,1),(1,0,0)])
+
+        plt.matshow(predicted[key][:2000, :2000], cmap=REDMAP)
+        plt.savefig(os.path.join(chroms_path, 'sample-vis.png'))
 
     print(f'Saving predicted data as individual chromosome files')
 

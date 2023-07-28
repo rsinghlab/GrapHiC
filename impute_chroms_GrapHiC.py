@@ -33,6 +33,10 @@ def upscale(model, target, base, epi_feature_set, experiment):
     if 'grch38' in base:
         cell_line = target.split('-')[0] + '-GRCH38'
     
+    if 'MM10' in base:
+        cell_line = target.split('-')[0] + '-MM10'
+    
+    
     # Step 1: Create the dataset
     dataset_path = os.path.join(DATASET_DIRECTORY, dataset_name)
     node_encoding_files = get_required_node_encoding_files_paths(
@@ -53,18 +57,15 @@ def upscale(model, target, base, epi_feature_set, experiment):
     
     print(base, target, dataset_path, node_encoding_files)
     
-    # Step 2: Setup the experiment by creating the datasets and required directories
-    if not os.path.exists(os.path.join(dataset_path, 'train.npz')):
-        create_dataset_from_hic_files(
-            os.path.join(PARSED_HIC_FILES_DIRECTORY, base ,'resolution_{}'.format(hic_data_resolution)),
-            os.path.join(PARSED_HIC_FILES_DIRECTORY, target ,'resolution_{}'.format(hic_data_resolution)),
-            dataset_path,
-            node_encoding_files,
-            dataset_creation_parameters,
-            datasets=['test']
-        )
-    else:
-        print('Dataset exists')
+    # Step 2: Setup the experiment by creating the datasets
+    create_dataset_from_hic_files(
+        os.path.join(PARSED_HIC_FILES_DIRECTORY, base ,'resolution_{}'.format(hic_data_resolution)),
+        os.path.join(PARSED_HIC_FILES_DIRECTORY, target ,'resolution_{}'.format(hic_data_resolution)),
+        dataset_path,
+        node_encoding_files,
+        dataset_creation_parameters,
+        datasets=['test']
+    )
     
     # Step 3: Create the model and initialize the weights
     graphic_model = GrapHiC(
@@ -89,17 +90,21 @@ def upscale(model, target, base, epi_feature_set, experiment):
 datasets = {
     # GM12878 Datasets
     'GM12878-encode-0'  : 'GM12878-geo-raoetal',
-    'GM12878-encode-1'  : 'GM12878-geo-raoetal',
-    'GM12878-encode-2'  : 'GM12878-geo-raoetal',
-    'GM12878-geo-026'   : 'GM12878-geo-raoetal',
-    'GM12878-geo-033'   : 'GM12878-geo-raoetal',
-    # Cross-celltype
-    'IMR90-geo-057'     : 'IMR90-geo-raoetal'  ,
-    'K562-geo-073'      : 'K562-geo-raoetal'   ,
+    # 'GM12878-encode-1'  : 'GM12878-geo-raoetal',
+    # 'GM12878-encode-2'  : 'GM12878-geo-raoetal',
+    # 'GM12878-geo-026'   : 'GM12878-geo-raoetal',
+    # 'GM12878-geo-033'   : 'GM12878-geo-raoetal',
+    # # Cross-celltype
+    # 'IMR90-geo-057'     : 'IMR90-geo-raoetal'  ,
+    # 'K562-geo-073'      : 'K562-geo-raoetal'   ,
+    # # Cross Species 
+    # 'CH12.LX-encode-MM10-lrc-0': 'CH12.LX-encode-MM10-hrc-0',
 }
 
 models = {
-    'graphic-final-GM12878-encode-0-GrapHiC-Trimmed'    : 'GrapHiC-Trimmed' 
+    # 'graphic-final-GM12878-encode-0-CTCF'    : 'CTCF' 
+    # 'graphic-final-pos-GM12878-encode-0-CTCF' : 'CTCF',
+    'graphic-simple-prior-final-GM12878-encode-0-GrapHiC-Trimmed'        : 'GrapHiC-Trimmed',
 }
 
 
@@ -108,12 +113,17 @@ def upscale_all_datasets(models, datasets):
     PARAMETERS['decoderstyle'] = 'Unet'
 
     for model, epi_set in models.items():
+        if 'pos' in model:
+            dataset_creation_parameters['node_embedding_concat_method'] = 'positional'
+        if 'prior' in model:
+            dataset_creation_parameters['replace_with_expected_hic'] = True
+        
+        
         for input, target in datasets.items():
             if 'IMR90' in input:
                 dataset_creation_parameters['add_expected_hic'] = True
             if 'K562' in input:
                 dataset_creation_parameters['add_expected_hic'] = True
-            
             
             upscale(model, target, input, epi_set, 'new-exps')
 
@@ -122,6 +132,10 @@ def upscale_all_datasets(models, datasets):
             if 'K562' in input:
                 dataset_creation_parameters['add_expected_hic'] = False
         
+        if 'pos' in model:
+            dataset_creation_parameters['node_embedding_concat_method'] = 'concat'
+        if 'prior' in model:
+            dataset_creation_parameters['replace_with_expected_hic'] = False
 
 
 upscale_all_datasets(models, datasets)

@@ -27,9 +27,6 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 download_all_hic_datasets()
 download_all_epigenetic_datasets()
 
-
-
-
 def train_grapHiC(base, target, epi_factors, model_name):
     dataset_name = '{}:{}_target:{}_nenc:{}/'.format(
         model_name,

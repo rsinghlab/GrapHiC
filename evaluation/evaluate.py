@@ -24,11 +24,11 @@ rp_values = {
     
 }
 
-relevant_directories = [sys.argv[1]]
+#relevant_directories = [sys.argv[1]]
 
 
 # relevant_directories = list(filter(lambda x: '@' in x, os.listdir(PREDICTED_FILES_DIRECTORY)))
-# relevant_directories = ['GM12878-encode-0@GM12878-geo-raoetal']
+relevant_directories = ['GM12878-encode-0@GM12878-geo-raoetal']
 relevant_directories = list(map(lambda x: os.path.join(PREDICTED_FILES_DIRECTORY, x) , relevant_directories))
 
 print(relevant_directories)
@@ -64,8 +64,8 @@ def read_and_crop_chrom_files(path, cpt_idx_dict):
 
 
 
-
-def get_every_nth_element(data, step=1):
+# Testing function to reduce the number of samples and check end-to-end performance
+def get_every_nth_element(data, step=10):
     num = data.shape[0]//step
     array = data[np.round(np.linspace(1, data.shape[0]-1, num=num)).astype(int)]
     
@@ -176,22 +176,22 @@ for relevant_directory in relevant_directories:
         # recon_analysis_files[key] = generate_models(samples_dictionary[key], indexes, recon_analysis_path)
         
         # Step 3: Setup the bio feature analysis files
-        bio_feature_analysis_path = os.path.join(output_path, 'bio_feature_analysis')
-        create_entire_path_directory(bio_feature_analysis_path)
-        print('Creating biological feature analysis files for {}'.format(key))
-        if key != 'inputs':
-            loops, borders, hairpins = extract_features(samples_dictionary[key], indexes, bio_feature_analysis_path)
-            bio_feature_analysis_files[key] = {
-                'loops': loops,
-                'borders': borders, 
-                'hairpins': hairpins
-            }
+        # bio_feature_analysis_path = os.path.join(output_path, 'bio_feature_analysis')
+        # create_entire_path_directory(bio_feature_analysis_path)
+        # print('Creating biological feature analysis files for {}'.format(key))
+        # if key != 'inputs':
+        #     loops, borders, hairpins = extract_features(samples_dictionary[key], indexes, bio_feature_analysis_path)
+        #     bio_feature_analysis_files[key] = {
+        #         'loops': loops,
+        #         'borders': borders, 
+        #         'hairpins': hairpins
+        #     }
             
-        # # Step 4: Setup Hi-C similarity analysis files
-        hic_similarity_analysis_path = os.path.join(output_path, 'hic_similarity_analysis')
-        create_entire_path_directory(hic_similarity_analysis_path)
-        print('Creating Hi-C similarity files for {}'.format(key))
-        hic_similarity_analysis_files[key] = create_required_analysis_files(samples_dictionary[key], indexes, hic_similarity_analysis_path, key)
+        # # # Step 4: Setup Hi-C similarity analysis files
+        # hic_similarity_analysis_path = os.path.join(output_path, 'hic_similarity_analysis')
+        # create_entire_path_directory(hic_similarity_analysis_path)
+        # print('Creating Hi-C similarity files for {}'.format(key))
+        # hic_similarity_analysis_files[key] = create_required_analysis_files(samples_dictionary[key], indexes, hic_similarity_analysis_path, key)
     
 
     correlation_results = {}
@@ -230,25 +230,25 @@ for relevant_directory in relevant_directories:
         #     reconstruction_results[key][result] = float(np.mean(results[result]))
         
         # Step 3: Compute Bio feature results
-        print('Running loop feature analysis evaluations for {}'.format(key))
-        loop_results = compare_features(bio_feature_analysis_files[key]['loops'], bio_feature_analysis_files['target']['loops'], rp_values['loops'])
-        loops_feature_results[key] = {}
-        for result in loop_results:
-            loops_feature_results[key][result] = float(np.mean(loop_results[result]))
+        # print('Running loop feature analysis evaluations for {}'.format(key))
+        # loop_results = compare_features(bio_feature_analysis_files[key]['loops'], bio_feature_analysis_files['target']['loops'], rp_values['loops'])
+        # loops_feature_results[key] = {}
+        # for result in loop_results:
+        #     loops_feature_results[key][result] = float(np.mean(loop_results[result]))
 
         
-        print('Running borders feature analysis evaluations for {}'.format(key))
-        borders_results = compare_features(bio_feature_analysis_files[key]['borders'], bio_feature_analysis_files['target']['borders'], rp_values['borders'])
-        borders_feature_results[key] = {}
-        for result in borders_results:
-            borders_feature_results[key][result] = float(np.mean(borders_results[result]))
+        # print('Running borders feature analysis evaluations for {}'.format(key))
+        # borders_results = compare_features(bio_feature_analysis_files[key]['borders'], bio_feature_analysis_files['target']['borders'], rp_values['borders'])
+        # borders_feature_results[key] = {}
+        # for result in borders_results:
+        #     borders_feature_results[key][result] = float(np.mean(borders_results[result]))
         
         
-        print('Running hairpin feature analysis evaluations for {}'.format(key))
-        hairpin_results = compare_features(bio_feature_analysis_files[key]['hairpins'], bio_feature_analysis_files['target']['hairpins'], rp_values['hairpins'])
-        hairpins_feature_results[key] = {}
-        for result in hairpin_results:
-            hairpins_feature_results[key][result] = float(np.mean(hairpin_results[result]))
+        # print('Running hairpin feature analysis evaluations for {}'.format(key))
+        # hairpin_results = compare_features(bio_feature_analysis_files[key]['hairpins'], bio_feature_analysis_files['target']['hairpins'], rp_values['hairpins'])
+        # hairpins_feature_results[key] = {}
+        # for result in hairpin_results:
+        #     hairpins_feature_results[key][result] = float(np.mean(hairpin_results[result]))
         
     
     
@@ -267,56 +267,56 @@ for relevant_directory in relevant_directories:
     #         'recon_results.json'
     #     )
     # )
-    save_results(
-        borders_feature_results, 
-        os.path.join(
-            results_directory, 
-            'borders_results.json'
-        )
-    )
-    save_results(
-        hairpins_feature_results, 
-        os.path.join(
-            results_directory, 
-            'hairpin_results.json'
-        )
-    )
-    save_results(
-        loops_feature_results, 
-        os.path.join(
-            results_directory, 
-            'loops_results.json'
-        )
-    )
+    # save_results(
+    #     borders_feature_results, 
+    #     os.path.join(
+    #         results_directory, 
+    #         'borders_results.json'
+    #     )
+    # )
+    # save_results(
+    #     hairpins_feature_results, 
+    #     os.path.join(
+    #         results_directory, 
+    #         'hairpin_results.json'
+    #     )
+    # )
+    # save_results(
+    #     loops_feature_results, 
+    #     os.path.join(
+    #         results_directory, 
+    #         'loops_results.json'
+    #     )
+    # )
     
     
-    # For Hi-C Similarity we unfortunately have to setup new set of scripts to run them separately 
-    first = True
-    for key in samples_dictionary.keys():
-        print('Setting up Hi-C similarity analysis metadata files {}'.format(key))
+    # # For Hi-C Similarity we unfortunately have to setup new set of scripts to run them separately 
+    # first = True
+    # for key in samples_dictionary.keys():
+    #     print('Setting up Hi-C similarity analysis metadata files {}'.format(key))
 
-        output_path = os.path.join(relevant_directory)
-        if key == 'target':
-            continue
+    #     output_path = os.path.join(relevant_directory)
+    #     if key == 'target':
+    #         continue
         
-        input_sparse_matrix_files = hic_similarity_analysis_files[key]
-        target_sparse_matrix_files = hic_similarity_analysis_files['target']
+    #     input_sparse_matrix_files = hic_similarity_analysis_files[key]
+    #     target_sparse_matrix_files = hic_similarity_analysis_files['target']
 
-        for chrom in test_chroms:
-            i_files = list(filter(
-                lambda x: 'chr_{}'.format(chrom) in x, 
-                input_sparse_matrix_files
-            ))
-            t_files = list(filter(
-                lambda x: 'chr_{}'.format(chrom) in x, 
-                target_sparse_matrix_files
-            ))
-            output_directory = os.path.join(output_path, 'hic_similarity_analysis', 'chr{}'.format(chrom))
+    #     for chrom in test_chroms:
+    #         i_files = list(filter(
+    #             lambda x: 'chr_{}'.format(chrom) in x, 
+    #             input_sparse_matrix_files
+    #         ))
+    #         t_files = list(filter(
+    #             lambda x: 'chr_{}'.format(chrom) in x, 
+    #             target_sparse_matrix_files
+    #         ))
+    #         output_directory = os.path.join(output_path, 'hic_similarity_analysis', 'chr{}'.format(chrom))
             
-            create_entire_path_directory(output_directory)
-            create_metadata_files_for_hic_similarity_analysis(i_files, t_files, output_directory, chrom, first)
+    #         create_entire_path_directory(output_directory)
+    #         create_metadata_files_for_hic_similarity_analysis(i_files, t_files, output_directory, chrom, first)
 
-        first= False
+    #     first= False
         
     
     

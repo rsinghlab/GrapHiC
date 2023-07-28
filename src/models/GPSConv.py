@@ -1,18 +1,8 @@
-import inspect
-from typing import Any, Dict, Optional
-
 import torch
 import torch.nn.functional as F
 from torch import Tensor
 from torch.nn import Dropout, Linear, Sequential
 
-from torch_geometric.nn.conv import MessagePassing
-from torch_geometric.nn.inits import reset
-from torch_geometric.nn.resolver import (
-    activation_resolver,
-    normalization_resolver,
-)
-from torch_geometric.typing import Adj
 from torch_geometric.utils import to_dense_batch
 from torch_geometric.nn import TransformerConv
 import torch.nn as nn
