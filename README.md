@@ -41,7 +41,8 @@ pip install -r requirements.txt
 ```
 
 ## Updating static paths in the codebase
-I have only two paths that are statically defined in the code base and they refer to the current working directory (directory where you put GrapHiC source code) and the data directory where you wish to store the outputs and datasets. 
+I have only two paths that are statically defined in the code base and they refer to the current working directory (directory where you put GrapHiC source code) and the data directory where you wish to store the outputs and datasets. They are currently setup in a way that assumes that you have cloned everything from Zenodo. 
+
 Static paths are defined in the parameters.py file and I would update them as follows:
 1) BASE_DIRECTORY path should point to the output of running the pwd command.
 2) DATA_DIRECTORY path should point to a folder (anywhere) that has ample storage (~150 GBs) capacity available. 
@@ -57,21 +58,23 @@ Once you have installed all the GrapHiC requirements and setup the paths accordi
 ```
 python train_GrapHiC.py
 ```
-This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. This function also evaluates GrapHiC on all five GM12878 cell lines on test chromosomes. The training and testing scripts for HiCReg, HiCNN and different versions of GrapHiC follow the same workflow and we have created distinct .py files in the same folder. 
+This command downloads all the necessary datasets both Hi-C and Auxiliary signals, pre-processes them and converts them into a dataset that is fed into the training pipeline. This trains the GrapHiC model with the parameters specified in the 'parameters.py' file and stores the weights in the specified weights directory. 
+
+You can train different variants of GrapHiC by changing the paramters defined in the parameters.py file or by changing the dataset it trains with by changing the parameters 'lrc_file', 'hrc_file' and the 'epi_feature_set'.
 
 ## Imputing Hi-C reads with GrapHiC
 Once you have retrained GrapHiC (or downloaded the provided weights), you can run the command:
 ```
 python impute_chroms_GrapHiC.py
 ```
-To generate imputed samples for all the datasets and analysis we performed in our manuscript. Similar scripts are provided for HiCNN and HiCReg to impute Hi-C data for all the datasets. 
+To generate imputed samples for all of the low-read-count (low-resolution) datasets with the GrapHiC model. 
 
 ## Running analysis
-Once you have generated all the data, you can run the command to run analysis scripts and evaluate and compare the performance of GrapHiC against other methods:
+Once you have generated all the data, you can run the command to run analysis scripts and evaluate the performance of GrapHiC:
 ```
 python evaluation/evaluate.py
 ```
-This script would generate aggregate results for all the test chromosomes in the RESULTS_DIRECTORY folder defined in the utils.py file along with visualization of the generated chromosomes. Unfortunatly, for Hi-C similarity metric we generate script files that run 3DChromatin_ReplicateQC replicate pipeline. 
+This script generates all quantitative results in the DATA_DIRECTORY/results folder and all the predicted (or generated Hi-C) data in DATA_DIRECTORY/predicted_data folder. 
 
 
 ## Online App
