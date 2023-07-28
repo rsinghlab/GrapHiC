@@ -77,8 +77,12 @@ python evaluation/evaluate.py
 This script generates all quantitative results in the DATA_DIRECTORY/results folder and all the predicted (or generated Hi-C) data in DATA_DIRECTORY/predicted_data folder. 
 
 
+## Zenodo
+GrapHiC is available on [Zenodo](https://sandbox.zenodo.org/record/1225991) that contains model weights and sample datasets. 
+
 ## Online App
 GrapHiC is also available as an app on [superbio.ai](https://app.superbio.ai/apps/196?id=63888da92ffa50c6deecdca2).
+
 
 
 
